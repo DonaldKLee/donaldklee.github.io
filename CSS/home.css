@@ -296,21 +296,24 @@ body {
 	list-style-type: none;
 }
 .project_filter_item {
+	position:relative;
+	top:5px;
 	display: inline-block;
 	font-size: 16px;
 	color: white;
-	line-height: 50px;
+	line-height: 40px;
 	text-align: center;
 	border-radius: 25px;
 	padding: 0 10px;
 	min-width: 130px;
 	cursor: pointer;
+	height:40px;
 	transition:all 0.3s ease-in-out;
 }
 
 #project_filter li.active,
 #project_filter li:hover{
-	background-color: #53bff0;
+	background-color: #3988FF;
 	color: white;
 }
 
@@ -373,11 +376,28 @@ body {
 	background: #3988FF;
 	vertical-align:middle;
 	text-align:center;
+	transition:0.3s;
 }
-.project_github {
+.project_learn_more:hover {
+	background:#4B94FF;
+}
+.project_github_img {
+	width:35px;
+	height:auto;
+	transition:0.4s;
+	margin-left:10px;
+	vertical-align:middle;
+}
+.project_github_img:hover {
+	filter: invert(100%);
+}
+.project_github_logo {
 	font-size:1.8em;
 	color:white;
 	transition:0.4s;
 	margin-left:10px;
 	vertical-align:middle;
+}
+.project_github_logo:hover {
+	color: #9C9C9C;
 }
