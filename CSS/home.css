@@ -1,0 +1,383 @@
+/*CSS for the home page*/
+
+body {
+	background:#1D1C1C;
+	margin: 0;
+	overflow-x:hidden;
+	font-family: monospace;
+}
+
+/*Top Page*/
+.top_page_home {
+	position:relative;
+	display:block;
+	width:100%;
+	min-height:80vh;
+	margin:0 auto;
+	width:70%;
+	top:0vh;
+	z-index:1;
+}
+
+.profile_picture_container {
+	display:block;
+	position:relative;
+	text-align:center;
+	margin-top:15.5em;
+}
+.home_rounded_image { /*Profile Picture*/
+	border-radius: 50%;
+	width:13em;
+	height:auto;
+	border-style: solid;
+	border-color: white;
+	border-width: 2px;
+}
+
+.introduction_container {
+	
+}
+
+.home_my_name_is {
+	font-size:24px;
+	color:white;
+	margin-bottom:-40px;
+}
+
+.home_name {
+	font-size:50px;
+	font-weight: bold;
+	margin-bottom:-40px;
+}
+
+.changing_home_text {
+	font-size:45px;
+	font-weight: bold;
+	color:white;
+	display: inline-block;
+	vertical-align: middle;
+	letter-spacing: 2px;
+}
+
+.home_button_link { /*Text in the get in touch button*/
+	color:white;
+	text-decoration:none;
+	text-align: center;
+	font-size:17px;
+	width:200px;
+	height:auto;
+	display:block;
+}
+.home_button_link:hover, .get_in_touch:hover {
+	background:white;
+	color:black;
+	transition:0.4s;
+	font-weight:bold;
+}
+.get_in_touch {
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+}
+
+
+#home_changing_text {
+	display: inline-block;
+	vertical-align: middle;
+	letter-spacing: 2px;
+}
+
+#blinking_line {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	right:10px;
+	width: 3px;
+	height: 50px;
+	animation: blink .75s step-end infinite;
+}
+
+@keyframes blink {
+	from, to { 
+		background-color: transparent 
+	}
+	50% { 
+		background-color: white; 
+	}
+}
+
+/*About Page*/
+.about_page {
+	position:relative;
+	display:block;
+	width:100%;
+	margin:0 auto;
+	width:70%;
+	height:auto;
+	margin-bottom:5em;
+}
+
+.about_intro_text {
+	font-size:1.875em;
+	color:white;
+}
+.knowledge_title {
+	font-size:1.875em;
+	color:white;
+	font-weight: bold;
+}
+
+.knowledge_container {
+	display:grid;
+	grid-template-columns: auto auto auto; /*3 columns*/
+}
+.seperate_knowledge_container {
+	padding-right:40px;
+}
+.knowledge_column_title {
+	font-size:1.75em;
+	color:white;
+}
+.knowledge_list_item {
+	font-size:1.7em;
+	color:white;
+	list-style-type:'👉 ';
+}
+.knowledge_list_item_indent {
+	padding-left:2em;
+}
+.nested_knowledge_points {
+	list-style-type:'➤ ';
+}
+
+/*Experience Page*/
+.experience_page {
+	position:relative;
+	display:block;
+	width:100%;
+	margin:0 auto;
+	width:70%;
+	z-index:1;
+	height:auto;
+	margin-bottom:5em;
+}
+.accordion_top_bottom {
+	background: #282828;
+	padding: 25px 0px;
+	width: 100%;
+}
+.accordion_top_bottom:nth-child(1) {
+	border-radius: 15px 15px 0px 0px;
+}
+.accordion_top_bottom:nth-last-child(1) {
+	border-radius: 0px 0px 15px 15px;
+	border-top: 1px solid white;
+}
+
+.accordion {
+	background: #282828;
+	cursor: pointer;
+	padding: 20px 10px;
+	width: 100%;
+	text-align: left;
+	outline: none;
+	border:none;
+	border-top: 1px solid white;
+	transition: 0.4s;
+}
+.accordion:hover {
+	background:#3988FF;
+	transition: 0.4s;
+}
+.active {
+	background:#3988FF;
+}
+
+.accordion_heading {
+	font-size:1.875em;
+	color:white;
+	padding:20px;
+}
+
+.accordion_plus_symbol {
+	position:relative;
+	float:right;
+	top:10px;
+	padding: 0px 10px;
+	color:white;
+	display:block;
+	transform: rotate(0deg);
+	transition:0.4s;
+	animation: minus_to_plus 0.4s;
+}
+
+@keyframes minus_to_plus {
+	from {display:block; transform: rotate(-270deg);}
+	to {display:none; transform: rotate(0deg);}
+}
+
+.accordion:hover .accordion_plus_symbol {
+	display:none;
+	transition:0.4s;
+	transform: rotate(-270deg);
+}
+
+.accordion_minus_symbol {
+	position:relative;
+	float:right;
+	top:10px;
+	padding: 0px 10px;
+	color:white;
+	display:none;
+	transform: rotate(0deg);
+	transition:0.4s;
+}
+
+.accordion:hover .accordion_minus_symbol {
+	display:block;
+	animation: plus_to_minus 0.4s;
+	transition:0.4s;
+	transform: rotate(0deg);
+}
+
+@keyframes plus_to_minus {
+	from {display:block; transform: rotate(-270deg);}
+	to {display:none; transform: rotate(0deg);}
+}
+
+.accordion_pop_up {
+	padding: 0 18px;
+	background-color: black;
+	max-height: 0;
+	overflow: hidden;
+}
+.accordion_pop_up_transition {
+	transition: max-height 0.3s ease-out;
+}
+
+.accordion_content {
+	padding:20px;
+}
+
+.role {
+	color:white;
+	font-size:1.7em;
+}
+.job_date {
+	color:white;
+	font-size:1.7em;
+}
+.about_role {
+	color:white;
+	font-size:1.7em;
+}
+
+.projects_page {
+	position:relative;
+	display:block;
+	width:100%;
+	min-height:100vh;
+	margin:0 auto;
+	width:70%;
+	z-index:1;
+	margin-bottom:10em;
+}
+.projects_intro_text {
+	margin-top:-20px;
+	font-size:1.875em;
+	color:white;
+}
+#project_filter {
+	width:100%;
+	height:50px;
+	border-radius:30px;
+	background: #282828;
+	margin-bottom:40px;
+	list-style-type: none;
+}
+.project_filter_item {
+	display: inline-block;
+	font-size: 16px;
+	color: white;
+	line-height: 50px;
+	text-align: center;
+	border-radius: 25px;
+	padding: 0 10px;
+	min-width: 130px;
+	cursor: pointer;
+	transition:all 0.3s ease-in-out;
+}
+
+#project_filter li.active,
+#project_filter li:hover{
+	background-color: #53bff0;
+	color: white;
+}
+
+.projects_container {
+	width:100%;
+	display:grid;
+	grid-gap:60px;
+	justify-items: center;
+	grid-template-columns: repeat(auto-fill, minmax(340px , 1fr));
+}
+
+.project {
+	overflow: hidden;
+	width:auto;
+	background:#282828;
+	border-radius:15px;
+	box-shadow: 0 0 0px #000000;
+}
+.project:hover {
+	 box-shadow: 0 0 20px #000000;
+	 transition:0.3s;
+}
+.project_image_container {
+	object-fit: cover;
+	width:100%;
+	max-height:200px;
+	overflow:hidden;
+	transition:0.3s;
+}
+.home_projects_image {
+	width:100%;
+	height:200px;
+	transform: scale(1.1);
+	transition:0.3s;
+}
+.project:hover .home_projects_image {
+	transform: scale(1);
+	transition:0.3s;
+}
+.about_project_section {
+	padding:20px;
+}
+.project_name {
+	color:white;
+	font-size:1.3em;
+	font-weight:bold;
+}
+.about_project {
+	color:white;
+	font-size:1.2em;
+}
+.project_learn_more {
+	display:inline-block;
+	width:120px;
+	border-radius:30px;
+	padding:10px;
+	font-size:1.2em;
+	color:white;
+	text-decoration:none;
+	background: #3988FF;
+	vertical-align:middle;
+	text-align:center;
+}
+.project_github {
+	font-size:1.8em;
+	color:white;
+	transition:0.4s;
+	margin-left:10px;
+	vertical-align:middle;
+}
