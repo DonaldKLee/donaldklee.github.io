@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<nav class="top_nav_bar">
+<nav id="top_nav_bar">
 	<ul class="nav_list">
 		<li class="nav_sections"><a class="nav_links" href="index.html"><img class="mylogo" src="images/DL_Logo.png" alt="Donald Lee Logo"></a></li>
 		<li class="nav_sections nav_name"><a class="nav_links" href="index.html">Donald Lee</a></li>
@@ -193,8 +193,8 @@
 	<p class="projects_intro_text">Here are just some of the things that I have built. Feel free to check them out! </p>
 
 
-	<ul id="project_filter">
-		<li class="project_filter_item active" data-filter="All">All</li>
+	<ul class="project_filter">
+		<li class="project_filter_item project_filter_active" data-filter="All">All</li>
 		<li class="project_filter_item" data-filter="hackathon">Hackathon</li>
 		<li class="project_filter_item" data-filter="side_project">Side-Projects</li>
 	</ul>
@@ -298,34 +298,12 @@
 		
 </footer>
 
-      <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<!--Jquery-->
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+<!--^ ^ ^-->
 
-      <script type="text/javascript">
-
-      $(document).ready(function(){
-        $('.project_filter_item').click(function(){
-          const value = $(this).attr('data-filter');
-          if (value == 'All') {
-            $('.project').show('1000');
-          }
-
-          else {
-            $('.project').not('.' +value).hide('1000');
-            $('.project').filter('.' +value).show('1000');
-          }
-
-
-        })
-
-
-        // add active class on selected item
-        $('.project_filter_item').click(function(){
-          $(this).addClass('active').siblings().removeClass('active');
-        })
-
-      })
-
-      </script>
 <script src="JS/js_on_home_page.js"></script>
 <script src="JS/nav_bar_js.js"></script>
 

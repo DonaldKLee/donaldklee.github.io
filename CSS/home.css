@@ -270,8 +270,6 @@ body {
 .projects_page {
 	position:relative;
 	display:block;
-	width:100%;
-	min-height:100vh;
 	margin:0 auto;
 	width:70%;
 	z-index:1;
@@ -282,9 +280,10 @@ body {
 	font-size:1.875em;
 	color:white;
 }
-#project_filter {
-	width:100%;
+.project_filter {
+	width:auto;
 	height:50px;
+	display:block;
 	border-radius:30px;
 	background: #282828;
 	margin-bottom:40px;
@@ -306,23 +305,25 @@ body {
 	transition:all 0.3s ease-in-out;
 }
 
-#project_filter li.active,
-#project_filter li:hover{
-	background-color: #3988FF;
+.project_filter li.project_filter_active, .project_filter li:hover{
+	background: #3988FF;
 	color: white;
 }
 
+
 .projects_container {
+	position:relative;
 	width:100%;
 	display:grid;
 	grid-gap:60px;
 	justify-items: center;
-	grid-template-columns: repeat(auto-fill, minmax(340px , 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
+	margin:0 auto;
 }
 
 .project {
 	overflow: hidden;
-	width:auto;
+	width:350px;
 	background:#282828;
 	border-radius:15px;
 	box-shadow: 0 0 0px #000000;

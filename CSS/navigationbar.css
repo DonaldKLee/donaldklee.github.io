@@ -1,3 +1,4 @@
+
 /*CSS for the navigation bar*/
 img {
 	/*Prevents the image from being draggable*/
@@ -9,7 +10,7 @@ img {
 	-ms-user-select: none;
 	/*^ ^ ^*/
 }
-.top_nav_bar {
+#top_nav_bar {
 	background: #282828;
 	height:80px;
 	width:100vw;

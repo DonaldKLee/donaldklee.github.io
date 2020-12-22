@@ -1,3 +1,18 @@
+// Smooth scrolling
+$(function() {
+ 		$('a[href*=#]:not([href=#])').click(function() {
+			    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			      var target = $(this.hash);
+			      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+			      if (target.length) {
+			        $('html,body').animate({
+			          scrollTop: target.offset().top - $('#top_nav_bar').height()
+			        }, 1000);
+			        return false;
+			      }
+		    }
+		  });
+		});
 
 // List of sentences that will be type_sentenced out.
 var sentences_to_type_sentence = [ 
@@ -149,6 +164,6 @@ $(document).ready(function(){
 
   // add active class on selected item
   $('.project_filter_item').click(function(){
-    $(this).addClass('active').siblings().removeClass('active');
+    $(this).addClass('project_filter_active').siblings().removeClass('project_filter_active');
   })
 })
