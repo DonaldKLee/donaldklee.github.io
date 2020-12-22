@@ -47,19 +47,30 @@ body {
 .home_name {
 	font-size:50px;
 	font-weight: bold;
-	margin-bottom:-40px;
+	margin-bottom:20px;
 }
 
 .changing_home_text {
-	font-size:45px;
+	font-size:3em;
 	font-weight: bold;
 	color:white;
-	display: inline-block;
+	display: inline;
 	vertical-align: middle;
 	letter-spacing: 2px;
 }
 
+#blinking_line {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	right:10px;
+	width: 3px;
+	height: 50px;
+	animation: blink .75s step-end infinite;
+}
+
 .home_button_link { /*Text in the get in touch button*/
+	margin-top:40px;
 	color:white;
 	text-decoration:none;
 	text-align: center;
@@ -80,22 +91,6 @@ body {
 	border-width: 1px;
 }
 
-
-#home_changing_text {
-	display: inline-block;
-	vertical-align: middle;
-	letter-spacing: 2px;
-}
-
-#blinking_line {
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-	right:10px;
-	width: 3px;
-	height: 50px;
-	animation: blink .75s step-end infinite;
-}
 
 @keyframes blink {
 	from, to { 

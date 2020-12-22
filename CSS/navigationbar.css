@@ -107,7 +107,7 @@ img {
 
 .side_left_line {
 	position:relative;
-	height:14em;
+	height:8em;
 	width:2px;
 	background:white;
 	left:15px;
@@ -136,7 +136,7 @@ img {
 }
 .side_right_line {
 	position:relative;
-	height:14em;
+	height:8em;
 	width:2px;
 	background:white;
 	right:15px;

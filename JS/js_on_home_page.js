@@ -1,9 +1,9 @@
 
 // List of sentences that will be type_sentenced out.
 var sentences_to_type_sentence = [ 
-	"\xa0am a high school student.", 
-	"\xa0am a self-taught programmer.", 
-	"\xa0code things that help make lives easier!"
+	"am a high school student.", 
+	"am a self-taught programmer.", 
+	"code things that help make lives easier!"
 ];
 
 
