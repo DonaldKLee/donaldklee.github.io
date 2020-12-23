@@ -128,7 +128,7 @@ body {
 
 .knowledge_container {
 	display:grid;
-	grid-template-columns: auto auto auto; /*3 columns*/
+		grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
 }
 .seperate_knowledge_container {
 	padding-right:40px;
