@@ -62,6 +62,10 @@ img {
 	color: #3988FF;
 	transition:0.3s;
 }
+.nav_active {
+	color:#3988FF;
+	transition:0.5s;
+}
 .nav_right {
 	float:right;
 	margin-right:30px;

@@ -6,7 +6,10 @@ body {
 	overflow-x:hidden;
 	font-family: monospace;
 }
-
+.top_of_page {
+	position:absolute;
+	top:0;
+}
 /*Top Page*/
 .top_page_home {
 	position:relative;

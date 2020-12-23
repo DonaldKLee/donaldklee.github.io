@@ -1,18 +1,79 @@
 // Smooth scrolling
-$(function() {
- 		$('a[href*=#]:not([href=#])').click(function() {
-			    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-			      var target = $(this.hash);
-			      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-			      if (target.length) {
-			        $('html,body').animate({
-			          scrollTop: target.offset().top - $('#top_nav_bar').height()
-			        }, 1000);
-			        return false;
-			      }
-		    }
-		  });
-		});
+
+// When you go to the website and there is a hash in front of the URL
+if (window.location.hash) {
+    var hash = window.location.hash;
+
+    if ($(hash).length) {
+		if (hash === "#projects") {
+		$('html, body').animate({
+			// We scroll back down a bit, because when going to the projects section, it doesn't scroll all the way down
+            scrollTop: $(hash).offset().top + 2.5 * $('#top_nav_bar').height()
+        }, 900, 'swing');
+		}
+		else {
+        $('html, body').animate({
+			// Nav bar is covering the sectio titles, so we scroll back up a bit
+            scrollTop: $(hash).offset().top - $('#top_nav_bar').height()
+        }, 900, 'swing');
+		}
+	}
+}
+
+// When click on navigation bar
+$(document).on('click', 'a[href^="#"]', function (event) {
+    event.preventDefault();
+
+    $('html, body').animate({
+		// Nav bar is covering the sectio titles, so we scroll back up a bit
+		scrollTop: $($.attr(this, 'href')).offset().top - $('#top_nav_bar').height()
+	}, 1000);
+});
+
+// Smooth scrolling ^ ^ ^
+
+
+//Give navbar nav_active
+function myFunction(the_section) {
+	var nav_link = document.getElementById(the_section + "_nav_link");
+	var sections = ["home_nav_link","about_nav_link","experience_nav_link","projects_nav_link","contact_nav_link"];
+	
+	for (i = 0; i < sections.length; i++) {
+	
+	// If the list section matches with the current section, give it the active class
+	  if (sections[i] === the_section + "_nav_link"){
+		  nav_link.classList.add("nav_active");
+	  }
+	  else {
+		 // Tries to remove the nav_active class from the element, but it will cause an error if it doesn't have that class
+		try {document.getElementById(sections[i]).classList.remove("nav_active");}
+		catch (e) {} 
+	  }
+	}
+}
+
+$(document).on('scroll', function() {
+	var scrolltop = $(this).scrollTop();
+	var scrollbottom = $(window).scrollTop() + $(window).height();
+	// Bottom section to top section 
+	if (scrollbottom >= $('#contact').position().top + 2 * $('#top_nav_bar').height() ) {
+		myFunction('contact');
+	}  
+	else if (scrolltop >= $('#projects').position().top - 2 * $('#top_nav_bar').height()) {
+		myFunction('projects');
+	}  
+	else if (scrolltop >= $('#experience').position().top - 2 * $('#top_nav_bar').height()) {
+		myFunction('experience');
+	}
+	else if (scrolltop >= $('#about').position().top - 2 * $('#top_nav_bar').height()) {
+		myFunction('about');
+	}
+	else if (scrolltop >= $('#home').position().top - $('#top_nav_bar').height()) {
+		myFunction('home');
+	}
+})
+
+//Give navbar nav_active ^ ^ ^
 
 // List of sentences that will be type_sentenced out.
 var sentences_to_type_sentence = [ 
