@@ -175,7 +175,8 @@ body {
 .accordion {
 	background: #282828;
 	cursor: pointer;
-	padding: 20px 10px;
+	padding: 10px;
+	height:60px;
 	width: 100%;
 	text-align: left;
 	outline: none;
@@ -191,56 +192,40 @@ body {
 	background:#3988FF;
 }
 
-.accordion_heading {
-	font-size:1.875em;
-	color:white;
-	padding:20px;
-}
-
-.accordion_plus_symbol {
+.accordion:after {
+	content: '\002B';
+	color: white;
+	font-weight: bold;
+	line-height:45px;
+	float: right;
 	position:relative;
-	float:right;
-	top:10px;
-	padding: 0px 10px;
-	color:white;
+	right:1em;
 	display:block;
 	transform: rotate(0deg);
 	transition:0.4s;
-	animation: minus_to_plus 0.4s;
+	animation: plus_to_minus 0.4s;
+	font-size:1.875em;
 }
 
+.active:after {
+  content: "\2212";
+  animation: minus_to_plus 0.4s;
+}
 @keyframes minus_to_plus {
 	from {display:block; transform: rotate(-270deg);}
 	to {display:none; transform: rotate(0deg);}
 }
 
-.accordion:hover .accordion_plus_symbol {
-	display:none;
-	transition:0.4s;
-	transform: rotate(-270deg);
-}
-
-.accordion_minus_symbol {
-	position:relative;
-	float:right;
-	top:10px;
-	padding: 0px 10px;
-	color:white;
-	display:none;
-	transform: rotate(0deg);
-	transition:0.4s;
-}
-
-.accordion:hover .accordion_minus_symbol {
-	display:block;
-	animation: plus_to_minus 0.4s;
-	transition:0.4s;
-	transform: rotate(0deg);
-}
-
 @keyframes plus_to_minus {
 	from {display:block; transform: rotate(-270deg);}
 	to {display:none; transform: rotate(0deg);}
+}
+
+.accordion_heading {
+	font-size:1.875em;
+	color:white;
+	line-height:45px;
+	margin-left:20px;
 }
 
 .accordion_pop_up {
@@ -269,6 +254,7 @@ body {
 	color:white;
 	font-size:1.7em;
 }
+
 
 .projects_page {
 	position:relative;

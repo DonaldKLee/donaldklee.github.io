@@ -149,6 +149,7 @@ typing_interval = setInterval(type_sentence, 100);
 
 
 // Js for accordion 
+// Js for accordion 
 var acc = document.getElementsByClassName("accordion");
 
 /*
@@ -164,12 +165,12 @@ function accordion_btn() {
 */
 
 
-var i;
+var accordion_index;
 
-for (i = 0; i < acc.length; i++) {
+for (accordion_index = 0; accordion_index < acc.length; accordion_index++) {
 	
 		
-acc[i].addEventListener("click", function() {
+acc[accordion_index].addEventListener("click", function() {
 
 var accordion_pop_up = this.nextElementSibling;
 
@@ -177,17 +178,17 @@ if (accordion_pop_up.style.maxHeight){
 	accordion_pop_up.style.maxHeight = null;
 	
 	let active = document.querySelectorAll(".experience_accordion_container .accordion.active");
-	for(let j = 0; j < active.length; j++){ 
+	for(let active_index = 0; active_index < active.length; active_index++){ 
 		//Removes the light blue colour on the accordion when it is closed
-		active[j].classList.remove("active");
+		active[active_index].classList.remove("active");
 	}
 } 
 
 else {
 	let active = document.querySelectorAll(".experience_accordion_container .accordion.active");
-	for(let j = 0; j < active.length; j++){
-		active[j].classList.remove("active");
-		active[j].nextElementSibling.style.maxHeight = null;
+	for(let active_index = 0; active_index < active.length; active_index++){
+		active[active_index].classList.remove("active");
+		active[active_index].nextElementSibling.style.maxHeight = null;
 		
   }
 
