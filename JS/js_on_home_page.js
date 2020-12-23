@@ -205,7 +205,7 @@ document.getElementById("default_accordion").click();
 
 // Runs after the default accordion is clicked
 setTimeout(() => {
-	var default_accordion = document.getElementById("a_p_u_id");
+	var default_accordion = document.getElementById("a_p_u_id"); // Accordion pop up ID
 	default_accordion.className += " accordion_pop_up_transition";
 }, 0);
 

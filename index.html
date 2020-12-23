@@ -22,6 +22,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Mobile Responsive Tag-->
 
 <!--CSS-->
+<link rel="stylesheet" href="CSS/universal.css"> 
 <link rel="stylesheet" href="CSS/home.css"> 
 <link rel="stylesheet" href="CSS/navigationbar.css"> 
 
@@ -36,11 +37,11 @@
 		<li class="nav_sections"><a href="#home" class="nav_links" href="index.html"><img class="mylogo" src="images/DL_Logo.png" alt="Donald Lee Logo"></a></li>
 		<li class="nav_sections nav_name"><a href="#home" class="nav_links" href="index.html">Donald Lee</a></li>
 		
-		<li class="nav_sections nav_right"><a id="contact_nav_link" class="nav_links" href="#contact">Contact</a></li>
-		<li class="nav_sections nav_right"><a id="projects_nav_link" class="nav_links" href="#projects">Projects</a></li>
-		<li class="nav_sections nav_right"><a id="experience_nav_link" class="nav_links" href="#experience">Experience</a></li>
-		<li class="nav_sections nav_right"><a id="about_nav_link" class="nav_links" href="#about">About</a></li>
-		<li class="nav_sections nav_right"><a id="home_nav_link" class="nav_links" href="#home">Home</a></li>
+		<li class="nav_sections nav_right"><a id="contact_nav_link" class="nav_links nav_sections_links" href="#contact">Contact</a></li>
+		<li class="nav_sections nav_right"><a id="projects_nav_link" class="nav_links nav_sections_links" href="#projects">Projects</a></li>
+		<li class="nav_sections nav_right"><a id="experience_nav_link" class="nav_links nav_sections_links" href="#experience">Experience</a></li>
+		<li class="nav_sections nav_right"><a id="about_nav_link" class="nav_links nav_sections_links" href="#about">About</a></li>
+		<li class="nav_sections nav_right"><a id="home_nav_link" class="nav_links nav_sections_links" href="#home">Home</a></li>
 		
 		<!--Dark/Light mode toggle button-->
 		
@@ -74,11 +75,11 @@
 <section id="about" class="page_section about_page">
 	<h1 class="section_titles">A Little Bit About Myself</h1>
 	<div class="about_intro_container">
-		<p class="about_intro_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am currently a high school student and self-taught programmer planning to go into Computer Science for post-secondary. I have a passion for coding projects that can help others make their lives easier.</p>
+		<p class="about_intro_text body_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am currently a high school student and self-taught programmer planning to go into Computer Science for post-secondary. I have a passion for coding projects that can help others make their lives easier.</p>
 		
 		</br>
 		
-		<p class="knowledge_title">A few things that I know or used:</p>
+		<p class="knowledge_title body_text">A few things that I know or used:</p>
 		
 		<div class="knowledge_container">
 			<div class="seperate_knowledge_container">
@@ -143,55 +144,59 @@
 		
 		
 		<div id="all_accordions">
-		<!--One accordion-->
-		<button id="default_accordion" class="accordion"><span class="accordion_heading">Title2</span></button>
-		
-			<div id="a_p_u_id" class="accordion_pop_up">
-				<div class="accordion_content">
-					<p class="role"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-					<p class="job_date">December 2020 - Present</p>
+			<!--One accordion-->
+			<button id="default_accordion" class="accordion"><span class="accordion_heading body_text">Role @ Company Name</span></button>
+			
+				<div id="a_p_u_id" class="accordion_pop_up">
+					<div class="accordion_content">
+						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="job_date body_text">December 2020 - Present</p>
+						
+						<ul>
+							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+						</ul>
 					
-					<ul>
-						<li class="about_role">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-						<li class="about_role">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
-					</ul>
-				
+					</div>
 				</div>
-			</div>
-		<!--One accordion ^^^-->
+			<!--One accordion ^^^-->
 
-		<!--One accordion-->
-			<button id="default_accordion" class="accordion"><span class="accordion_heading">Title2</span></button>
-			<div class="accordion_pop_up accordion_pop_up_transition">
-				<div class="accordion_content">
-					<p class="role"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-					<p class="job_date">December 2020 - Present</p>
+			<!--One accordion-->
+			<button class="accordion"><span class="accordion_heading body_text">Role @ Company Name</span></button>
+			
+				<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
+					<div class="accordion_content">
+						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="job_date body_text">December 2020 - Present</p>
+						
+						<ul>
+							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+						</ul>
 					
-					<ul>
-						<li class="about_role">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-						<li class="about_role">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
-					</ul>
-				
+					</div>
 				</div>
-			</div>
-		<!--One accordion ^^^-->
-		
+			<!--One accordion ^^^-->			
+
+			<!--One accordion-->
+			<button class="accordion"><span class="accordion_heading body_text">Role @ Company Name</span></button>
+			
+				<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
+					<div class="accordion_content">
+						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="job_date body_text">December 2020 - Present</p>
+						
+						<ul>
+							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+						</ul>
+					
+					</div>
+				</div>
+			<!--One accordion ^^^-->
+
 	
-		<!--One accordion-->
-			<button id="default_accordion" class="accordion"><span class="accordion_heading">Title2</span></button>
-			<div class="accordion_pop_up accordion_pop_up_transition">
-				<div class="accordion_content">
-					<p class="role"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-					<p class="job_date">December 2020 - Present</p>
-					
-					<ul>
-						<li class="about_role">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-						<li class="about_role">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
-					</ul>
-				
-				</div>
-			</div>
-		<!--One accordion ^^^-->
+	
 		</div>
 		<div class="accordion_top_bottom"></div>
 	</div>
@@ -199,7 +204,7 @@
 
 <section id="projects" class="page_section projects_page">
 	<h1 class="section_titles">Some Things I’ve Built</h1>
-	<p class="projects_intro_text">Here are just some of the things that I have built. Feel free to check them out! </p>
+	<p class="projects_intro_text body_text">Here are just some of the things that I have built. Feel free to check them out! </p>
 
 
 	<ul class="project_filter">

@@ -116,19 +116,17 @@ body {
 }
 
 .about_intro_text {
-	font-size:1.625em;
-	color:white;
 	line-height: 1.6;
+	color:white;
 }
 .knowledge_title {
-	font-size:1.625em;
-	color:white;
 	font-weight: bold;
+	color:white;
 }
 
 .knowledge_container {
 	display:grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
 }
 .seperate_knowledge_container {
 	padding-right:40px;
@@ -205,7 +203,7 @@ body {
 	transform: rotate(0deg);
 	transition:0.4s;
 	animation: plus_to_minus 0.4s;
-	font-size:1.625em;
+	font-size:1.625em; /*Symbol*/
 }
 
 .active:after {
@@ -223,7 +221,6 @@ body {
 }
 
 .accordion_heading {
-	font-size:1.625em;
 	color:white;
 	line-height:45px;
 	margin-left:20px;
@@ -245,15 +242,12 @@ body {
 
 .role {
 	color:white;
-	font-size:1.625em;
 }
 .job_date {
 	color:white;
-	font-size:1.625em;
 }
 .about_role {
 	color:white;
-	font-size:1.625em;
 	line-height: 1.6;
 }
 
@@ -268,13 +262,12 @@ body {
 }
 .projects_intro_text {
 	margin-top:-20px;
-	font-size:1.625em;
 	color:white;
 	line-height: 1.6;
 }
 .project_filter {
 	width:auto;
-	height:50px;
+	height:auto;
 	display:block;
 	border-radius:30px;
 	background: #282828;
@@ -283,18 +276,17 @@ body {
 }
 .project_filter_item {
 	position:relative;
-	top:5px;
 	display: inline-block;
 	font-size: 16px;
 	color: white;
 	line-height: 40px;
 	text-align: center;
 	border-radius: 25px;
-	padding: 0 10px;
+	padding: 0px 10px 0px 10px;
 	min-width: 130px;
 	cursor: pointer;
-	height:40px;
 	transition:all 0.3s ease-in-out;
+	margin: 5px 0px 5px 0px;
 }
 
 .project_filter li.project_filter_active, .project_filter li:hover{

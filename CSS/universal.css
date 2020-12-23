@@ -1,0 +1,13 @@
+/*Universal text fonts*/
+.section_titles {
+	font-size:3em;
+	font-weight: bold;
+	color:white;
+	display: inline-block;
+	vertical-align: middle;
+	letter-spacing: 2px;
+}
+
+.body_text {
+	font-size:1.625em;
+}

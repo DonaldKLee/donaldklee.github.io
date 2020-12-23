@@ -158,14 +158,6 @@ img {
 	margin-bottom:10em;
 }
 
-.section_titles {
-	font-size:3em;
-	font-weight: bold;
-	color:white;
-	display: inline-block;
-	vertical-align: middle;
-	letter-spacing: 2px;
-}
 .footer_intro_text {
 	font-size:1.625em;
 	color:white;
@@ -194,4 +186,11 @@ img {
 	color:black;
 	transition:0.4s;
 	font-weight:bold;
+}
+
+@media only screen and (max-width: 1000px) {
+	.nav_sections_links {
+		display:none;
+	}
+	.side_items {display:none;}
 }
