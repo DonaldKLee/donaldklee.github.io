@@ -42,15 +42,15 @@ body {
 }
 
 .home_my_name_is {
-	font-size:24px;
+	font-size:1.5em;
 	color:white;
 	margin-bottom:-40px;
 }
 
 .home_name {
-	font-size:50px;
+	font-size:4em;
 	font-weight: bold;
-	margin-bottom:20px;
+	margin-bottom:15px;
 }
 
 .changing_home_text {
@@ -73,11 +73,11 @@ body {
 }
 
 .home_button_link { /*Text in the get in touch button*/
-	margin-top:40px;
+	margin-top:30px;
 	color:white;
 	text-decoration:none;
 	text-align: center;
-	font-size:17px;
+	font-size:1.2em;
 	width:200px;
 	height:auto;
 	display:block;
@@ -116,11 +116,12 @@ body {
 }
 
 .about_intro_text {
-	font-size:1.875em;
+	font-size:1.625em;
 	color:white;
+	line-height: 1.6;
 }
 .knowledge_title {
-	font-size:1.875em;
+	font-size:1.625em;
 	color:white;
 	font-weight: bold;
 }
@@ -204,7 +205,7 @@ body {
 	transform: rotate(0deg);
 	transition:0.4s;
 	animation: plus_to_minus 0.4s;
-	font-size:1.875em;
+	font-size:1.625em;
 }
 
 .active:after {
@@ -222,7 +223,7 @@ body {
 }
 
 .accordion_heading {
-	font-size:1.875em;
+	font-size:1.625em;
 	color:white;
 	line-height:45px;
 	margin-left:20px;
@@ -244,15 +245,16 @@ body {
 
 .role {
 	color:white;
-	font-size:1.7em;
+	font-size:1.625em;
 }
 .job_date {
 	color:white;
-	font-size:1.7em;
+	font-size:1.625em;
 }
 .about_role {
 	color:white;
-	font-size:1.7em;
+	font-size:1.625em;
+	line-height: 1.6;
 }
 
 
@@ -266,8 +268,9 @@ body {
 }
 .projects_intro_text {
 	margin-top:-20px;
-	font-size:1.875em;
+	font-size:1.625em;
 	color:white;
+	line-height: 1.6;
 }
 .project_filter {
 	width:auto;

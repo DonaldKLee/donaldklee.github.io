@@ -167,19 +167,21 @@ img {
 	letter-spacing: 2px;
 }
 .footer_intro_text {
-	font-size:1.875em;
+	font-size:1.625em;
 	color:white;
 	margin-top:-5px;
+	line-height: 1.6;
 }
 
 .footer_email { /*Text in the get in touch button*/
 	color:white;
 	text-decoration:none;
 	text-align: center;
-	font-size:17px;
+	font-size:1.2em;
 	width:200px;
 	height:auto;
 	display:block;
+	margin-top:30px;
 }
 
 .footer_say_hi {
