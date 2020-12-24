@@ -26,11 +26,11 @@ body {
 	display:block;
 	position:relative;
 	text-align:center;
-	margin-top:15.5em;
+	margin-top:16.5em;
 }
 .home_rounded_image { /*Profile Picture*/
 	border-radius: 50%;
-	width:13em;
+	width:12em;
 	height:auto;
 	border-style: solid;
 	border-color: white;

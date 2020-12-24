@@ -13,7 +13,7 @@ if (window.location.hash) {
 		}
 		else {
         $('html, body').animate({
-			// Nav bar is covering the sectio titles, so we scroll back up a bit
+			// Nav bar is covering the section titles, so we scroll back up a bit
             scrollTop: $(hash).offset().top - $('#top_nav_bar').height()
         }, 900, 'swing');
 		}
@@ -32,48 +32,6 @@ $(document).on('click', 'a[href^="#"]', function (event) {
 
 // Smooth scrolling ^ ^ ^
 
-
-//Give navbar nav_active
-function myFunction(the_section) {
-	var nav_link = document.getElementById(the_section + "_nav_link");
-	var sections = ["home_nav_link","about_nav_link","experience_nav_link","projects_nav_link","contact_nav_link"];
-	
-	for (i = 0; i < sections.length; i++) {
-	
-	// If the list section matches with the current section, give it the active class
-	  if (sections[i] === the_section + "_nav_link"){
-		  nav_link.classList.add("nav_active");
-	  }
-	  else {
-		 // Tries to remove the nav_active class from the element, but it will cause an error if it doesn't have that class
-		try {document.getElementById(sections[i]).classList.remove("nav_active");}
-		catch (e) {} 
-	  }
-	}
-}
-
-$(document).on('scroll', function() {
-	var scrolltop = $(this).scrollTop();
-	var scrollbottom = $(window).scrollTop() + $(window).height();
-	// Bottom section to top section 
-	if (scrollbottom >= $('#contact').position().top + 2 * $('#top_nav_bar').height() ) {
-		myFunction('contact');
-	}  
-	else if (scrolltop >= $('#projects').position().top - 2 * $('#top_nav_bar').height()) {
-		myFunction('projects');
-	}  
-	else if (scrolltop >= $('#experience').position().top - 2 * $('#top_nav_bar').height()) {
-		myFunction('experience');
-	}
-	else if (scrolltop >= $('#about').position().top - 2 * $('#top_nav_bar').height()) {
-		myFunction('about');
-	}
-	else if (scrolltop >= $('#home').position().top - $('#top_nav_bar').height()) {
-		myFunction('home');
-	}
-})
-
-//Give navbar nav_active ^ ^ ^
 
 // List of sentences that will be type_sentenced out.
 var sentences_to_type_sentence = [ 
@@ -149,21 +107,7 @@ typing_interval = setInterval(type_sentence, 100);
 
 
 // Js for accordion 
-// Js for accordion 
 var acc = document.getElementsByClassName("accordion");
-
-/*
-// Resets the status of all the plus and minus signs
-function accordion_btn() {
-	var plus = document.getElementsByClassName("accordion_plus_symbol");
-	var minus = document.getElementsByClassName("accordion_minus_symbol");
-	for (var i=0;i<plus.length;i+=1){
-	plus[i].style.display = "block";
-	minus[i].style.display = "none";	
-	}
-}
-*/
-
 
 var accordion_index;
 

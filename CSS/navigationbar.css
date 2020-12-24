@@ -10,6 +10,10 @@ img {
 	-ms-user-select: none;
 	/*^ ^ ^*/
 }
+
+#vertical_nav_bar {display:none;}
+
+
 #top_nav_bar {
 	background: #282828;
 	height:80px;
@@ -70,6 +74,80 @@ img {
 	float:right;
 	margin-right:30px;
 }
+
+/*Hamburger Menu*/
+.ham_menu {
+	width:auto;
+	height:auto;
+	border:none;
+	background:none;
+	cursor:pointer;
+	margin: 14px 16px;
+	display:none;
+	float:right;
+	margin-right:35px;
+}
+.ham_menu:focus {
+	outline:none;
+}
+.lines {
+	width:25px;
+	height:4px;
+	background: white; /*Colour of the hamburger bars*/
+	margin:4px;
+	top:0px;
+}
+
+.line_one_ani {
+	transition:0.2s;
+	transform:rotate(135deg);
+	position: relative;
+	top:7px;
+	animation: move_then_rotate 0.1s;
+}
+@keyframes move_then_rotate {
+	from {top:0px; transform:rotate(0deg);}
+	to {top:7px; transform:rotate(135deg);}
+}
+.line_two_ani {
+	transition:0.2s;
+	transform:rotate(45deg);
+}
+.line_three_ani {
+	position: relative;
+	transition:0.5s;
+	top:-7px;
+	animation: move_then_disappear 0.1s;
+	opacity:0;
+	right:0px;
+}
+@keyframes move_then_disappear {
+	0% {right:0px; opacity:1; top:0px;}
+	25% {right:5px;}
+	50% {right:-5px;}
+	100% {right:0px; opacity:0; top:-7px;}
+}
+.ham_menu_spin {
+	animation: ham_menu_spin 0.2s;
+	transform-origin: center;
+	transform:rotate(0deg);
+}
+@keyframes ham_menu_spin {
+	from {transform:rotate(0deg);}
+	to {transform:rotate(360deg);}
+}
+#hammenu_line_one {transition:0.2s;}
+#hammenu_line_two {transition:0.2s;}
+#hammenu_line_three {transition:0.2s;}
+@keyframes move_then_reappear {
+	0% {right:0px; opacity:0; top:-7px;}
+	25% {right:-5px;}
+	50% {right:5px;}
+	100% {right:0px; opacity:1; top:0px;}
+}
+/*Hamburger Menu ^ ^ ^*/
+
+
 
 .side_items {
 	position:fixed;
@@ -176,8 +254,86 @@ img {
 }
 
 @media only screen and (max-width: 1000px) {
-	.nav_sections_links {
+	.nav_right {
 		display:none;
 	}
 	.side_items {display:none;}
+	.ham_menu {display:block;}
+	#vertical_nav_bar {
+		position:fixed;
+		display:block;
+		height:100vh;
+		width:60%;
+		background: #1d1c1c;
+		display:none;
+		z-index:11;
+		top:0;
+		right:0px;
+		transition:0.3s;
+		animation: slide_in_ham_nav 0.4s;
+	}
+	@keyframes slide_in_ham_nav { /*vertical_nav_bar will have this*/
+		from {right:-500px;}
+		to {right:0px;}
+	}
+	.ham_ul_nav_list {
+		list-style-type:none;
+		top:200px;
+		position:relative;
+	}
+	.ham_li_nav_sections {
+		font-size: 1.5em;
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
+	.ham_nav_active {
+		color:#3988FF;
+		transition:0.5s;
+	}
+	#vnb_blur {
+		position:fixed;
+		top:0;
+		z-index:10;
+		display:none;
+		height:100vh;
+		width:100vw;
+		background: black;
+		opacity:0.6;
+		cursor:pointer;
+		transition:0.3s;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
