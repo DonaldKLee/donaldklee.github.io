@@ -100,7 +100,6 @@ function show_responsive_bar() {
 		vnb_blur.style.display = "block";
 		
 	}
-
 }
 function animate_ham_menu() {
 	var e_h_m = document.getElementById("entire_ham_menu");

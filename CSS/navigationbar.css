@@ -25,6 +25,8 @@ img {
 }
 .nav_list {
 	list-style-type: none;
+	transition:0.3s;
+	padding: 0px 20px 0px 30px;
 }
 .mylogo {
 	filter: invert(100%); /*Makes the logo white*/
@@ -47,13 +49,14 @@ img {
 
 .nav_name {
 	font-weight:bold;
+	margin-left:16px;
 }
 .nav_sections { /*On all nav bar content*/
 	font-size: 1.5em;
 	display: block;
 	color: white;
 	text-align: center;
-	padding: 14px 16px;
+	padding: 14px 0px;
 	text-decoration: none;
 	float:left;
 }
@@ -250,11 +253,13 @@ img {
 
 }
 
-@media only screen and (max-width: 1000px) { /*Hide side bars and add a hamburger menu*/
+@media only screen and (max-width: 900px) { /*Hide side bars and add a hamburger menu*/
 	.nav_right {
 		display:none;
 	}
 	.side_items {display:none;}
+	
+	/*Hamburger menu*/
 	.ham_menu {display:block;}
 	#vertical_nav_bar {
 		position:fixed;
@@ -310,7 +315,10 @@ img {
         -o-user-select: none;
 		/*^ ^ ^*/
 	}
-	
+	/*Hamburger menu ^ ^ ^*/
+	.nav_list {
+		padding: 0px 0px 0px 15px;
+	}
 }
 
 
