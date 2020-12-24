@@ -89,7 +89,6 @@ function show_responsive_bar() {
 	var vnb_blur = document.getElementById("vnb_blur");
 	if (vnb.style.display === "block") {
 		vnb.style.right = "-500px";
-		vnb_blur.style.display = "none";
 		
 		setTimeout(() => {
 			vnb.style.display = "none";
@@ -109,7 +108,8 @@ function animate_ham_menu() {
 	var hammenu_line_two = document.getElementById("hammenu_line_two");
 	var hammenu_line_three = document.getElementById("hammenu_line_three");
   
-  if (e_h_m.classList.contains("mobilenavbarison")) { 
+  if (e_h_m.classList.contains("mobilenavbarison")) { //Closes nav bar
+	vnb_blur.style.display = "none";	  
 	e_h_m.classList.remove("mobilenavbarison"); // Removes the class
 	
 	hammenu_line_three.style.animation = "move_then_reappear 0.3s;";	
@@ -132,7 +132,7 @@ function animate_ham_menu() {
 
   } //End of if statement
   
-  else {
+  else { //Opens nav bar
 	  e_h_m.classList.add("mobilenavbarison");
 	  hammenu_line_three.classList.add("line_three_ani"); // Adds the class
 
