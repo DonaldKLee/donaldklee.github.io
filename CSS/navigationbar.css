@@ -185,7 +185,7 @@ img {
 .fa-instagram:hover {color: #cd486b;}
 .fa-twitter:hover {color: #1DA1F2;}
 .fa-linkedin:hover {color: #2867B2;}
-.fa-envelope:hover {color: #fe0000;}
+.fa-envelope:hover {color: #02a744;}
 
 
 .side_left_line {
@@ -246,13 +246,42 @@ img {
 	margin-top:30px;
 }
 
-.footer_say_hi {
+.footer_logos_container {display:none;}
 
+.footer_logos { /*ul*/
+	text-align: center;
+	list-style: inside;
+	padding:0;
+	height:auto;
 }
-.footer_email:hover, .footer_say_hi:hover {
-
+.footer_logo_lines {
+	position:relative;
+	width:10vw;
+	height:2px;
+	background:white;
+	display:inline-block;
+	bottom:5px;
+	
+}
+.footer_ssm { /*li*/
+	display:inline-block;
+	padding:10px;
 }
 
+.credit {
+	color:white;
+	text-align:center;
+	font-size:1em;
+	bottom:0;
+	position:relative;
+	display:block;
+	margin-bottom:2em;
+	text-decoration:none;
+	transition:0.3s;
+}
+.credit:hover {
+	color: #3988FF;
+}
 @media only screen and (max-width: 900px) { /*Hide side bars and add a hamburger menu*/
 	.nav_right {
 		display:none;
@@ -320,6 +349,7 @@ img {
 	.nav_list {
 		padding: 0px 0px 0px 2.5em;
 	}
+	.footer_logos_container {display:block;}
 }
 
 @media only screen and (max-width: 500px) {
