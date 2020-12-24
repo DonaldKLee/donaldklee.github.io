@@ -74,24 +74,12 @@ body {
 
 .home_button_link { /*Text in the get in touch button*/
 	margin-top:30px;
-	color:white;
-	text-decoration:none;
-	text-align: center;
-	font-size:1.2em;
-	width:200px;
-	height:auto;
-	display:block;
 }
 .home_button_link:hover, .get_in_touch:hover {
-	background:white;
-	color:black;
-	transition:0.4s;
-	font-weight:bold;
+
 }
 .get_in_touch {
-	border-style: solid;
-	border-color: white;
-	border-width: 1px;
+
 }
 
 
@@ -266,13 +254,13 @@ body {
 	line-height: 1.6;
 }
 .project_filter {
-	width:auto;
 	height:auto;
-	display:block;
 	border-radius:30px;
 	background: #282828;
 	margin-bottom:40px;
 	list-style-type: none;
+	padding: 1px;
+	display:block;
 }
 .project_filter_item {
 	position:relative;
@@ -282,18 +270,17 @@ body {
 	line-height: 40px;
 	text-align: center;
 	border-radius: 25px;
-	padding: 0px 10px 0px 10px;
-	min-width: 130px;
 	cursor: pointer;
 	transition:all 0.3s ease-in-out;
-	margin: 5px 0px 5px 0px;
+	margin: 5px 5px;
+	width:130px;
+	padding:0px 10px;
 }
 
 .project_filter li.project_filter_active, .project_filter li:hover{
 	background: #3988FF;
 	color: white;
 }
-
 
 .projects_container {
 	position:relative;
@@ -323,13 +310,13 @@ body {
 	overflow:hidden;
 	transition:0.3s;
 }
-.home_projects_image {
+.projects_image {
 	width:100%;
 	height:200px;
 	transform: scale(1.1);
 	transition:0.3s;
 }
-.project:hover .home_projects_image {
+.project:hover .projects_image {
 	transform: scale(1);
 	transition:0.3s;
 }

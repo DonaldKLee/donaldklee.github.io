@@ -1,0 +1,25 @@
+
+
+/*Projects section*/
+@media only screen and (max-width: 1000px) { /*Makes the project filter mobile responsive*/
+	.project_filter {
+		width:100%;
+		text-align:center;
+	}
+}
+
+@media only screen and (max-width: 500px) { /*Makes the projects section mobile responsive*/
+	.projects_container {
+		grid-template-columns: auto;
+	}
+	.project {	
+		width:100%;
+	}
+	.project_image_container {
+		max-height:150px;
+	}
+	.projects_image {
+		height:150px;
+	}
+}
+/*Projects section ^ ^ ^*/

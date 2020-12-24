@@ -11,3 +11,42 @@
 .body_text {
 	font-size:1.625em;
 }
+
+.white_btn {
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+}
+.white_btn_text {
+	color:white;
+	text-decoration:none;
+	text-align: center;
+	font-size:1.2em;
+	width:200px;
+	height:auto;
+	display:block;
+}
+
+
+.home_button_link:hover, .white_btn:hover {
+	background:white;
+	color:black;
+	transition:0.4s;
+	font-weight:bold;
+}
+
+.footer_email:hover, .white_btn:hover {
+	background:white;
+	color:black;
+	transition:0.4s;
+	font-weight:bold;
+}
+
+@media only screen and (max-width: 1000px) { 
+	.section_titles {
+		font-size:2em;
+	}
+	.body_text {
+		font-size:1em;
+	}
+}

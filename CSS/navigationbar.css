@@ -159,33 +159,20 @@ img {
 }
 
 .footer_intro_text {
-	font-size:1.625em;
 	color:white;
 	margin-top:-5px;
 	line-height: 1.6;
 }
 
 .footer_email { /*Text in the get in touch button*/
-	color:white;
-	text-decoration:none;
-	text-align: center;
-	font-size:1.2em;
-	width:200px;
-	height:auto;
-	display:block;
 	margin-top:30px;
 }
 
 .footer_say_hi {
-	border-style: solid;
-	border-color: white;
-	border-width: 1px;
+
 }
 .footer_email:hover, .footer_say_hi:hover {
-	background:white;
-	color:black;
-	transition:0.4s;
-	font-weight:bold;
+
 }
 
 @media only screen and (max-width: 1000px) {
