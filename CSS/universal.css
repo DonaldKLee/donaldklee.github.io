@@ -51,4 +51,8 @@
 	.body_text {
 		font-size:1em;
 	}
+	.white_btn_text {
+		font-size:1em;
+		width:180px;
+	}
 }

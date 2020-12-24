@@ -44,19 +44,14 @@ body {
 	margin-bottom:-40px;
 }
 
-.home_name {
+.home_name { /*Donald Lee*/
 	font-size:4em;
 	font-weight: bold;
 	margin-bottom:15px;
 }
 
 .changing_home_text {
-	font-size:3em;
-	font-weight: bold;
-	color:white;
-	display: inline;
-	vertical-align: middle;
-	letter-spacing: 2px;
+	display: inline !important;
 }
 
 #blinking_line {
@@ -262,7 +257,7 @@ body {
 .project_filter_item {
 	position:relative;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 1.2em;
 	color: white;
 	line-height: 40px;
 	text-align: center;
@@ -328,6 +323,7 @@ body {
 .about_project {
 	color:white;
 	font-size:1.2em;
+	margin-bottom:30px;
 }
 .project_learn_more {
 	display:inline-block;
