@@ -11,7 +11,9 @@
 .body_text {
 	font-size:1.625em;
 }
-
+.theme_light_blue {
+	color: #3988FF;
+}
 .white_btn {
 	border-style: solid;
 	border-color: white;

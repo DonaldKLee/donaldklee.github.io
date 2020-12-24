@@ -92,7 +92,7 @@ function show_responsive_bar() {
 		
 		setTimeout(() => {
 			vnb.style.display = "none";
-		}, 400);
+		}, 100);
 	}
 	else {
 		vnb.style.right = "0px";

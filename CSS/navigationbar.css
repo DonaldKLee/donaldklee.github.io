@@ -178,9 +178,6 @@ img {
 	transition:0.4s;
 }
 
-.theme_light_blue {
-	color: #3988FF;
-}
 .side_github:hover {color:#9C9C9C;}
 .fa-instagram:hover {color: #cd486b;}
 .fa-twitter:hover {color: #1DA1F2;}
@@ -271,6 +268,7 @@ img {
 		right:0px;
 		transition:0.3s;
 		animation: slide_in_ham_nav 0.4s;
+		 box-shadow: -5px 0 15px -2px #000000;
 	}
 	@keyframes slide_in_ham_nav { /*vertical_nav_bar will have this*/
 		from {right:-500px;}
