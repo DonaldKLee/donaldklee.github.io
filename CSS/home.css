@@ -25,14 +25,12 @@
 	width:12em;
 	height:auto;
 	border-style: solid;
-	border-color: white;
 	border-width: 2px;
 }
 
 
 .home_my_name_is {
 	font-size:1.5em;
-	color:white;
 	margin-bottom:-40px;
 }
 
@@ -66,16 +64,6 @@
 
 }
 
-
-@keyframes blink {
-	from, to { 
-		background-color: transparent 
-	}
-	50% { 
-		background-color: white; 
-	}
-}
-
 /*About Page*/
 .about_page {
 	position:relative;
@@ -89,11 +77,9 @@
 
 .about_intro_text {
 	line-height: 1.6;
-	color:white;
 }
 .knowledge_title {
 	font-weight: bold;
-	color:white;
 }
 
 .knowledge_container {
@@ -105,11 +91,9 @@
 }
 .knowledge_column_title {
 	font-size:1.75em;
-	color:white;
 }
 .knowledge_list_item {
 	font-size:1.7em;
-	color:white;
 	list-style-type:'👉 ';
 }
 .knowledge_list_item_indent {
@@ -131,7 +115,6 @@
 	margin-bottom:5em;
 }
 .accordion_top_bottom {
-	background: #282828;
 	padding: 25px 0px;
 	width: 100%;
 }
@@ -140,11 +123,9 @@
 }
 .accordion_top_bottom:nth-last-child(1) {
 	border-radius: 0px 0px 15px 15px;
-	border-top: 1px solid white;
 }
 
 .accordion {
-	background: #282828;
 	cursor: pointer;
 	padding: 10px;
 	height:60px;
@@ -152,20 +133,22 @@
 	text-align: left;
 	outline: none;
 	border:none;
-	border-top: 1px solid white;
 	transition: 0.4s;
 }
 .accordion:hover {
 	background:#3988FF;
 	transition: 0.4s;
 }
-.active {
-	background:#3988FF;
+
+.active_blue {
+	background:#3988FF !important;
+}
+.active >  .accordion_heading {
+	color: white !important;
 }
 
 .accordion:after {
 	content: '\002B';
-	color: white;
 	font-weight: bold;
 	line-height:45px;
 	float: right;
@@ -193,14 +176,12 @@
 }
 
 .accordion_heading {
-	color:white;
 	line-height:45px;
 	margin-left:20px;
 }
 
 .accordion_pop_up {
 	padding: 0 18px;
-	background-color: black;
 	max-height: 0;
 	overflow: hidden;
 }
@@ -212,14 +193,7 @@
 	padding:20px;
 }
 
-.role {
-	color:white;
-}
-.job_date {
-	color:white;
-}
 .about_role {
-	color:white;
 	line-height: 1.6;
 }
 
@@ -234,13 +208,11 @@
 }
 .projects_intro_text {
 	margin-top:-20px;
-	color:white;
 	line-height: 1.6;
 }
 .project_filter {
 	height:auto;
 	border-radius:30px;
-	background: #282828;
 	margin-bottom:40px;
 	list-style-type: none;
 	padding: 1px;
@@ -250,7 +222,6 @@
 	position:relative;
 	display: inline-block;
 	font-size: 1.2em;
-	color: white;
 	line-height: 40px;
 	text-align: center;
 	border-radius: 25px;
@@ -262,8 +233,7 @@
 }
 
 .project_filter li.project_filter_active, .project_filter li:hover{
-	background: #3988FF;
-	color: white;
+	background: #3988FF !important;
 }
 
 .projects_container {
@@ -279,7 +249,6 @@
 .project {
 	overflow: hidden;
 	width:350px;
-	background:#282828;
 	border-radius:15px;
 	box-shadow: 0 0 0px #000000;
 }
@@ -308,22 +277,20 @@
 	padding:20px;
 }
 .project_name {
-	color:white;
 	font-size:1.3em;
 	font-weight:bold;
 }
 .about_project {
-	color:white;
 	font-size:1.2em;
 	margin-bottom:30px;
 }
 .project_learn_more {
+	color:white;
 	display:inline-block;
 	width:120px;
 	border-radius:15px;
 	padding:10px;
 	font-size:1.2em;
-	color:white;
 	text-decoration:none;
 	background: #3988FF;
 	vertical-align:middle;
@@ -346,7 +313,6 @@
 }
 .project_github_logo {
 	font-size:1.8em;
-	color:white;
 	transition:0.4s;
 	margin-left:10px;
 	vertical-align:middle;

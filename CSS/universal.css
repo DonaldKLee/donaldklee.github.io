@@ -1,14 +1,13 @@
 /*Universal text fonts*/
 body {
-	background:#1D1C1C;
 	margin: 0;
 	overflow-x:hidden;
 	font-family: monospace;
+	transition: 0.5s;
 }
 .section_titles {
 	font-size:3em;
 	font-weight: bold;
-	color:white;
 	display: inline-block;
 	vertical-align: middle;
 	letter-spacing: 2px;
@@ -23,13 +22,9 @@ body {
 .theme_light_blue {
 	color: #3988FF;
 }
-.white_btn {
+.white_btn { 
 	border-style: solid;
-	border-color: white;
 	border-width: 1px;
-}
-.white_btn_text {
-	color:white;
 	text-decoration:none;
 	text-align: center;
 	font-size:1.2em;
@@ -38,18 +33,11 @@ body {
 	display:block;
 }
 
-
 .home_button_link:hover, .white_btn:hover {
-	background:white;
-	color:black;
-	transition:0.4s;
 	font-weight:bold;
 }
 
 .footer_email:hover, .white_btn:hover {
-	background:white;
-	color:black;
-	transition:0.4s;
 	font-weight:bold;
 }
 
@@ -60,7 +48,7 @@ body {
 	.body_text {
 		font-size:1em;
 	}
-	.white_btn_text {
+	.white_btn {
 		font-size:1em;
 		width:180px;
 	}

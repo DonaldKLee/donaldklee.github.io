@@ -1,5 +1,83 @@
-
 /*CSS for the navigation bar*/
+
+/*Theme button*/
+.theme_changer {
+	position:fixed;
+	display:block;
+	top:20%;
+	right:0;
+	overflow:hidden;
+	z-index:90;
+}
+
+.theme_btn {
+	width:50px;
+	height:50px;
+	border:none;
+	border-radius: 20px 0px 0px 20px;
+	cursor:pointer;
+	transition:0.3s;
+}
+.theme_btn:focus {
+	outline:none;
+}
+#theme_moon {
+	position:relative;
+	animation: transform_moon 0.5s;
+	top:0px; 
+	left:0px;
+	transform:rotateY(0deg);
+}
+
+@keyframes transform_moon {
+	from {
+		top:-80px; 
+		left:-100px;
+		transform: rotateY(-1800deg);
+	}
+	to {top:0px; left:0px; transform: rotateY(0deg);}
+}
+
+#theme_sun {
+	position:relative;
+	animation: transform_sun 0.5s;
+	top:0px; 
+	left:0px;
+	transform:rotateY(0deg);
+}
+
+@keyframes transform_sun {
+	from {
+		top:-80px; 
+		left:100px;
+		transform: rotateY(-1800deg);
+	}
+	to {top:0px; left:0px; transform: rotateY(0deg);}
+}
+
+
+.theme_moon {
+	position:relative;
+	color:black;
+	font-size:1.5em;
+	margin:2.5px 0px 0px 5px;
+	transition:0.3s;
+}
+.theme_sun {
+	position:relative;
+	color:white;
+	font-size:1.5em;
+	margin:2.5px 0px 0px 5px;
+	transition:0.3s;
+}
+
+
+/*Theme button ^ ^ ^*/
+
+
+
+
+
 img {
 	/*Prevents the image from being draggable*/
 	user-drag: none; 
@@ -15,7 +93,6 @@ img {
 
 
 #top_nav_bar {
-	background: #282828;
 	height:80px;
 	width:100vw;
 	top:0;
@@ -29,7 +106,6 @@ img {
 	padding: 0px 20px 0px 30px;
 }
 .mylogo {
-	filter: invert(100%); /*Makes the logo white*/
 	width:40px;
 	height:auto;
 	display:block;
@@ -54,7 +130,6 @@ img {
 .nav_sections { /*On all nav bar content*/
 	font-size: 1.5em;
 	display: block;
-	color: white;
 	text-align: center;
 	padding: 14px 0px;
 	text-decoration: none;
@@ -62,7 +137,6 @@ img {
 }
 
 .nav_links {
-	color:white;
 	text-decoration: none;
 }
 .nav_links:hover {
@@ -96,7 +170,6 @@ img {
 .lines {
 	width:25px;
 	height:3px;
-	background: white; /*Colour of the hamburger bars*/
 	margin:4px;
 	top:0px;
 }
@@ -171,7 +244,6 @@ img {
 }
 .side_social_media_logo {
 	font-size:20px;
-	color:white;
 	transition:0.4s;
 	top:0px;
 }
@@ -192,7 +264,6 @@ img {
 	position:relative;
 	height:8em;
 	width:2px;
-	background:white;
 	left:15px;
 	margin-bottom:-20px;
 }
@@ -204,7 +275,6 @@ img {
 }
 .right_side_email {
 	position:relative;
-	color:white;
 	writing-mode: vertical-rl; /*Rotates the text*/
 	right:30px;
 	text-decoration:none;
@@ -221,7 +291,6 @@ img {
 	position:relative;
 	height:8em;
 	width:2px;
-	background:white;
 	right:15px;
 	margin-bottom:-20px;
 }
@@ -237,7 +306,6 @@ img {
 }
 
 .footer_intro_text {
-	color:white;
 	margin-top:-5px;
 	line-height: 1.6;
 }
@@ -258,7 +326,6 @@ img {
 	position:relative;
 	width:10vw;
 	height:2px;
-	background:white;
 	display:inline-block;
 	bottom:5px;
 	
@@ -269,7 +336,6 @@ img {
 }
 
 .credit {
-	color:white;
 	text-align:center;
 	font-size:1em;
 	bottom:0;
@@ -317,7 +383,6 @@ img {
 	.ham_li_nav_sections {
 		font-size: 1.5em;
 		display: block;
-		color: white;
 		text-align: center;
 		margin-top: 14px;
 		text-decoration: none;

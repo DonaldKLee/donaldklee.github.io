@@ -125,6 +125,7 @@ if (accordion_pop_up.style.maxHeight){
 	for(let active_index = 0; active_index < active.length; active_index++){ 
 		//Removes the light blue colour on the accordion when it is closed
 		active[active_index].classList.remove("active");
+		active[active_index].classList.remove("active_blue");
 	}
 } 
 
@@ -132,11 +133,13 @@ else {
 	let active = document.querySelectorAll(".experience_accordion_container .accordion.active");
 	for(let active_index = 0; active_index < active.length; active_index++){
 		active[active_index].classList.remove("active");
+		active[active_index].classList.remove("active_blue");
 		active[active_index].nextElementSibling.style.maxHeight = null;
 		
   }
 
   this.classList.toggle("active");
+  this.classList.toggle("active_blue");
 	accordion_pop_up.style.maxHeight = accordion_pop_up.scrollHeight + "px";
 	}
 

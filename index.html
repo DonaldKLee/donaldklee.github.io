@@ -33,8 +33,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!--CSS-->
 <link rel="stylesheet" href="CSS/universal.css"> 
 <link rel="stylesheet" href="CSS/home.css"> 
-<link rel="stylesheet" href="CSS/navigationbar.css"> 
 <link rel="stylesheet" href="CSS/responsive_home.css"> 
+<link id="theme" rel="stylesheet" type="text/css" href="CSS/dark_mode_colours.css"/>
+<link rel="stylesheet" href="CSS/navigationbar.css"> 
 
 <!--Font Awesome-->
 <script src="https://kit.fontawesome.com/ba7447c34f.js" crossorigin="anonymous"></script>
@@ -79,6 +80,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 <!-- Nav bar ^ ^ ^-->
 
+
+<div class="theme_changer">
+	<button id="theme-toggle" class="theme_btn">
+		<div id="theme_moon" class=""><i class="theme_moon fas fa-moon"></i></div>
+		<div id="theme_sun" class=""><i class="theme_sun fas fa-sun"></i></div>
+	</button>
+</div>
+
+
+
 <section id="home" class="page_section top_of_page"></section>
 
 <section class="top_page_home">
@@ -87,15 +98,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</div>
 	
 	<div class="introduction_container">
-		<p class="home_my_name_is">Hi, my name is</p>
+		<p class="home_my_name_is theme_text">Hi, my name is</p>
 		<p class="home_name theme_light_blue">Donald Lee</p>
 		
-		<p class="changing_home_text section_titles">I
-			<div id="home_changing_text" class="changing_home_text section_titles"></div>
+		<p class="changing_home_text section_titles theme_text">I
+			<div id="home_changing_text" class="changing_home_text section_titles theme_text"></div>
 			<div id="blinking_line"></div>
 		</p>
 			
-		<a class="home_button_link white_btn white_btn_text" href="mailto:donald3010@outlook.com">
+		<a class="home_button_link white_btn rectangle_btn" href="mailto:donald3010@outlook.com">
 			<div class="get_in_touch">
 				<p>Get In Touch</p>
 			</div>
@@ -104,36 +115,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section id="about" class="page_section about_page">
-	<h1 class="section_titles">A Little Bit About Myself</h1>
+	<h1 class="section_titles theme_text">A Little Bit About Myself</h1>
 	<div class="about_intro_container">
-		<p class="about_intro_text body_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am currently a high school student and self-taught programmer planning to go into Computer Science for post-secondary. I have a passion for coding projects that can help others make their lives easier.</p>
+		<p class="about_intro_text body_text theme_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am currently a high school student and self-taught programmer planning to go into Computer Science for post-secondary. I have a passion for coding projects that can help others make their lives easier.</p>
 		
 		</br>
 		
-		<p class="knowledge_title body_text">A few things that I know or used:</p>
+		<p class="knowledge_title body_text theme_text">A few things that I know or used:</p>
 		
 		<div class="knowledge_container">
 			<div class="seperate_knowledge_container">
-				<p class="knowledge_column_title">Web Development</p>
+				<p class="knowledge_column_title theme_text">Web Development</p>
 				<ul>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">HTML</li></div>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">CSS</li></div>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">SEO</li></div>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">WordPress</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">HTML</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">CSS</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">SEO</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">WordPress</li></div>
 				</ul>
 			</div>
 			
 			<div class="seperate_knowledge_container">
-				<p class="knowledge_column_title">Backend Development</p>
+				<p class="knowledge_column_title theme_text">Backend Development</p>
 				
 				<ul>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">Python</li>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">Python</li>
 						
 						<ul>
-							<li class="knowledge_list_item nested_knowledge_points">Web automation</li>
-							<li class="knowledge_list_item nested_knowledge_points">Web scrapping</li>
-							<li class="knowledge_list_item nested_knowledge_points">Web server</li>
-							<li class="knowledge_list_item nested_knowledge_points">GUI</li>
+							<li class="knowledge_list_item nested_knowledge_points theme_text">Web automation</li>
+							<li class="knowledge_list_item nested_knowledge_points theme_text">Web scrapping</li>
+							<li class="knowledge_list_item nested_knowledge_points theme_text">Web server</li>
+							<li class="knowledge_list_item nested_knowledge_points theme_text">GUI</li>
 						</ul>
 
 					</div>
@@ -143,10 +154,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	
 		
 		<div class="seperate_knowledge_container">
-			<p class="knowledge_column_title">Tools</p>
+			<p class="knowledge_column_title theme_text">Tools</p>
 				<ul>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">Figma</li></div>
-					<div class="knowledge_list_item_indent"><li class="knowledge_list_item">Google Analytics</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">Figma</li></div>
+					<div class="knowledge_list_item_indent"><li class="knowledge_list_item theme_text">Google Analytics</li></div>
 				</ul>
 		</div>
 		
@@ -155,7 +166,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section id="experience" class="page_section experience_page">
-	<h1 class="section_titles">Work and Volunteer Experience</h1>
+	<h1 class="section_titles theme_text">Work and Volunteer Experience</h1>
 	
 	<!--
 	
@@ -180,12 +191,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			
 				<div id="a_p_u_id" class="accordion_pop_up">
 					<div class="accordion_content">
-						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-						<p class="job_date body_text">December 2020 - Present</p>
+						<p class="body_text theme_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="body_text theme_text">December 2020 - Present</p>
 						
 						<ul class="accordion_text_lists">
-							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+							<li class="about_role body_text theme_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text theme_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
 						</ul>
 					
 					</div>
@@ -197,12 +208,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			
 				<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
 					<div class="accordion_content">
-						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-						<p class="job_date body_text">December 2020 - Present</p>
+						<p class="body_text theme_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="body_text theme_text">December 2020 - Present</p>
 						
 						<ul class="accordion_text_lists">
-							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+							<li class="about_role body_text theme_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text theme_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
 						</ul>
 					
 					</div>
@@ -214,12 +225,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			
 				<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
 					<div class="accordion_content">
-						<p class="role body_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
-						<p class="job_date body_text">December 2020 - Present</p>
+						<p class="body_text theme_text"><span class="theme_light_blue">Job title</span> @ Another Company Name</p>
+						<p class="body_text theme_text">December 2020 - Present</p>
 						
 						<ul class="accordion_text_lists">
-							<li class="about_role body_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
-							<li class="about_role body_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
+							<li class="about_role body_text theme_text">I did this here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magn.</li>
+							<li class="about_role body_text theme_text">And this......... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus. In mollis nunc sed id semper risus. </li>
 						</ul>
 					
 					</div>
@@ -234,8 +245,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section id="projects" class="page_section projects_page">
-	<h1 class="section_titles">Some Things I’ve Built</h1>
-	<p class="projects_intro_text body_text">Here are just some of the things that I have built. Feel free to check them out! </p>
+	<h1 class="section_titles theme_text">Some Things I’ve Built</h1>
+	<p class="projects_intro_text body_text theme_text">Here are just some of the things that I have built. Feel free to check them out! </p>
 
 
 	<ul class="project_filter">
@@ -254,14 +265,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</div>
 			
 			<div class="about_project_section">
-				<p class="project_name">CarePackages4U | July 2020</p>
-				<p class="about_project">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
+				<p class="project_name theme_text">CarePackages4U | July 2020</p>
+				<p class="about_project theme_text">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
 				<a class="project_learn_more" href="projects/template.html">Learn more</a>
-				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github"></i></a>
+				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github theme_text"></i></a>
 			</div>
 		</div>
 	<!--One Project ^^^-->
-	
 	<!--One Project-->
 		<div class="project hackathon">
 			<div class="project_image_container">
@@ -269,14 +279,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</div>
 			
 			<div class="about_project_section">
-				<p class="project_name">CarePackages4U | July 2020</p>
-				<p class="about_project">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
+				<p class="project_name theme_text">CarePackages4U | July 2020</p>
+				<p class="about_project theme_text">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
 				<a class="project_learn_more" href="projects/template.html">Learn more</a>
-				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github"></i></a>
+				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github theme_text"></i></a>
 			</div>
 		</div>
 	<!--One Project ^^^-->
-	
 	<!--One Project-->
 		<div class="project side_project">
 			<div class="project_image_container">
@@ -284,14 +293,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</div>
 			
 			<div class="about_project_section">
-				<p class="project_name">CarePackages4U | July 2020</p>
-				<p class="about_project">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
+				<p class="project_name theme_text">CarePackages4U | July 2020</p>
+				<p class="about_project theme_text">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
 				<a class="project_learn_more" href="projects/template.html">Learn more</a>
-				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github"></i></a>
+				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github theme_text"></i></a>
 			</div>
 		</div>
 	<!--One Project ^^^-->
-	
 	<!--One Project-->
 		<div class="project side_project">
 			<div class="project_image_container">
@@ -299,13 +307,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</div>
 			
 			<div class="about_project_section">
-				<p class="project_name">CarePackages4U | July 2020</p>
-				<p class="about_project">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
+				<p class="project_name theme_text">CarePackages4U | July 2020</p>
+				<p class="about_project theme_text">A project inspired by Linktree. July 7th - 9th, 2020. As the free version of Linktree has its limitations, I decided to code my own so I could have more freedom on the design, and add features that Linktree does not have.</p>
 				<a class="project_learn_more" href="projects/template.html">Learn more</a>
-				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github"></i></a>
+				<a href='https://github.com/DonaldKLee' target="_blank"><i class="project_github_logo fab fa-github theme_text"></i></a>
 			</div>
 		</div>
 	<!--One Project ^^^-->
+	
+
+
 </section>
 
 
@@ -323,18 +334,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</div>
 	
 	<div class="side_items_right">
-		<a class="right_side_email ssm" href="mailto:donald3010@outlook.com">donald3010@outlook.com</a>
+		<a class="right_side_email ssm theme_text" href="mailto:donald3010@outlook.com">donald3010@outlook.com</a>
 		<div class="side_right_line"></div>
 	</div>
 </div>
 
 
 <footer id="contact" class="page_section website_footer">
-	<h1 class="section_titles">Hi there, thanks for visiting!</h1>
-	<p class="footer_intro_text body_text">My inbox is always open. Have a question or you just want to say hi? Free to send me an email, I will try my best to get back to you!</p>
+	<h1 class="section_titles theme_text">Hi there, thanks for visiting!</h1>
+	<p class="footer_intro_text body_text theme_text">My inbox is always open. Have a question or you just want to say hi? Free to send me an email, I will try my best to get back to you!</p>
 		
-	<a class="footer_email white_btn_text" href="mailto:donald3010@outlook.com">
-		<div class="footer_say_hi white_btn">
+	<a class="footer_email white_btn rectangle_btn" href="mailto:donald3010@outlook.com">
+		<div class="footer_say_hi">
 			<p>Say Hi!</p>
 		</div>
 	</a>
@@ -350,7 +361,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			<div class="footer_logo_lines"></div>
 		</ul>
 	</div>	
-<a class="credit" href="https://donaldklee.github.io/#home">Designed and Coded by Donald Lee</a>
+<a class="credit theme_text" href="https://donaldklee.github.io/#home">Designed and Coded by Donald Lee</a>
 <!--Footer ^ ^ ^-->
 
 <!--Jquery-->
@@ -361,6 +372,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script src="JS/js_on_home_page.js"></script>
 <script src="JS/nav_bar_js.js"></script>
+<script src="JS/theme_changer.js"></script>
 
 </body>
 </html>
