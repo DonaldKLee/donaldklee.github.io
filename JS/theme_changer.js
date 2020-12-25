@@ -1,6 +1,4 @@
-localStorage.setItem('theme', 'CSS/dark_mode_colours.css');
-
-// this one is jut to wait for the page to load
+// this one is just to wait for the page to load
 document.addEventListener('DOMContentLoaded', () => {
 	var moon = document.getElementById("theme_moon");
 	var sun = document.getElementById("theme_sun");
