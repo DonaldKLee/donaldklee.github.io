@@ -265,7 +265,7 @@
 }
 .projects_image {
 	width:100%;
-	height:200px;
+	height:auto;
 	transform: scale(1.1);
 	transition:0.3s;
 }

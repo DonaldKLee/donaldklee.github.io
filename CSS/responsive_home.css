@@ -48,7 +48,7 @@
 		max-height:160px;
 	}
 	.projects_image {
-		height:160px;
+		height:auto;
 	}
 	.project_name {
 		font-size:1.2em;
@@ -76,7 +76,7 @@
 		max-height:150px;
 	}
 	.projects_image {
-		height:150px;
+		height:auto;
 	}
 }
 @media only screen and (max-width: 400px) { /*Makes the projects section mobile responsive*/
