@@ -3,7 +3,16 @@
   background: black;
   color:white;
 }
+
 .theme_btn {background: #CCCCCC;}
+
+.theme_btn:hover {
+	background: #333333;
+}
+.theme_btn:hover .theme_moon{
+	color:white;
+}
+
 #theme_moon {display:block;}
 #theme_sun {display:none;}
 

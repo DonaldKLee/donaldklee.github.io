@@ -62,6 +62,10 @@
 }
 
 @media only screen and (max-width: 500px) { /*Makes the projects section mobile responsive*/
+	.project_filter_item {
+		display:block;
+		width:auto; /*Makes filter items take up the entire container*/
+	}
 	.projects_container {
 		grid-template-columns: auto;
 	}

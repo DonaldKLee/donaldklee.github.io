@@ -5,9 +5,16 @@
 }
 
 .theme_btn {background: #333333;}
+
+.theme_btn:hover {
+	background: #CCCCCC;
+}
+.theme_btn:hover .theme_sun{
+	color:black;
+}
+
 #theme_moon {display:none;}
 #theme_sun {display:block;}
-
 
 
 body {background:#1D1C1C;}
