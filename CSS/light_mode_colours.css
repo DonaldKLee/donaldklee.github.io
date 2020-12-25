@@ -17,7 +17,7 @@
 #theme_sun {display:none;}
 
 
-body, #top_nav_bar {background:#FFFFFF;}
+body, #top_nav_bar, #vertical_nav_bar {background:#FFFFFF;}
 
 .mylogo {
 	filter: invert(0%); /*Makes the logo black*/
