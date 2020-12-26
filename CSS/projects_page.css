@@ -81,7 +81,15 @@ body {
 	
 }
 .projects_page_li {
-
+	margin-bottom:5px;
+}
+.project_link {
+	color: #3988FF;
+	transition:0.3s;
+}
+.project_link:hover {
+	color: #136DF3;
+	text-decoration:none;
 }
 @media only screen and (max-width: 850px) {
 	.projects_image_container {
@@ -90,7 +98,7 @@ body {
 	}
 	.project_background {
 		widows:auto;
-		height:300px;
+		height:auto;
 	}
 	.project_title {
 		width:100%;
