@@ -4,7 +4,7 @@
   color:white;
 }
 
-.theme_btn {background: #CCCCCC;}
+.theme_btn {background: #E5E5E5;}
 
 .theme_btn:hover {
 	background: #333333;
@@ -59,7 +59,7 @@ body, #top_nav_bar, #vertical_nav_bar {background:#FFFFFF;}
 }
 
 .accordion, .accordion_top_bottom, .project_filter, .project {
-	background: #d7d7d7;
+	background: #E5E5E5;
 }
 
 .project_filter li.project_filter_active, .project_filter li:hover{

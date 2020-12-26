@@ -7,7 +7,7 @@
 .theme_btn {background: #333333;}
 
 .theme_btn:hover {
-	background: #CCCCCC;
+	background: #E5E5E5;
 }
 .theme_btn:hover .theme_sun{
 	color:black;
