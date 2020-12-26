@@ -27,6 +27,18 @@
 	.accordion_text_lists {
 		 padding: 2px;
 	}
+	.accordion {
+		padding: 5px;
+	}
+	.accordion_heading {
+		margin-left:5px;
+	}
+	.accordion:after {
+		right:5px;
+	}
+	.accordion_pop_up {
+		font-size:13px;
+	}
 }
 @media only screen and (max-width: 500px) { /*Experience accordions*/
 	.accordion_content {

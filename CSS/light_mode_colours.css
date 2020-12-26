@@ -71,7 +71,8 @@ body, #top_nav_bar, #vertical_nav_bar {background:#FFFFFF;}
 .accordion_top_bottom:nth-last-child(1) {border-top: 1px solid black;}
 .accordion {border-top: 1px solid black;}
 
-
+.project_logo_colour {color:black}
+.project_logo_colour:hover {color:#3988FF}
 
 
 
