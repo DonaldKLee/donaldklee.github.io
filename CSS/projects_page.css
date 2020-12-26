@@ -57,7 +57,7 @@ body {
 	cursor: pointer;
 	transition:all 0.3s ease-in-out;
 	margin: 5px 5px;
-	width:130px;
+	min-width:130px;
 	padding:0px 10px;
 	background: #3988FF;
 	color: white;
