@@ -94,13 +94,13 @@
 }
 .knowledge_list_item {
 	font-size:1.7em;
-	list-style-type:'👉 ';
+	list-style-type:'➤ ';
 }
 .knowledge_list_item_indent {
 	padding-left:2em;
 }
 .nested_knowledge_points {
-	list-style-type:'➤ ';
+	list-style-type:'➼ ';
 }
 
 /*Experience Page*/

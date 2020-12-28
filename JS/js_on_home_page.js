@@ -144,9 +144,7 @@ else {
 	}
 
 });
-
 }
-
 
 document.getElementById("default_accordion").click();
 
