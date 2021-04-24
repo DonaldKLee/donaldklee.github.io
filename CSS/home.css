@@ -23,7 +23,7 @@
 .home_rounded_image { /*Profile Picture*/
 	border-radius: 50%;
 	width:12em;
-	height:auto;
+	height:12em;
 	border-style: solid;
 	border-width: 2px;
 }
@@ -197,6 +197,14 @@
 	line-height: 1.6;
 }
 
+.experience_links {
+	color:#3988FF; 
+	transition:0.3s; 
+}
+.experience_links:hover {
+	color:#136DF3;
+	text-decoration:none;
+}
 
 .projects_page {
 	position:relative;
