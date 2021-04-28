@@ -4,6 +4,7 @@
 	}
 	.home_rounded_image { /*Profile Picture*/
 		width:11em;
+		height: 11em;
 	}
 	.home_my_name_is {
 		font-size:1.3em;
