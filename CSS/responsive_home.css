@@ -94,7 +94,8 @@
 }
 @media only screen and (max-width: 400px) { /*Makes the projects section mobile responsive*/
 	.project_learn_more {
-		width:90px;
+		/*width:90px; Prior to the removal of the logos experiment */
+		width: 90%;
 	}
 	.project_github_logo {
 		font-size:1.5em;

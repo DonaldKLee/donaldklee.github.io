@@ -297,6 +297,22 @@
 	list-style-type:none;
 }
 .project_buttons_li {
+	display:block;
+	margin:10px auto;
+	
+}
+.project_learn_more {
+	width:90%;
+	margin: 0 auto;
+	border-radius:15px;
+	padding:10px;
+	background: #3988FF;
+	transition:0.3s;
+	/*animation: reverse_flip 0.3s;*/
+}
+
+/* Prior to the removal of the logos experiment
+.project_buttons_li {
 	display:inline-block;
 	margin:10px auto;
 }
@@ -306,8 +322,7 @@
 	padding:10px;
 	background: #3988FF;
 	transition:0.3s;
-	/*animation: reverse_flip 0.3s;*/
-}
+} */
 
 @keyframes reverse_flip {
   from {
