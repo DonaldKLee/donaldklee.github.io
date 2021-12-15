@@ -129,24 +129,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<p class="body_text theme_text">Ever wanted to take notes while watching a YouTube video without the use of split-screen? Do you want to send instructions alongside a video to a friend, team member, or colleague? Do you feel uncomfortable logging into platforms such as Google docs using public Wifi or on somebody else’s device? Or do you want to Rick-roll a group chat and leave a message asking your friends to play along or act oblivious?</br></br>VidNotes is a free web-based service that allows you to send a link containing a YouTube video alongside notes or instructions or take notes while watching a YouTube video on the side! If you are taking notes on someone else’s device, you can have your notes emailed straight to your inbox to refer back to when you get home!</p>
 
 		<h1 class="section_titles theme_text">How I built it</h1>
-		<p class="body_text theme_text">Coming soon...</p>
+		<p class="body_text theme_text">In this project, I set up a Flask server and used HTML and CSS to design the website based on our UI/UX design on Figma and JavaScript to prevalidate forms and ensure that all requirements were met before validating it with Python in the backend. Once the form is submitted, the data is taken with WTF-forms, processed using Python, and stored in our MongoDB database. Additionally, I used the "smtplib" module to allow users to email themself the notes. Afterwards, I hosted the website on Heroku.</p>
 		
-		<h1 class="section_titles theme_text">Tools</h1>
+		<h1 class="section_titles theme_text">Key Languages and Tools:</h1>
+		
+		<h1 class="body_text theme_text">Languages:</h1>
 		<ul class="projects_page_ul">
-			<li class="projects_page_li body_text theme_text">Coming soon...</li>
-			<li class="projects_page_li body_text theme_text">Coming soon...</li>
-			<li class="projects_page_li body_text theme_text">Coming soon...</li>
+			<li class="projects_page_li body_text theme_text">HTML</li>
+			<li class="projects_page_li body_text theme_text">CSS</li>
+			<li class="projects_page_li body_text theme_text">JavaScript</li>
+			<li class="projects_page_li body_text theme_text">Python</li>
+		</ul>		
+		
+		<h1 class="body_text theme_text">Modules and Libraries:</h1>
+		<ul class="projects_page_ul">
+			<li class="projects_page_li body_text theme_text">Flask</li>
+			<li class="projects_page_li body_text theme_text">WTForms</li>
+			<li class="projects_page_li body_text theme_text">MongoDB</li>
+			<li class="projects_page_li body_text theme_text">smtplib</li>
+			<li class="projects_page_li body_text theme_text">gunicorn</li>
+			<li class="projects_page_li body_text theme_text">APScheduler</li>
+			<li class="projects_page_li body_text theme_text">gunicorn</li>
+			<li class="projects_page_li body_text theme_text">python-dateutil</li>
+			<li class="projects_page_li body_text theme_text">requests</li>
+			<li class="projects_page_li body_text theme_text">python-decouple</li>
 		</ul>
+		
+		<h1 class="body_text theme_text">Additional tools used:</h1>
+		<ul class="projects_page_ul">
+			<li class="projects_page_li body_text theme_text">Heroku</li>
+			<li class="projects_page_li body_text theme_text">Figma</li>
+			<li class="projects_page_li body_text theme_text">Gmail (To automate emails)</li>
+		</ul>		
 		
 		
 		<h1 class="section_titles theme_text">Challenges</h1>
-		<p class="body_text theme_text">Coming soon...</p>
+		<p class="body_text theme_text">During this project, a challenge I faced was trying to embed the YouTube video onto the website because YouTube has multiple domains and even different formats for their video URLs. For example, if you copy the link of a video from a playlist, it would not be embedded when the user pastes in the link. However, I solved this issue by manipulating the string. The main challenge I faced in this project was trying to deploy it on Heroku because this was my first time hosting a Flask server on the internet, and I did not know what additional files I needed in my repository to allow Heroku to know what requirements my app needs.</p>
 		
 		<h1 class="section_titles theme_text">What I learned</h1>
-		<p class="body_text theme_text">Coming soon...</p>
+		<p class="body_text theme_text">From this project, I improved my teamwork skills by working alongside a UI/UX designer, improved my front-end development skills by building a website with HTML, CSS, and JavaScript, and improved my backend development skills by setting up a Flask server with Python. Additionally, I learned how to use environment variables, send emails using Python, and gained experience in using MongoDB. Furthermore, I learned how to use Heroku to successfully deploy a web application, and I can apply this to my future projects!</p>
 		
 		<h1 class="section_titles theme_text">What's next for VidNotes?</h1>
-		<p class="body_text theme_text">Coming soon...</p>
+		<p class="body_text theme_text">In the future, I may implement a login system to allow users to store all their notes without the need of emailing or remembering the link of their notes.</p>
 	</div>
 	
 </section>
