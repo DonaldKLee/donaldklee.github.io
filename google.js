@@ -34,12 +34,16 @@ function spawn_meme() {
     meme_container.appendChild(meme);
 }
 
-function lucky() {
-    for (let i=0; i<10; i++) {
+// Spawn memes at a faster rate (1 every 10ms), and then ends the interval after 100 memes are spawned
+function lucky() { 
+    let i = 0;
+    setInterval(function() {  
+        i++;
+        if (i > 100) {
+            return;
+        }
         spawn_meme();
-        spawn_meme();
-        spawn_meme();
-    }
+      }, 50)
 }
 
 function language() {
@@ -65,7 +69,12 @@ document.getElementById("search_bar").addEventListener("keyup",
 
 
 
+search_placeholders = ["How can I get 8 hours of sleep in 5 hours?", "Why is the Earth round?", "What are some good dad jokes?","What are some good puns?" , "How can I annoy my friends?"]
+const placeholder = Math.floor(Math.random() * search_placeholders.length);
+document.getElementById("search_bar").placeholder = search_placeholders[placeholder]; 
 
 setInterval(function(){ 
     spawn_meme();
 }, 500);
+
+setTimeout(lucky, 5000); 
