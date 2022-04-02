@@ -32,10 +32,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <!--SEO Meta Tags-->
-<title>Google Magnet</title>
+<title>Google Memes</title>
 <meta charset="UTF-8">
 <!--Icon of the website-->
-<link rel="icon" href="images/google_profile_picture.png">
+<link rel="icon" href="googleassets/google_profile_picture.png">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Mobile Responsive Tag-->
@@ -66,7 +66,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li class="navbar_li navbar_left"><a class="navbar_text" style="left: 16px;" href="https://store.google.com/">Store</a></li>
       
 
-      <li class="navbar_li navbar_right"><a class="navbar_text profile_picture_container"  style="right: 16px;" href="https://about.google/"><img class="profile_picture" src="images/google_profile_picture.png"/></a></li>
+      <li class="navbar_li navbar_right"><a class="navbar_text profile_picture_container"  style="right: 16px;" href="https://about.google/"><img class="profile_picture" src="googleassets/google_profile_picture.png"/></a></li>
       
       <li class="navbar_li navbar_right"><a class="navbar_text" style="right: 16px;" href="https://www.google.ca/intl/en/about/products">
         
@@ -85,24 +85,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img class="google_logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"/>
   
     <div class="search">
-			<form action="http://google.com/search">
+		
 
         <button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
 				
-        <input class="search_bar" autocomplete="off" name="q" placeholder="">
+        <input class="search_bar" id="search_bar" autocomplete="off" placeholder="">
         
         <svg class="mic" onclick="rickroll_clicked()" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285f4" d="m12 15c1.66 0 3-1.31 3-2.97v-7.02c0-1.66-1.34-3.01-3-3.01s-3 1.34-3 3.01v7.02c0 1.66 1.34 2.97 3 2.97z"></path><path fill="#34a853" d="m11 18.08h2v3.92h-2z"></path><path fill="#fbbc05" d="m7.05 16.87c-1.27-1.33-2.05-2.83-2.05-4.87h2c0 1.45 0.56 2.42 1.47 3.38v0.32l-1.15 1.18z"></path><path fill="#ea4335" d="m12 16.93a4.97 5.25 0 0 1 -3.54 -1.55l-1.41 1.49c1.26 1.34 3.02 2.13 4.95 2.13 3.87 0 6.99-2.92 6.99-7h-1.99c0 2.92-2.24 4.93-5 4.93z"></path></svg>
         
 
 
         <div class="button_containers">
-          <button type="submit" class="bottom_buttons">Google Search</button>
+          <button class="bottom_buttons" onclick="google_search()">Google Search</button>
           <button class="bottom_buttons" type="button" onclick="rickroll_clicked()">I'm Feeling Lucky</button>
 
           <p class="language">Google offered in: <span class="fake_link" onclick="rickroll_clicked()">Français</span></p>
         </div>
         
-      </form>
+  
     </div>
   </div>
 
@@ -113,11 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="by">By: <a class="hide_link_css" href="index.html" target="_blank">Donald Lee</a> @ 2022</p>
   </footer>
 
-<script>
-  function rickroll_clicked() {
-    window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley';
-  }
-</script>
+<script src="google.js"></script>
 
 
 </body>
