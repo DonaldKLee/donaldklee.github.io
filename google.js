@@ -6,8 +6,8 @@ function spawn_meme() {
 
     const meme_images = [
         "googleassets/eggdog.gif",
-        "https://static.wikia.nocookie.net/smash_moveset_fanon/images/b/b1/Chrome-dinosaur.png/revision/latest/top-crop/width/360/height/450?cb=20201214102640",
-        "https://static.wikia.nocookie.net/ducksong/images/5/55/DuckFullBody.png/revision/latest/scale-to-width-down/276?cb=20211223200904",
+        "googleassets/dino.png",
+        "googleassets/duck.png",
     ];
     const image = Math.floor(Math.random() * meme_images.length);
     meme.src = meme_images[image]; 
