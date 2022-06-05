@@ -56,6 +56,8 @@
 	.project_filter_item {
 		font-size: 1em;
 		min-width:100px;
+		display:block;
+		width:auto; /*Makes filter items take up the entire container*/
 	}
 	.project_image_container {
 		max-height:160px;
@@ -75,10 +77,10 @@
 }
 
 @media only screen and (max-width: 500px) { /*Makes the projects section mobile responsive*/
-	.project_filter_item {
+	/* .project_filter_item {
 		display:block;
-		width:auto; /*Makes filter items take up the entire container*/
-	}
+		width:auto; 
+	} */
 	.projects_container {
 		grid-template-columns: auto;
 	}
