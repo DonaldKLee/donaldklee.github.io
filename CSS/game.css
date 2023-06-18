@@ -1,0 +1,13 @@
+.gameContainer {
+    background: red;
+    height: 300px;
+    width: 100%;
+}
+
+.gameScore {
+
+}
+
+.gameHighScore {
+    float: right;
+}
