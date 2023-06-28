@@ -76,15 +76,16 @@ body, #vertical_nav_bar {background:#1D1C1C;}
 .project_logo_colour {color:white}
 .project_logo_colour:hover {color:#3988FF}
 
-
-
-
-
-
-
-
-
-
-
-
-
+.gameContainer {
+    border-top: 15px white solid;
+    border-bottom: 15px white solid;
+}
+.gameCharacter {
+    filter: invert(0%);
+}
+.gameGroundObstacle {
+	border-bottom: 30px solid white;
+}
+.gameAirObstacle {
+	background: white;
+}

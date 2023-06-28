@@ -68,7 +68,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="https://kit.fontawesome.com/ba7447c34f.js" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body id="body">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLBJS4J"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -147,14 +147,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<p class="about_intro_text body_text theme_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am a self-taught programmer and a first year Science student at the University of British Columbia intending to major in Computer Science. I have a passion for tech startups and coding projects that can help others make their lives easier.</p>
 		
 		</br>
-		<!--
+		
 		<p class="about_intro_text body_text theme_text">I also like to make random things sometimes. Here's a game you can play :)</p>
-		<div class="gameContainer">
+		<div class="gameContainer" id="gameContainer">
 			<div class="gameInfo">
-				<p class="gameScore body_text theme_text">Score: <span>0</span></p>
+				<p class="gameScore body_text theme_text">Score: <span id="gameScore">0</span></p>
 				<p class="gameHighScore body_text theme_text">Your high score: <span>0</span></p>
 			</div>
-		</div> -->
+
+			<div class="gameScreen" id="gameScreen">
+				<img class="gameCharacter" id="gameCharacter" src="./googleassets/eggdog.gif"/>
+			</div>
+		</div>
 
 		<p class="knowledge_title body_text theme_text">Technologies I have worked with:</p>
 		

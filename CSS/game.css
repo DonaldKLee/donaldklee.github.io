@@ -1,13 +1,65 @@
 .gameContainer {
-    background: red;
+    /* background: red; */
     height: 300px;
     width: 100%;
+    overflow: hidden;
 }
 
 .gameScore {
-
+    float: left;
+    font-weight: bold;
 }
 
 .gameHighScore {
     float: right;
+    font-weight: bold;
+}
+.gameScreen {
+    position: relative;
+}
+.gameCharacter {
+    position: absolute;
+    top: 210px;
+    left: 50px;
+    transition: 0.2s;
+    transform: rotate(0deg);
+}
+
+.gameGroundObstacle {
+    position: absolute;
+    top: 240px;
+    left: 100%;
+    border-top: 30px solid transparent;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    animation: gameMoveGroundObstacles 10s linear;
+}
+
+.gameAirObstacle {
+    position: absolute;
+    top: 200px;
+    left: 100%;
+    height: 30px;
+    width: 30px;
+    animation: gameMoveAirObstacles 10s linear;
+}
+
+@keyframes gameMoveGroundObstacles {
+    from {
+        left: 2000px
+    }
+    to {
+        left: -200px;
+    }
+}
+
+@keyframes gameMoveAirObstacles {
+    from {
+        left: 2000px;
+        transform: rotate(0deg);
+    }
+    to {
+        left: -200px;
+        transform: rotate(36000deg);
+    }
 }
