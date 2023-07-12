@@ -21,14 +21,14 @@
     position: absolute;
     top: 210px;
     left: 50px;
-    transition: 0.2s;
+    transition: 0.5s;
     transform: rotate(0deg);
 }
 
 .gameGroundObstacle {
     position: absolute;
     top: 240px;
-    left: 100%;
+    left: -200px;
     border-top: 30px solid transparent;
     border-left: 30px solid transparent;
     border-right: 30px solid transparent;
@@ -38,7 +38,7 @@
 .gameAirObstacle {
     position: absolute;
     top: 200px;
-    left: 100%;
+    left: -200px;
     height: 30px;
     width: 30px;
     animation: gameMoveAirObstacles 10s linear;
@@ -61,5 +61,44 @@
     to {
         left: -200px;
         transform: rotate(36000deg);
+    }
+}
+
+.gameStart {
+    font-size: 1.5em;
+    position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    text-decoration: none;
+    text-align: center;
+    height: auto;
+    width: 200px;
+    top: 120px;
+    left: 40%;
+    display: block;
+    background: none;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 2;
+}
+
+.gameOverText {
+    position: absolute;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 100%;
+    top: 30px;
+    /* font-size: 4em; */
+    /* To animate game over text appearing */
+    transition: 0.6;
+}
+
+@media only screen and (max-width: 500px) {
+    .gameStart {
+        font-size: 1em;
+        left: 0%;
+        width: 100%;
     }
 }

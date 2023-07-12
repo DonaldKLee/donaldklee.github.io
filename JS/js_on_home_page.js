@@ -36,7 +36,7 @@ $(document).on('click', 'a[href^="#"]', function (event) {
 // List of sentences that will be type_sentenced out.
 var sentences_to_type_sentence = [ 
 	"am a self-taught programmer.", 
-	"am an aspiring software engineer.", 
+	"am software developer.", 
 	"code things that help make lives easier!"
 ];
 

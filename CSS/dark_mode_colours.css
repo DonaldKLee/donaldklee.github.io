@@ -89,3 +89,14 @@ body, #vertical_nav_bar {background:#1D1C1C;}
 .gameAirObstacle {
 	background: white;
 }
+
+.gameStart {
+    color: white;
+    border-color: white;
+}
+
+.gameStart:hover {
+    border-color: white;
+    color: black;
+    background: white;
+}

@@ -46,7 +46,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="author" content="Donald Lee">
 <meta name="application-name" content="Donald Lee's Portfolio Site">
 	
-<meta name="description" content="Hi, there! 👋 I'm Donald, I am a self-taught programmer and a first year Science student at the University of British Columbia intending to major in Computer Science. In the future, I want to code something that can help make lives simpler. 👉 Be sure to check out my website! 👈 @2020 Donald Lee"/>
+<meta name="description" content="Hi, there! 👋 I'm Donald, I am a self-taught programmer and a second year Science student at the University of British Columbia. In the future, I want to code something that can help make lives simpler. 👉 Be sure to check out my website! 👈 @2020 Donald Lee"/>
 	
 
 <!--Linkedin-->
@@ -144,19 +144,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section id="about" class="page_section about_page">
 	<h1 class="section_titles theme_text">A Little Bit About Myself</h1>
 	<div class="about_intro_container">
-		<p class="about_intro_text body_text theme_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am a self-taught programmer and a first year Science student at the University of British Columbia intending to major in Computer Science. I have a passion for tech startups and coding projects that can help others make their lives easier.</p>
+		<p class="about_intro_text body_text theme_text">Hi there, I’m <span class="theme_light_blue"><strong>Donald</strong></span>!</br>I am a self-taught programmer and a second year Science student at the University of British Columbia. I have a passion for tech startups and coding projects that can help others make their lives easier.</p>
 		
 		</br>
 		
-		<p class="about_intro_text body_text theme_text">I also like to make random things sometimes. Here's a game you can play :)</p>
+		<p class="about_intro_text body_text theme_text">I also like to make random things sometimes. Bored? Here's a game you can play :)
+		</br></br>
+		Instructions:
+		</p>
+		<ul>
+			<li class="knowledge_list_item theme_text">a - jump</li>
+			<li class="knowledge_list_item theme_text">d - slide</li>
+		</ul>
+		</br>
 		<div class="gameContainer" id="gameContainer">
 			<div class="gameInfo">
 				<p class="gameScore body_text theme_text">Score: <span id="gameScore">0</span></p>
-				<p class="gameHighScore body_text theme_text">Your high score: <span>0</span></p>
+				<p class="gameHighScore body_text theme_text">Your high score: <span id="gameHighScore">0</span></p>
 			</div>
 
 			<div class="gameScreen" id="gameScreen">
-				<img class="gameCharacter" id="gameCharacter" src="./googleassets/eggdog.gif"/>
+				<h2 class="gameOverText theme_text" id="gameOverText" style="font-size: 0px; visibility: hidden;">Game Over</h2>
+				<button class="gameStart theme_text" onclick="startGame()" id="gameStartButton" style="transform: scale(1); visibility: visible;">Play</button>
+				<img class="gameCharacter" id="gameCharacter" src="./images/eggdog2.gif"/>
 			</div>
 		</div>
 
@@ -235,7 +245,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		
 		<div id="all_accordions">
 			<!--One accordion-->
-			<button id="default_accordion" class="accordion"><span class="accordion_heading body_text">Developer @ nwPlus</span></button>
+			<button id="default_accordion" class="accordion"><span class="accordion_heading body_text">Software Developer Assistant @ UBC</span></button>
+
+			<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
+				<div class="accordion_content">
+					<p class="body_text theme_text"><span class="theme_light_blue">Software Developer Assistant</span> @ UBC LFS Learning Center</p>
+					<p class="body_text theme_text">May 2023 - Present</p>
+					
+					<ul class="accordion_text_lists">
+						<li class="body_text theme_text about_role">Currently using Flask to build a web app for faculty members to send mass emails by uploading a spreadsheet of variables and sending the emails with an alias - Used LDAP to authenticate users.</li>
+						<li class="body_text theme_text about_role">Redeveloped internal and external Node.js apps using Python to reduce the number of servers required and pitched and implemented new features and UI changes.</li>
+						<li class="body_text theme_text about_role">Developed the front and backend of the LFS Course Directory using Python (Flask), HTML, CSS, and JavaScript.</li>
+						<li class="body_text theme_text about_role">Made API calls to retrieve LFS courses offered at UBC and wrote a script to download their syllabuses from Canvas.</li>
+					</ul>
+				
+				</div>
+			</div>
+			<!--One accordion ^^^-->
+
+			<!--One accordion-->
+			<button class="accordion"><span class="accordion_heading body_text">Developer @ nwPlus</span></button>
 			
 				<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
 					<div class="accordion_content">
@@ -243,8 +272,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						<p class="body_text theme_text">May 2022 - Present</p>
 						
 						<ul class="accordion_text_lists">
-							<li class="body_text theme_text about_role">Collaborating with 7 designers and 7 developers with Git to develop a React component library using Storybook, and a QR Check-in app using Next.js for our upcoming Hackathons.</li>
-							<li class="body_text theme_text about_role">Hosted an Intro to Python and Intro to Web Development workshop for HackCamp 2022 to 95+ beginners</li>
+							<li class="body_text theme_text about_role">Collaborated with 7 designers and 7 developers with Git to develop a React component library using Storybook, and a QR Check-in app using Next.js for our upcoming Hackathons.</li>
+							<li class="body_text theme_text about_role">Hosted workshops to teach 95+ HackCamp and nwHacks attendees Python, Web Development, and Git.</li>
 							<li class="body_text theme_text about_role">Fixed bugs and updated other nwPlus websites (<a class="experience_links" href="https://nwplus.io/" target="_blank">main website</a> and <a class="experience_links" href="https://hackcamp.nwplus.io/" target="_blank">HackCamp 2022 website</a>) and applications (<a class="experience_links" href="https://portal.nwplus.io/" target="_blank">hacker application portal</a>).</li>
 							<li class="body_text theme_text about_role">Collaborated with 2 other developers and designers to develop the <a class="experience_links" href="https://www.nwhacks.io/" target="_blank">nwHacks 2023 website</a> using React and Firebase.</li>
 						</ul>
@@ -252,6 +281,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					</div>
 				</div>
 			<!--One accordion ^^^-->	
+
+			<!--One accordion-->
+			<button class="accordion"><span class="accordion_heading body_text">Co-founder @ UBC Startups</span></button>
+
+			<div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
+				<div class="accordion_content">
+					<p class="body_text theme_text"><span class="theme_light_blue">Co-founder & Technology Lead</span> @ UBC Startups</p>
+					<p class="body_text theme_text">August 2022 - Present</p>
+					
+					<ul class="accordion_text_lists">
+						<li class="body_text theme_text about_role">Collaborated with a UI/UX designer to develop the UBC Startups <a class="experience_links" href="https://ubcstartups.com/" target="_blank">website</a> using React.</li>
+						<li class="body_text theme_text about_role">Organized and set up 4 events alongside a team of 8 and other UBC student-led clubs (CUS & LFSUS) and organizations.</li>
+						<li class="body_text theme_text about_role">Networked and built relationships with startup founders and students across Vancouver.</li>
+						<li class="body_text theme_text about_role">Took initiative to assist other team members with duties such as outreach, talking with sponsors, setting up our venue, and planning event logistics.</li>
+					</ul>
+				
+				</div>
+			</div>
+		<!--One accordion ^^^-->
 
 			<!--One accordion-->
 			<button class="accordion"><span class="accordion_heading body_text">Head of IT @ YHY</span></button>
@@ -399,7 +447,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!--One Project-->
 		<div class="project startup">
 			<div class="project_image_container">
-				<a href="https://proventextension.com/links.html" target="_blank"><img class="projects_image" src="images/projects/home/provent.png"></a>
+				<a href="https://proventextension.com/links.html" target="_blank"><img class="projects_image" src="images/projects/home/provent3.jpg"></a>
 			</div>
 			
 			<div class="about_project_section">
