@@ -43,6 +43,8 @@ function gameOver() {
     // render replay button
     document.getElementById("gameStartButton").style.transform = "scale(1)";
     document.getElementById("gameStartButton").innerHTML = "Play Again!";
+    // enables start button
+    document.getElementById("gameStartButton").disabled = false;
 }
 
 // Runs every second when the game starts
@@ -109,6 +111,8 @@ function gameJob() {
 }
 
 function startGame() {
+    // disables start button to prevent running intervals multiple times
+    document.getElementById("gameStartButton").disabled = true;
     // clear all existing obstacles
     const screen = document.getElementById("gameScreen");
     for (let i=0; i < screen.children.length; i++) {
