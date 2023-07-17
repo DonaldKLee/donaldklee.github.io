@@ -90,7 +90,7 @@ function gameJob() {
         if (
                 screen.children[i].classList.contains("gameAirObstacle")
                 && // x
-                (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.height)))
+                (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.width)))
                 && // y
                 (parseFloat(obstacle.y) + parseFloat(obstacle.height)/2 - 2.5 > parseFloat(character.y))
             ) {
@@ -100,7 +100,7 @@ function gameJob() {
         else if (
             screen.children[i].classList.contains("gameGroundObstacle")
             && // x
-            (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.height)))
+            (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.width)))
             && // y
             (parseFloat(obstacle.y) - parseFloat(obstacle.height) < parseFloat(character.y))
         ) {
