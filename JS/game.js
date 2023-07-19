@@ -100,7 +100,7 @@ function gameJob() {
         else if (
             screen.children[i].classList.contains("gameGroundObstacle")
             && // x
-            (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.width)))
+            (parseFloat(obstacle.x) < parseFloat(character.x) && parseFloat(character.x) < (parseFloat(obstacle.x) + parseFloat(obstacle.width)/2))
             && // y
             (parseFloat(obstacle.y) - parseFloat(obstacle.height) < parseFloat(character.y))
         ) {
@@ -138,7 +138,7 @@ function startGame() {
             setTimeout (function () {
                 document.getElementById("gameCharacter").style.top = "210px";
                 document.getElementById("gameCharacter").style.transform = "rotate(0deg)";
-            }, 500);
+            }, 250);
         }
         if (event.key.toLowerCase() === "d") {
             // Down
@@ -148,7 +148,7 @@ function startGame() {
             setTimeout (function () {
                 document.getElementById("gameCharacter").style.top = "210px";
                 document.getElementById("gameCharacter").style.transform = "rotate(0deg)";
-            }, 500);
+            }, 250);
         }
     })
     // Add key listeners to character
