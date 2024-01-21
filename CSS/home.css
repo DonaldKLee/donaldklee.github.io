@@ -421,3 +421,17 @@
 .project_discord_logo:hover {
 	color: #4c6ef5;
 }
+
+.projectTags {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.projectTag {
+	color: white;
+	margin: 0 auto;
+	border-radius:15px;
+	padding:10px;
+	background: #3988FF;
+	display: inline-block;
+}
