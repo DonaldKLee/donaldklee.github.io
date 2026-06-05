@@ -141,7 +141,7 @@
          <p class="knowledge_title body_text theme_text">Technologies I have worked with:</p>
          <div class="knowledge_container">
             <div class="seperate_knowledge_container">
-               <p class="knowledge_column_title theme_text">Web Development</p>
+               <p class="knowledge_column_title theme_text">Frontend</p>
                <ul>
                   <div class="knowledge_list_item_indent">
                      <li class="knowledge_list_item theme_text">HTML</li>
@@ -151,6 +151,10 @@
                   </div>
                   <div class="knowledge_list_item_indent">
                      <li class="knowledge_list_item theme_text">JavaScript</li>
+                     <ul>
+                        <li class="knowledge_list_item nested_knowledge_points theme_text">Next.js</li>
+                        <li class="knowledge_list_item nested_knowledge_points theme_text">Electron</li>
+                     </ul>
                   </div>
                   <div class="knowledge_list_item_indent">
                      <li class="knowledge_list_item theme_text">React</li>
@@ -166,9 +170,9 @@
                   <div class="knowledge_list_item_indent">
                      <li class="knowledge_list_item theme_text">Python</li>
                      <ul>
+                        <li class="knowledge_list_item nested_knowledge_points theme_text">AI agent & tools</li>
                         <li class="knowledge_list_item nested_knowledge_points theme_text">Web automation</li>
                         <li class="knowledge_list_item nested_knowledge_points theme_text">Web scrapping</li>
-                        <li class="knowledge_list_item nested_knowledge_points theme_text">Web frameworks (Flask & Django)</li>
                         <li class="knowledge_list_item nested_knowledge_points theme_text">GUI</li>
                      </ul>
                      <li class="knowledge_list_item theme_text">Java</li>
@@ -217,8 +221,22 @@
          <div class="experience_accordion_container">
             <div class="accordion_top_bottom"></div>
             <div id="all_accordions">
+            <!--One accordion-->
+            <button id="default_accordion" class="accordion"><span class="accordion_heading body_text">Software Development Intern @ Amazon</span></button>
+               <div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
+                  <div class="accordion_content">
+                     <p class="body_text theme_text"><span class="theme_light_blue">SDE Intern</span> @ Amazon</p>
+                     <p class="body_text theme_text">May 2026 - current</p>
+                     <ul class="accordion_text_lists">
+                        <li class="body_text theme_text about_role">💸 Amazon Financial Foundation Services (AFFS) Team</li>
+                        <li class="body_text theme_text about_role">🤖⚡️ Helping accountants work more efficiently by building a desktop app to support local MCP servers</li>
+                     </ul>
+                  </div>
+               </div>
+               <!--One accordion ^^^-->
+
                <!--One accordion-->
-               <button id="default_accordion" class="accordion"><span class="accordion_heading body_text">Software Development Intern @ Amazon</span></button>
+               <button class="accordion"><span class="accordion_heading body_text">Software Development Intern @ Amazon</span></button>
                <div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
                   <div class="accordion_content">
                      <p class="body_text theme_text"><span class="theme_light_blue">SDE Intern</span> @ Amazon</p>
@@ -255,9 +273,10 @@
                <div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
                   <div class="accordion_content">
                      <p class="body_text theme_text"><span class="theme_light_blue">Co-President</span> @ nwPlus</p>
-                     <p class="body_text theme_text">March 2025 - Present</p>
+                     <p class="body_text theme_text">March 2025 - April 2026</p>
                      <ul class="accordion_text_lists">
-                        <li class="body_text theme_text about_role">🚀 Leading 9 teams to run 3 hackathons</li>
+                        <li class="body_text theme_text about_role">🚀 Led 9 teams (53 execs) to run 3 hackathons (HackCamp, nwHacks, and cmd-f)</li>
+                        <li class="body_text theme_text about_role">🏆 Awarded best SUS Club Dynamic</li>
                      </ul>
                   </div>
                   <div class="accordion_content">
@@ -281,7 +300,7 @@
                <div id="a_p_u_id" class="accordion_pop_up accordion_pop_up_transition">
                   <div class="accordion_content">
                      <p class="body_text theme_text"><span class="theme_light_blue">Student Programmer</span> @ Population Data BC</p>
-                     <p class="body_text theme_text">May 2024 - Present</p>
+                     <p class="body_text theme_text">May 2024 - August 2024</p>
                      <ul class="accordion_text_lists">
                         <li class="body_text theme_text about_role">🔐 Population Data BC - Systems & Security Team</li>
                         <li class="body_text theme_text about_role">📈 Worked on external and internal tools for researchers and employees</li>
@@ -335,19 +354,51 @@
          </ul>
          <div class="projects_container">
             <!--One Project-->
+            <div class="project hackathon">
+               <div class="project_image_container">
+                  <a href="Global-Climate-Change-Visualization" target="_blank"><img class="projects_image" src="images/projects/home/global.png"></a>
+               </div>
+               <div class="about_project_section">
+                  <p class="project_name theme_text">Globe w/ Data | Side-Project</p>
+                  <p class="about_project theme_text">
+                     A web application that visualizes climate change data using a 3D interactive globe and graphs. Users can explore various datasets and gain insights into the impact of climate change over time.
+                  </p>
+                  <ul class="project_buttons">
+                     <a href="Global-Climate-Change-Visualization" target="_blank">
+                        <li class="project_buttons_li project_learn_more"><span class="project_learn_more_text">View Project</span><i class="fas fa-angle-double-right"></i></li>
+                     </a>
+                  </ul>
+               </div>
+            </div>
+            <!--One Project ^^^-->
+            
+            <!--One Project-->
+            <div class="project hackathon">
+               <div class="project_image_container">
+                  <a href="https://devpost.com/software/fragments-gmleoj" target="_blank"><img class="projects_image" src="images/projects/home/fragments.png"></a>
+               </div>
+               <div class="about_project_section">
+                  <p class="project_name theme_text">Fragments | Hackathon</p>
+                  <p class="about_project theme_text">
+                     Fragments is a new browser extension and platform that lets you capture the exact moments from any video that inspire you.</br></br></br></br>
+                  </p>
+                  <ul class="project_buttons">
+                     <a href="https://devpost.com/software/fragments-gmleoj" target="_blank">
+                        <li class="project_buttons_li project_learn_more"><span class="project_learn_more_text">View Project</span><i class="fas fa-angle-double-right"></i></li>
+                     </a>
+                  </ul>
+               </div>
+            </div>
+            <!--One Project ^^^-->
+
+            <!--One Project-->
             <div class="project side_project">
                <div class="project_image_container">
                   <a href="rickgpt" target="_blank"><img class="projects_image" src="images/projects/home/rickgpt.jpg"></a>
                </div>
                <div class="about_project_section">
                   <p class="project_name theme_text">RickGPT | Side-Project</p>
-                  <p class="about_project theme_text">ChatGPT look alike for April Fools! Try it out!</br></br></br></br></br></br></br></br></br></p>
-                  <!-- <ul class="projectTags">
-                     <li class="projectTag">HTML</li>
-                     <li class="projectTag">CSS</li>
-                     <li class="projectTag">JavaScript</li>
-                     </ul>
-                     -->
+                  <p class="about_project theme_text">ChatGPT look alike for April Fools! Try it out!</br></br></br></br></p>
                   <ul class="project_buttons">
                      <a href="rickgpt" target="_blank">
                         <li class="project_buttons_li project_learn_more"><span class="project_learn_more_text">View Project</span><i class="fas fa-angle-double-right"></i></li>
