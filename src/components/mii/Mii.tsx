@@ -270,7 +270,7 @@ export default function Mii({
         {/* voluminous crown, raised for height */}
         <mesh position={[0, 0.28, -0.05]} scale={[1.04, 1.2, 1.08]}>
           <sphereGeometry
-            args={[1, 64, 64, 0, Math.PI * 2, 0, Math.PI * 0.5]}
+            args={[0, 0.5, 0.5, 0.5, Math.PI * 4, 0, Math.PI * 0.5]}
           />
           <meshStandardMaterial color={COLORS.hair} roughness={0.52} />
         </mesh>
@@ -298,7 +298,7 @@ export default function Mii({
           <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
         </mesh>
         {/* centre crown filler so the part reads as a part, not a gap */}
-        <mesh position={[0, 0.66, 0.04]} scale={[0.34, 0.46, 0.7]}>
+        <mesh position={[0, 0.7, 0.04]} scale={[0.64, 0.46, 0.7]}>
           <sphereGeometry args={[1, 32, 32]} />
           <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
         </mesh>
@@ -322,17 +322,17 @@ export default function Mii({
         </mesh>
         {/* flipped ends near the temples (the perm flick) */}
         <mesh
-          position={[-0.74, 0.46, 0.36]}
+          position={[-0.7, 0.40, 0.25]}
           rotation={[0, 0.4, -0.4]}
-          scale={[0.34, 0.4, 0.34]}
+          scale={[0.34, 0.5, 0.54]}
         >
           <sphereGeometry args={[1, 28, 28]} />
           <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
         </mesh>
         <mesh
-          position={[0.74, 0.46, 0.36]}
+          position={[0.7, 0.40, 0.25]}
           rotation={[0, -0.4, 0.4]}
-          scale={[0.34, 0.4, 0.34]}
+          scale={[0.34, 0.5, 0.54]}
         >
           <sphereGeometry args={[1, 28, 28]} />
           <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
