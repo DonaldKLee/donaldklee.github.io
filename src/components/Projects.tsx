@@ -1,0 +1,142 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  featuredProjects,
+  moreProjects,
+  type Category,
+  type Project,
+} from "@/data/content";
+import SectionHeading from "./SectionHeading";
+import Reveal from "./Reveal";
+import FeaturedCarousel from "./FeaturedCarousel";
+
+const FILTERS: (Category | "All")[] = [
+  "All",
+  "Startup",
+  "Hackathon",
+  "Side-Project",
+];
+
+export default function Projects() {
+  const [filter, setFilter] = useState<Category | "All">("All");
+  const shown =
+    filter === "All"
+      ? moreProjects
+      : moreProjects.filter((p) => p.category === filter);
+
+  return (
+    <section id="projects" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <SectionHeading
+          marker="## projects"
+          title="Some things I've built"
+          sub="A few wins, a few experiments, and a couple of April Fools jokes that got out of hand. Scroll to spin through them."
+        />
+      </div>
+
+      {/* featured — a 3D cylinder you rotate by scrolling */}
+      <FeaturedCarousel projects={featuredProjects} />
+
+      {/* the rest — a whiteboard of taped-up projects */}
+      <div className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+        <Reveal className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h3 className="font-display text-2xl font-semibold text-ink">
+              More from the shelf
+            </h3>
+            <p className="mt-1 font-mono text-xs text-muted">
+              the side-projects wall · tap any to open
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`rounded-full px-3.5 py-1.5 font-mono text-sm transition-colors ${
+                  filter === f
+                    ? "bg-ink text-bg"
+                    : "bg-surface text-muted hover:text-ink"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl border border-line-strong bg-surface p-5 shadow-[inset_0_2px_12px_rgba(40,60,100,0.06)] sm:p-8">
+            {/* whiteboard sheen + faint grid */}
+            <div className="dot-grid pointer-events-none absolute inset-0 opacity-50" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.5),transparent_40%)]" />
+            <motion.div
+              layout
+              className="relative grid grid-cols-1 gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {shown.map((p, i) => (
+                <PinnedCard key={p.name} project={p} index={i} />
+              ))}
+            </motion.div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+const TILTS = [-3, 2.2, -1.6, 2.8, -2.4, 1.4, -2, 2.5, -1.2, 1.8];
+
+function PinnedCard({ project, index }: { project: Project; index: number }) {
+  const tilt = TILTS[index % TILTS.length];
+  return (
+    <motion.a
+      layout
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 18, rotate: tilt }}
+      whileInView={{ opacity: 1, y: 0, rotate: tilt }}
+      viewport={{ once: true, margin: "-40px" }}
+      whileHover={{ rotate: 0, y: -8, scale: 1.03, zIndex: 5 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col rounded-[10px] bg-white p-2.5 pb-3 shadow-[0_12px_26px_-14px_rgba(30,40,70,0.5)]"
+      style={{ transformOrigin: "center top" }}
+    >
+      {/* tape */}
+      <span
+        aria-hidden
+        className="absolute -top-2.5 left-1/2 h-5 w-16 -translate-x-1/2 -rotate-2 rounded-[2px] bg-amber/30 backdrop-blur-[1px]"
+        style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.08)" }}
+      />
+      <div className="aspect-[16/11] overflow-hidden rounded-[5px] bg-surface">
+        <Image
+          src={project.image}
+          alt={`${project.name} — ${project.tagline}`}
+          width={640}
+          height={440}
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        />
+      </div>
+      <div className="px-1 pt-3">
+        <div className="flex items-center justify-between gap-2">
+          <h4 className="font-display text-base font-semibold text-ink">
+            {project.name}
+          </h4>
+          <span className="font-mono text-[0.65rem] text-muted">
+            {project.category}
+          </span>
+        </div>
+        <p className="mt-0.5 text-sm font-medium text-accent">
+          {project.tagline}
+        </p>
+        <p className="mt-1.5 line-clamp-2 text-[0.82rem] leading-relaxed text-muted">
+          {project.description}
+        </p>
+      </div>
+    </motion.a>
+  );
+}
