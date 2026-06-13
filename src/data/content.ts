@@ -172,6 +172,10 @@ export interface Role {
 export interface ExperienceGroup {
   org: string;
   emoji: string;
+  /** short lettermark shown when there's no brand logo */
+  short: string;
+  /** path to a real brand logo in /public/images/logos (optional) */
+  logo?: string;
   roles: Role[];
 }
 
@@ -179,11 +183,13 @@ export const experience: ExperienceGroup[] = [
   {
     org: "Amazon",
     emoji: "📦",
+    short: "AMZ",
+    logo: "/images/logos/amazon.svg",
     roles: [
       {
         org: "Amazon",
         title: "Software Development Intern",
-        period: "May 2026 — Present",
+        period: "May 2026 – Present",
         points: [
           "Financial Foundation Services (AFFS) team.",
           "Building a desktop app that lets accountants run local MCP servers to work faster.",
@@ -192,7 +198,7 @@ export const experience: ExperienceGroup[] = [
       {
         org: "Amazon",
         title: "Software Development Intern",
-        period: "May 2025 — Aug 2025",
+        period: "May 2025 – Aug 2025",
         points: [
           "Built a Gen-AI internal accounting assistant that speeds up the hunt for missing transactions.",
         ],
@@ -202,17 +208,19 @@ export const experience: ExperienceGroup[] = [
   {
     org: "Boeing",
     emoji: "✈️",
+    short: "BA",
+    logo: "/images/logos/boeing.svg",
     roles: [
       {
         org: "Boeing",
         title: "DevOps Engineering Intern · FlightOps Data Science",
-        period: "Jan 2025 — May 2025",
+        period: "Jan 2025 – May 2025",
         points: ["Worked on projects supporting commercial airlines."],
       },
       {
         org: "Boeing",
         title: "DevOps Engineering Intern · TechOps Data Science",
-        period: "Sept 2024 — Dec 2024",
+        period: "Sept 2024 – Dec 2024",
         points: [
           "Built infrastructure and Python tooling for AI/ML and defense projects.",
           "2nd of 121 teams worldwide at the Q4 DAS AI hackathon, shipping an AI assistant for mechanics.",
@@ -223,11 +231,12 @@ export const experience: ExperienceGroup[] = [
   {
     org: "nwPlus",
     emoji: "🚀",
+    short: "nw",
     roles: [
       {
         org: "nwPlus",
         title: "Co-President",
-        period: "Mar 2025 — Apr 2026",
+        period: "Mar 2025 – Apr 2026",
         points: [
           "Led 9 teams (53 execs) to run three hackathons: HackCamp, nwHacks, and cmd-f.",
           "Awarded best SUS Club Dynamic.",
@@ -236,13 +245,13 @@ export const experience: ExperienceGroup[] = [
       {
         org: "nwPlus",
         title: "Dev Director",
-        period: "Apr 2024 — Mar 2025",
+        period: "Apr 2024 – Mar 2025",
         points: ["Built and led a team of 9 developers."],
       },
       {
         org: "nwPlus",
         title: "Developer",
-        period: "May 2022 — Mar 2024",
+        period: "May 2022 – Mar 2024",
         points: [
           "Built websites and tooling for the team and hackers, and taught hackers to code.",
         ],
@@ -252,11 +261,12 @@ export const experience: ExperienceGroup[] = [
   {
     org: "UBC Startups",
     emoji: "💡",
+    short: "US",
     roles: [
       {
         org: "UBC Startups",
         title: "President",
-        period: "May 2024 — Dec 2024",
+        period: "May 2024 – Dec 2024",
         points: [
           "Led a team of 11 running events to inspire the next generation of founders.",
         ],
@@ -264,7 +274,7 @@ export const experience: ExperienceGroup[] = [
       {
         org: "UBC Startups",
         title: "Co-founder & Technology Lead",
-        period: "Aug 2022 — Apr 2024",
+        period: "Aug 2022 – Apr 2024",
         points: [
           "Co-founded with four students to run startup events, and built the website.",
         ],
@@ -274,11 +284,12 @@ export const experience: ExperienceGroup[] = [
   {
     org: "Population Data BC",
     emoji: "🔐",
+    short: "PD",
     roles: [
       {
         org: "Population Data BC",
         title: "Student Programmer · Systems & Security",
-        period: "May 2024 — Aug 2024",
+        period: "May 2024 – Aug 2024",
         points: ["Built internal and external tooling for researchers and staff."],
       },
     ],
@@ -286,11 +297,12 @@ export const experience: ExperienceGroup[] = [
   {
     org: "UBC LFS",
     emoji: "👷",
+    short: "LFS",
     roles: [
       {
         org: "UBC LFS Learning Centre",
         title: "Software Developer Assistant",
-        period: "May 2023 — Apr 2024",
+        period: "May 2023 – Apr 2024",
         points: [
           "Built full-stack web apps, automated workflows, and picked up a pile of new languages.",
         ],
@@ -304,73 +316,87 @@ export interface SideQuest {
   blurb: string;
   tag: string;
   emoji: string;
-  /** drop a file in /public/images/sidequests and set the path to use a real photo */
-  image?: string;
+  /**
+   * Photo slot. Drop a file at /public/images/sidequests/<slug>.jpg and it
+   * appears automatically; until then the stylized polaroid shows.
+   */
+  slug: string;
 }
 
 /**
- * The roadside memories Donald drives past. Each has a swap-ready `image`
- * slot: add a file under /public/images/sidequests and set the path.
+ * The roadside memories. Each has a swap-ready photo slot keyed by `slug`:
+ * add /public/images/sidequests/<slug>.jpg and it shows in place of the
+ * stylized stand-in.
  */
 export const sideQuests: SideQuest[] = [
   {
     title: "Boeing intern crew",
     tag: "Boeing",
     emoji: "✈️",
+    slug: "boeing",
     blurb: "The data-science team that put up with all my questions.",
   },
   {
     title: "Amazon intern crew",
     tag: "Amazon",
     emoji: "📦",
+    slug: "amazon",
     blurb: "Summers of free lunches and surprisingly good coffee.",
   },
   {
     title: "Victoria with friends",
     tag: "Victoria",
     emoji: "⛵",
+    slug: "victoria",
     blurb: "Ferries, tide pools, and far too many photos of the water.",
   },
   {
     title: "Competing at CalHacks",
     tag: "CalHacks",
     emoji: "🐻",
+    slug: "calhacks",
     blurb: "Berkeley, 36 hours, and a demo held together with hope.",
   },
   {
     title: "Competing at StormHacks",
     tag: "StormHacks",
     emoji: "⛈️",
+    slug: "stormhacks",
     blurb: "Where TravoAI came to life over one very long weekend.",
   },
   {
     title: "On the mic",
     tag: "Workshops",
     emoji: "🎤",
+    slug: "workshops",
     blurb: "Teaching workshops and hyping up rooms full of first-time hackers.",
   },
   {
     title: "My coding club",
     tag: "nwPlus",
     emoji: "🚀",
+    slug: "codingclub",
     blurb: "53 execs, three hackathons a year, one chaotic group chat.",
   },
   {
     title: "Northern lights",
     tag: "Iceland",
     emoji: "🌌",
+    slug: "iceland",
     blurb: "Stood under a green sky in the middle of nowhere. Worth the cold.",
   },
   {
     title: "Off the map in Asia",
     tag: "Asia",
     emoji: "🏯",
+    slug: "asia",
     blurb: "Saying yes to the adventurous option, every single time.",
   },
   {
     title: "Good eats in Japan",
     tag: "Japan",
     emoji: "🍜",
+    slug: "japan",
     blurb: "On a lifelong mission to find the perfect bowl of ramen.",
   },
 ];

@@ -1,18 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import { sideQuests } from "@/data/content";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import { sideQuests, type SideQuest } from "@/data/content";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
-import InView from "./InView";
 
-const DriveScene = dynamic(() => import("./sidequests/DriveScene"), {
-  ssr: false,
-});
-
-/** scene gradients used when a memory has no real photo yet */
+/** scene gradients used as a stand-in until a real photo is added */
 const SCENES = [
   "linear-gradient(160deg,#5d6c8c,#9aa9cf 60%,#cdd7ef)",
   "linear-gradient(160deg,#3a6ea5,#79a7d6 60%,#cfe2f4)",
@@ -32,101 +26,146 @@ export default function SideQuests() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="side-quests" className="relative overflow-hidden py-24 sm:py-32">
-      {/* daytime sky */}
+    <section id="side-quests" className="relative overflow-hidden pt-24 sm:pt-32">
+      {/* a soft, warm wash that settles toward the footer */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(180deg,#eaf2fc 0%,#f4f8fd 45%,var(--color-bg) 100%)",
+            "linear-gradient(180deg,#eef4fc 0%,#f6f9fd 44%,#fdf4ec 82%,var(--color-bg) 100%)",
         }}
       />
-      {/* sun glow */}
-      <div className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-amber/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 top-8 -z-10 h-72 w-72 rounded-full bg-amber/15 blur-3xl" />
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <SectionHeading
           marker="## side-quests"
           title="Life outside the editor"
-          sub="The stuff that doesn't fit on a résumé. Take the scenic route, these roll by like roadside billboards."
+          sub="The trips, the teams, and the late nights that don't fit on a résumé. A quick look at the person behind the projects."
         />
       </div>
 
-      {/* the drive */}
       <Reveal>
-        <div className="relative">
-          {/* roadside memories */}
-          <div className="no-scrollbar flex snap-x gap-6 overflow-x-auto px-5 pb-6 pt-2 sm:gap-9 sm:px-8">
-            {sideQuests.map((q, i) => (
-              <motion.figure
-                key={q.title}
-                initial={{ opacity: 0, y: 28, rotate: TILTS[i % TILTS.length] }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                  rotate: TILTS[i % TILTS.length],
-                }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={reduce ? {} : { rotate: 0, y: -10, scale: 1.03 }}
-                className="group relative w-[74vw] shrink-0 snap-center rounded-[14px] bg-white p-3 pb-4 shadow-[0_18px_40px_-22px_rgba(30,40,70,0.5)] sm:w-[300px]"
-                style={{ transformOrigin: "center bottom" }}
-              >
-                <div className="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[7px]">
-                  {q.image ? (
-                    <Image
-                      src={q.image}
-                      alt={q.title}
-                      fill
-                      sizes="300px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div
-                      className="grid h-full w-full place-items-center"
-                      style={{ background: SCENES[i % SCENES.length] }}
-                    >
-                      <span
-                        className="text-6xl drop-shadow-sm transition-transform duration-500 group-hover:scale-110"
-                        aria-hidden
-                      >
-                        {q.emoji}
-                      </span>
-                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.35),transparent_55%)]" />
-                    </div>
-                  )}
-                  <span className="absolute bottom-3 left-3 rounded-full bg-black/30 px-2.5 py-1 font-mono text-[0.7rem] text-white backdrop-blur-sm">
-                    {q.tag}
-                  </span>
-                </div>
-                <figcaption className="px-1 pt-3">
-                  <h3 className="font-display text-base font-semibold text-ink">
-                    {q.title}
-                  </h3>
-                  <p className="mt-0.5 text-[0.82rem] leading-relaxed text-muted">
-                    {q.blurb}
-                  </p>
-                </figcaption>
-              </motion.figure>
-            ))}
-            <div className="w-2 shrink-0 sm:w-8" aria-hidden />
-          </div>
-
-          {/* the 3D drive */}
-          <InView
-            className="mt-2 h-[300px] w-full sm:h-[400px]"
-            rootMargin="400px"
-          >
-            <DriveScene moving={!reduce} />
-          </InView>
-        </div>
-      </Reveal>
-
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <p className="mt-5 font-mono text-xs text-muted">
-          ← drag along for the ride →
+        <PhotoRail reduce={!!reduce} />
+        <p className="mx-auto max-w-6xl px-5 pb-16 pt-2 font-mono text-xs text-muted sm:px-8">
+          drag the photos, or let them roll by
         </p>
-      </div>
+      </Reveal>
     </section>
+  );
+}
+
+/** Horizontal photo rail that gently auto-scrolls and loops, pausing on touch. */
+function PhotoRail({ reduce }: { reduce: boolean }) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const paused = useRef(false);
+
+  useEffect(() => {
+    if (reduce) return;
+    const el = railRef.current;
+    if (!el) return;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (t: number) => {
+      const dt = t - last;
+      last = t;
+      if (!paused.current) {
+        el.scrollLeft += dt * 0.03; // ~30px/s
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half) el.scrollLeft -= half;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [reduce]);
+
+  const items = reduce ? sideQuests : [...sideQuests, ...sideQuests];
+
+  return (
+    <div
+      ref={railRef}
+      onPointerEnter={() => (paused.current = true)}
+      onPointerLeave={() => (paused.current = false)}
+      onPointerDown={() => (paused.current = true)}
+      onPointerUp={() => (paused.current = false)}
+      className="no-scrollbar flex gap-6 overflow-x-auto px-5 pb-6 pt-2 sm:gap-9 sm:px-8"
+    >
+      {items.map((q, i) => (
+        <Polaroid key={`${q.slug}-${i}`} quest={q} index={i} reduce={reduce} />
+      ))}
+    </div>
+  );
+}
+
+function Polaroid({
+  quest,
+  index,
+  reduce,
+}: {
+  quest: SideQuest;
+  index: number;
+  reduce: boolean;
+}) {
+  const tilt = TILTS[index % TILTS.length];
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <figure
+      className="group relative w-[74vw] shrink-0 rounded-[14px] bg-white p-3 pb-4 shadow-[0_18px_40px_-22px_rgba(30,40,70,0.5)] transition-transform duration-300 ease-out sm:w-[300px]"
+      style={{ transform: `rotate(${tilt}deg)`, transformOrigin: "center bottom" }}
+      onMouseEnter={(e) => {
+        if (!reduce)
+          e.currentTarget.style.transform =
+            "rotate(0deg) translateY(-10px) scale(1.03)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = `rotate(${tilt}deg)`;
+      }}
+    >
+      <div className="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[7px]">
+        {/* stand-in shown until a real photo loads */}
+        {!loaded && (
+          <div
+            className="grid h-full w-full place-items-center"
+            style={{ background: SCENES[index % SCENES.length] }}
+          >
+            <span
+              className="text-6xl drop-shadow-sm transition-transform duration-500 group-hover:scale-110"
+              aria-hidden
+            >
+              {quest.emoji}
+            </span>
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.35),transparent_55%)]" />
+          </div>
+        )}
+        {/* real photo, if present in /public/images/sidequests/<slug>.jpg */}
+        {!failed && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/images/sidequests/${quest.slug}.jpg`}
+            alt={quest.title}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            onError={() => setFailed(true)}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+              loaded ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
+        <span className="absolute bottom-3 left-3 z-10 rounded-full bg-black/35 px-2.5 py-1 font-mono text-[0.7rem] text-white backdrop-blur-sm">
+          {quest.tag}
+        </span>
+      </div>
+      <figcaption className="px-1 pt-3">
+        <h3 className="font-display text-base font-semibold text-ink">
+          {quest.title}
+        </h3>
+        <p className="mt-0.5 text-[0.82rem] leading-relaxed text-muted">
+          {quest.blurb}
+        </p>
+      </figcaption>
+    </figure>
   );
 }

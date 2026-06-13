@@ -34,26 +34,38 @@ export default function Experience() {
                   className="flex w-full items-center gap-4 px-5 py-5 text-left transition-colors hover:bg-surface sm:px-7"
                   aria-expanded={isOpen}
                 >
-                  <span
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-surface text-xl"
-                    aria-hidden
-                  >
-                    {group.emoji}
+                  <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-xl border border-line bg-white">
+                    {group.logo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={group.logo}
+                        alt=""
+                        aria-hidden
+                        className="h-[22px] w-[22px] object-contain"
+                      />
+                    ) : (
+                      <span className="font-display text-sm font-bold text-ink">
+                        {group.short}
+                      </span>
+                    )}
                   </span>
-                  <span className="flex-1">
-                    <span className="block font-display text-lg font-semibold text-ink">
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-display text-lg font-semibold text-ink">
                       {group.org}
                     </span>
-                    <span className="font-mono text-xs text-muted">
+                    <span className="truncate font-mono text-xs text-muted">
                       {group.roles[0].title}
                       {group.roles.length > 1 &&
                         ` + ${group.roles.length - 1} more`}
                     </span>
                   </span>
+                  <span className="hidden shrink-0 font-mono text-xs text-muted sm:block">
+                    {group.roles[0].period}
+                  </span>
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-2xl font-light text-muted"
+                    className="shrink-0 text-2xl font-light text-muted"
                   >
                     +
                   </motion.span>

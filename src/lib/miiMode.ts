@@ -43,7 +43,7 @@ export function getMiiStatus(date = new Date()): MiiStatus {
   let mode: MiiMode;
 
   if (weekend) {
-    if (hour < 8) mode = "sleep";
+    if (hour < 8) mode = "work";
     else if (hour < 9) mode = "chill";
     else if (hour < 12) mode = pick(["chill", "work"], hour, date);
     else if (hour < 13) mode = "eat";

@@ -9,7 +9,6 @@ import {
   type Category,
   type Project,
 } from "@/data/content";
-import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import FeaturedCarousel from "./FeaturedCarousel";
 
@@ -28,20 +27,17 @@ export default function Projects() {
       : moreProjects.filter((p) => p.category === filter);
 
   return (
-    <section id="projects" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <SectionHeading
-          marker="## projects"
-          title="Some things I've built"
-          sub="A few wins, a few experiments, and a couple of April Fools jokes that got out of hand. Scroll to spin through them."
-        />
-      </div>
-
-      {/* featured — a 3D cylinder you rotate by scrolling */}
-      <FeaturedCarousel projects={featuredProjects} />
+    <section id="projects" className="pb-24 pt-12 sm:pb-32">
+      {/* featured — a 3D cylinder you rotate by scrolling; heading stays pinned */}
+      <FeaturedCarousel
+        projects={featuredProjects}
+        marker="## projects"
+        title="Some things I've built"
+        sub="A few wins, a few experiments, and a couple of April Fools jokes that got out of hand."
+      />
 
       {/* the rest — a whiteboard of taped-up projects */}
-      <div className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+      <div className="mx-auto mt-12 max-w-6xl px-5 sm:px-8">
         <Reveal className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h3 className="font-display text-2xl font-semibold text-ink">
