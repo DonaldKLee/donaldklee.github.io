@@ -412,14 +412,14 @@ export default function Mii({
 
 function Laptop() {
   return (
-    <group position={[0, -0.62, 1.45]} rotation={[0.1, 0, 0]}>
+    <group position={[0, -1.4, 1.45]} rotation={[0.1, 3.3, 0]}>
       {/* base */}
       <mesh rotation={[-0.35, 0, 0]} position={[0, -0.05, 0.18]}>
         <boxGeometry args={[1.25, 0.07, 0.85]} />
         <meshStandardMaterial color="#c7ccd4" roughness={0.4} metalness={0.5} />
       </mesh>
       {/* lid */}
-      <group position={[0, 0.05, -0.18]} rotation={[0.32, 0, 0]}>
+      <group position={[0, 0.2, -0.18]} rotation={[0, 0, 0]}>
         <mesh>
           <boxGeometry args={[1.25, 0.82, 0.05]} />
           <meshStandardMaterial
