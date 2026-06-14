@@ -9,10 +9,10 @@ export interface MiiStatus {
 const META: Record<MiiMode, { emoji: string; label: string }> = {
   sleep: { emoji: "💤", label: "asleep (it's late in Vancouver)" },
   commute: { emoji: "🚗", label: "on the road" },
-  work: { emoji: "💻", label: "heads-down, building" },
-  eat: { emoji: "🍣", label: "grabbing some food" },
-  chill: { emoji: "📱", label: "scrolling, probably" },
-  idle: { emoji: "👋", label: "around" },
+  work: { emoji: "💻", label: "building something" },
+  eat: { emoji: "🍣", label: "snacking" },
+  chill: { emoji: "📱", label: "doomscrolling" },
+  idle: { emoji: "👋", label: "idling" },
 };
 
 /** Get Donald's current hour (0–23) and weekday in America/Vancouver. */
@@ -43,7 +43,7 @@ export function getMiiStatus(date = new Date()): MiiStatus {
   let mode: MiiMode;
 
   if (weekend) {
-    if (hour < 8) mode = "work";
+    if (hour < 8) mode = "sleep";
     else if (hour < 9) mode = "chill";
     else if (hour < 12) mode = pick(["chill", "work"], hour, date);
     else if (hour < 13) mode = "eat";

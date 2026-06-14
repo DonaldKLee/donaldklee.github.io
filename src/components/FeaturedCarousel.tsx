@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -32,6 +32,7 @@ export default function FeaturedCarousel({
   const reduce = useReducedMotion();
 
   const trackRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
@@ -41,6 +42,59 @@ export default function FeaturedCarousel({
   useMotionValueEvent(scrollYProgress, "change", (p) => {
     setCurrent(Math.min(n - 1, Math.max(0, Math.round(p * (n - 1)))));
   });
+
+  // Any gesture over the pinned stage should advance the page: sideways
+  // trackpad swipes redirect to vertical, and click-drag scrolls too. This
+  // makes "scroll the cylinder" and "scroll the page" the same motion.
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || reduce) return;
+
+    const onWheel = (e: WheelEvent) => {
+      // when the horizontal intent dominates, push it into the page scroll
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        window.scrollBy({ top: e.deltaX });
+        e.preventDefault();
+      }
+    };
+
+    let dragging = false;
+    let lastY = 0;
+    let lastX = 0;
+    const onDown = (e: PointerEvent) => {
+      // leave touch alone so phones keep native vertical scrolling
+      if (e.button !== 0 || e.pointerType === "touch") return;
+      dragging = true;
+      lastY = e.clientY;
+      lastX = e.clientX;
+      el.setPointerCapture(e.pointerId);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!dragging) return;
+      // dragging up or left walks the page forward
+      const dy = e.clientY - lastY;
+      const dx = e.clientX - lastX;
+      lastY = e.clientY;
+      lastX = e.clientX;
+      window.scrollBy({ top: -(dy + dx) * 1.4 });
+    };
+    const stop = () => {
+      dragging = false;
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", stop);
+    el.addEventListener("pointercancel", stop);
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerup", stop);
+      el.removeEventListener("pointercancel", stop);
+    };
+  }, [reduce]);
 
   // reduced motion / no scroll-jacking: heading + a simple swipe rail
   if (reduce) {
@@ -57,7 +111,7 @@ export default function FeaturedCarousel({
           {projects.map((p, i) => (
             <div
               key={p.name}
-              className="w-[86vw] shrink-0 snap-center sm:w-[460px]"
+              className="aspect-[16/10] w-[88vw] shrink-0 snap-center sm:w-[580px]"
             >
               <CarouselCard project={p} index={i} total={n} active />
             </div>
@@ -69,20 +123,24 @@ export default function FeaturedCarousel({
   }
 
   const stageVars = {
-    // wide on desktop, near full-width on phones, shrink on short viewports
-    "--card-w": "min(90vw, 580px, 50vh)",
-    "--card-h": "calc(var(--card-w) * 0.5625 + 264px)",
+    // landscape cards: a wide rectangle (~half the screen on desktop) with the
+    // image on the left and the copy on the right
+    "--card-w": "min(92vw, 720px)",
+    "--card-h": "max(calc(var(--card-w) * 0.58), 232px)",
     "--radius": "calc(var(--card-w) / 1.04)",
-    "--persp": "calc(var(--radius) * 8)",
+    "--persp": "calc(var(--radius) * 10)",
   } as CSSProperties;
 
   return (
     <div
       ref={trackRef}
       className="relative"
-      style={{ height: `${n * 82}svh` }}
+      style={{ height: `${n * 72}svh` }}
     >
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
+      <div
+        ref={stageRef}
+        className="sticky top-0 h-[100svh] cursor-grab touch-pan-y overflow-hidden active:cursor-grabbing"
+      >
         {/* pinned heading — stays in view while the cylinder spins */}
         <div className="absolute inset-x-0 top-0 z-10 pt-[max(4.5rem,7vh)]">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -180,47 +238,49 @@ function CarouselCard({
   total: number;
   active: boolean;
 }) {
+  const internal = Boolean(project.slug);
+  const linkProps = internal
+    ? { href: `/work/${project.slug}/` }
+    : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
   return (
     <a
-      href={project.href}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...linkProps}
       tabIndex={active ? 0 : -1}
-      className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
+      className="group grid h-full grid-cols-2 overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
     >
-      <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-surface">
+      <div className="relative h-full overflow-hidden bg-surface">
         <Image
           src={project.image}
           alt={`${project.name} — ${project.tagline}`}
           fill
-          sizes="(max-width: 640px) 90vw, 640px"
+          sizes="(max-width: 640px) 46vw, 360px"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
         />
       </div>
-      <div className="flex flex-1 flex-col gap-2.5 p-6 sm:p-7">
-        <div className="flex items-center gap-3 font-mono text-xs">
+      <div className="flex h-full flex-col justify-center gap-2 p-5 sm:p-7">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem]">
           <span className="text-muted">
             {String(index + 1).padStart(2, "0")} /{" "}
             {String(total).padStart(2, "0")}
           </span>
-          <span className="rounded-full bg-accent-wash px-2.5 py-0.5 text-accent-strong">
+          <span className="rounded-full bg-accent-wash px-2 py-0.5 text-accent-strong">
             {project.category}
           </span>
           {project.award && (
             <span className="text-muted">· {project.award}</span>
           )}
         </div>
-        <h3 className="font-display text-[clamp(1.7rem,4vw,2.3rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
+        <h3 className="font-display text-[clamp(1.3rem,2.7vw,2rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
           {project.name}
         </h3>
-        <p className="line-clamp-1 text-lg font-medium text-accent sm:text-xl">
+        <p className="line-clamp-1 text-base font-medium text-accent">
           {project.tagline}
         </p>
-        <p className="line-clamp-2 text-[0.97rem] leading-relaxed text-ink-soft sm:text-base">
+        <p className="line-clamp-3 text-[0.9rem] leading-relaxed text-ink-soft">
           {project.description}
         </p>
-        <span className="mt-1 inline-flex items-center gap-2 font-mono text-sm text-ink">
-          View project
+        <span className="mt-1 inline-flex items-center gap-2 font-mono text-[0.8rem] text-ink">
+          {internal ? "Read the story" : "View project"}
           <span className="transition-transform duration-200 group-hover:translate-x-1">
             →
           </span>

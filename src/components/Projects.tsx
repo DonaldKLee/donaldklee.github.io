@@ -12,19 +12,25 @@ import {
 import Reveal from "./Reveal";
 import FeaturedCarousel from "./FeaturedCarousel";
 
-const FILTERS: (Category | "All")[] = [
-  "All",
-  "Startup",
-  "Hackathon",
-  "Side-Project",
-];
+const FILTERS: (Category | "All")[] = ["All", "Hackathon", "Side-Project"];
+const PAGE_SIZE = 6;
 
 export default function Projects() {
   const [filter, setFilter] = useState<Category | "All">("All");
-  const shown =
+  const [page, setPage] = useState(0);
+
+  const matches =
     filter === "All"
       ? moreProjects
       : moreProjects.filter((p) => p.category === filter);
+  const pageCount = Math.ceil(matches.length / PAGE_SIZE);
+  const start = page * PAGE_SIZE;
+  const shown = matches.slice(start, start + PAGE_SIZE);
+
+  const choose = (f: Category | "All") => {
+    setFilter(f);
+    setPage(0);
+  };
 
   return (
     <section id="projects" className="pb-24 pt-12 sm:pb-32">
@@ -44,14 +50,14 @@ export default function Projects() {
               More from the shelf
             </h3>
             <p className="mt-1 font-mono text-xs text-muted">
-              the side-projects wall · tap any to open
+              older experiments and weekend builds · tap any to open
             </p>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {FILTERS.map((f) => (
               <button
                 key={f}
-                onClick={() => setFilter(f)}
+                onClick={() => choose(f)}
                 className={`rounded-full px-3.5 py-1.5 font-mono text-sm transition-colors ${
                   filter === f
                     ? "bg-ink text-bg"
@@ -70,7 +76,7 @@ export default function Projects() {
             <div className="dot-grid pointer-events-none absolute inset-0 opacity-50" />
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.5),transparent_40%)]" />
             <motion.div
-              layout
+              key={`${filter}-${page}`}
               className="relative grid grid-cols-1 gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3"
             >
               {shown.map((p, i) => (
@@ -78,6 +84,41 @@ export default function Projects() {
               ))}
             </motion.div>
           </div>
+
+          {pageCount > 1 && (
+            <div className="mt-7 flex items-center justify-center gap-2.5 font-mono text-sm">
+              <button
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-ink transition-colors hover:border-line-strong hover:bg-surface disabled:cursor-not-allowed disabled:border-line disabled:text-line-strong disabled:hover:bg-bg"
+                aria-label="Previous page"
+              >
+                ←
+              </button>
+              <div className="flex items-center gap-1.5 px-1" aria-hidden>
+                {Array.from({ length: pageCount }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setPage(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === page ? "w-6 bg-ink" : "w-1.5 bg-line-strong hover:bg-muted"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="sr-only">
+                Page {page + 1} of {pageCount}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+                disabled={page === pageCount - 1}
+                className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-ink transition-colors hover:border-line-strong hover:bg-surface disabled:cursor-not-allowed disabled:border-line disabled:text-line-strong disabled:hover:bg-bg"
+                aria-label="Next page"
+              >
+                →
+              </button>
+            </div>
+          )}
         </Reveal>
       </div>
     </section>
@@ -88,12 +129,14 @@ const TILTS = [-3, 2.2, -1.6, 2.8, -2.4, 1.4, -2, 2.5, -1.2, 1.8];
 
 function PinnedCard({ project, index }: { project: Project; index: number }) {
   const tilt = TILTS[index % TILTS.length];
+  const internal = Boolean(project.slug);
+  const linkProps = internal
+    ? { href: `/work/${project.slug}/` }
+    : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
   return (
     <motion.a
       layout
-      href={project.href}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...linkProps}
       initial={{ opacity: 0, y: 18, rotate: tilt }}
       whileInView={{ opacity: 1, y: 0, rotate: tilt }}
       viewport={{ once: true, margin: "-40px" }}

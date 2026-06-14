@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
-import SmoothScroll from "@/components/SmoothScroll";
 import CursorWii from "@/components/CursorWii";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
@@ -11,6 +10,7 @@ import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import SideQuests from "@/components/SideQuests";
 import Footer from "@/components/Footer";
+import SideRails from "@/components/SideRails";
 
 export default function Home() {
   const [ready, setReady] = useState(false);
@@ -18,9 +18,9 @@ export default function Home() {
   return (
     <>
       <LoadingScreen onComplete={() => setReady(true)} />
-      <SmoothScroll />
       <CursorWii />
       <Nav />
+      <SideRails />
       <main>
         <Hero ready={ready} />
         <About />

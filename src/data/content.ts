@@ -8,6 +8,8 @@ export interface Project {
   href: string;
   image: string;
   award?: string;
+  /** when set, the card opens the internal write-up at /work/<slug> */
+  slug?: string;
 }
 
 /* The headliners — flow one into the next */
@@ -38,6 +40,7 @@ export const featuredProjects: Project[] = [
     category: "Hackathon",
     href: "https://donaldklee.github.io/honkhonkhire.html",
     image: "/images/projects/home/honkhonkhire.png",
+    slug: "honkhonkhire",
   },
   {
     name: "TravoAI",
@@ -48,6 +51,7 @@ export const featuredProjects: Project[] = [
     href: "https://donaldklee.github.io/travoai.html",
     award: "StormHacks 2023",
     image: "/images/projects/home/travoai.jpg",
+    slug: "travoai",
   },
   {
     name: "Provent",
@@ -66,6 +70,7 @@ export const featuredProjects: Project[] = [
     category: "Hackathon",
     href: "https://donaldklee.github.io/giftdex.html",
     image: "/images/projects/home/giftdex.png",
+    slug: "giftdex",
   },
 ];
 
@@ -96,6 +101,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://github.com/DonaldKLee/Hakoten-Fruits",
     image: "/images/projects/home/hakotenfruits.png",
+    slug: "hakotenfruits",
   },
   {
     name: "VidNotes",
@@ -105,6 +111,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://donaldklee.github.io/vidnotes.html",
     image: "/images/projects/home/vidnotes.png",
+    slug: "vidnotes",
   },
   {
     name: "Shark Cult",
@@ -114,6 +121,7 @@ export const moreProjects: Project[] = [
     category: "Hackathon",
     href: "https://donaldklee.github.io/sharkcult.html",
     image: "/images/projects/home/sharkcult.png",
+    slug: "sharkcult",
   },
   {
     name: "Focomend",
@@ -123,6 +131,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://github.com/DonaldKLee/Focomend",
     image: "/images/projects/home/focomend.png",
+    slug: "focomend",
   },
   {
     name: "COVID-19 Info Bot",
@@ -132,6 +141,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://donaldklee.github.io/thecovid19infobot.html",
     image: "/images/projects/home/covidbot.png",
+    slug: "thecovid19infobot",
   },
   {
     name: "CarePackages4U",
@@ -141,6 +151,7 @@ export const moreProjects: Project[] = [
     category: "Hackathon",
     href: "https://donaldklee.github.io/carepackages4u.html",
     image: "/images/projects/home/carepackages4u.png",
+    slug: "carepackages4u",
   },
   {
     name: "Ardio",
@@ -150,6 +161,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://donaldklee.github.io/ardio.html",
     image: "/images/projects/home/ardio.png",
+    slug: "ardio",
   },
   {
     name: "StudyHawk",
@@ -159,6 +171,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://donaldklee.github.io/studyhawk.html",
     image: "/images/projects/home/studyhawk.png",
+    slug: "studyhawk",
   },
 ];
 

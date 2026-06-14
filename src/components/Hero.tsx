@@ -111,8 +111,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           variants={item}
           className="mt-5 max-w-[46ch] text-balance text-lg leading-relaxed text-ink-soft sm:text-xl"
         >
-          A self-taught developer at UBC. I build AI tooling, hackathon
-          projects, and the occasional 2am side quest.
+          A self-taught programmer studying at UBC. I build things that help make lives easier!
         </motion.p>
 
         {/* rotating currently line */}
@@ -178,11 +177,11 @@ export default function Hero({ ready }: { ready: boolean }) {
           {status && (
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3 py-1 font-mono text-xs text-ink-soft">
               <span aria-hidden>{status.emoji}</span>
-              right now, probably {status.label}
+              probably {status.label} right now
             </span>
           )}
           <span className="pointer-events-none font-mono text-xs text-muted">
-            psst — tap him 👋
+            psst — tap me 👋
           </span>
         </motion.div>
       </div>

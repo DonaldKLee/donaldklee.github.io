@@ -27,12 +27,13 @@ export default function SideQuests() {
 
   return (
     <section id="side-quests" className="relative overflow-hidden pt-24 sm:pt-32">
-      {/* a soft, warm wash that settles toward the footer */}
+      {/* a soft cool-to-warm wash; the closing colour matches the footer's
+          opening colour so the two read as one continuous scene */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(180deg,#eef4fc 0%,#f6f9fd 44%,#fdf4ec 82%,var(--color-bg) 100%)",
+            "linear-gradient(180deg,#eef4fc 0%,#f6f9fd 38%,#fbf2e8 74%,#fdeee0 100%)",
         }}
       />
       <div className="pointer-events-none absolute -right-24 top-8 -z-10 h-72 w-72 rounded-full bg-amber/15 blur-3xl" />
@@ -47,7 +48,7 @@ export default function SideQuests() {
 
       <Reveal>
         <PhotoRail reduce={!!reduce} />
-        <p className="mx-auto max-w-6xl px-5 pb-16 pt-2 font-mono text-xs text-muted sm:px-8">
+        <p className="mx-auto max-w-6xl px-5 pb-10 pt-2 font-mono text-xs text-muted sm:px-8">
           drag the photos, or let them roll by
         </p>
       </Reveal>
@@ -89,7 +90,7 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
       onPointerLeave={() => (paused.current = false)}
       onPointerDown={() => (paused.current = true)}
       onPointerUp={() => (paused.current = false)}
-      className="no-scrollbar flex gap-6 overflow-x-auto px-5 pb-6 pt-2 sm:gap-9 sm:px-8"
+      className="marquee-fade no-scrollbar flex gap-6 overflow-x-auto px-5 pb-6 pt-2 sm:gap-9 sm:px-8"
     >
       {items.map((q, i) => (
         <Polaroid key={`${q.slug}-${i}`} quest={q} index={i} reduce={reduce} />

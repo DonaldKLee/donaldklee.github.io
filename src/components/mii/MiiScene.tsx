@@ -22,19 +22,13 @@ export default function MiiScene({
   return (
     <Canvas
       className={className}
-      shadows
-      dpr={[1, 2]}
+      dpr={[1, 1.75]}
       camera={{ position: [0, 0, compact ? 8.4 : 9.4], fov: 34 }}
-      gl={{ antialias: true, alpha: true }}
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent" }}
     >
       <ambientLight intensity={0.85} />
-      <directionalLight
-        position={[3, 5, 4]}
-        intensity={1.6}
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-      />
+      <directionalLight position={[3, 5, 4]} intensity={1.6} />
       <directionalLight position={[-4, 2, 2]} intensity={0.5} color="#cfe0ff" />
       <directionalLight position={[0, 2, -5]} intensity={0.7} color="#ffffff" />
 

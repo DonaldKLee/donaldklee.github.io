@@ -16,14 +16,15 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="relative overflow-hidden px-5 pb-12 pt-12 sm:px-8 sm:pt-16"
+      className="relative overflow-hidden px-5 pb-12 pt-4 sm:px-8 sm:pt-6"
     >
-      {/* last warm light of the drive, settling into home */}
+      {/* picks up exactly where the side-quests wash ends, then resolves back
+          to the page — the two sections read as one continuous closing scene */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[60%]"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[72%]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 100% at 50% 0%, #fdf1e4 0%, transparent 62%)",
+            "linear-gradient(180deg, #fdeee0 0%, #fdf4ec 26%, var(--color-bg) 100%)",
         }}
       />
       <div className="dot-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-full opacity-25 [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]" />

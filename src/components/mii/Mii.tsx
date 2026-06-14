@@ -7,21 +7,37 @@ import * as THREE from "three";
 const COLORS = {
   skin: "#e7b48f",
   skinDark: "#d9a47e",
-  hair: "#221a16",
-  hairSheen: "#332620",
+  hair: "#1d1714",
+  hairSheen: "#2e231d",
   eye: "#241c18",
   brow: "#1d1612",
   mouth: "#b06b5c",
-  zip: "#1b1b1f",
-  zipPanel: "#252528",
-  collar: "#2c2c31",
+  zip: "#191920",
+  zipPanel: "#23232b",
+  collar: "#2a2a33",
   zipperTeeth: "#3a3a40",
-  zipperPull: "#b9bec7",
-  innerTee: "#f3f3f5",
+  zipperPull: "#c2c7d0",
+  innerTee: "#f4f4f6",
   jeans: "#46699c",
   jeansDark: "#3a567f",
   shoe: "#f1f1f3",
   shoeSole: "#cfd2d8",
+  // scene props
+  sheet: "#eaf0fb",
+  sheetDeep: "#d3ddf0",
+  pillow: "#fbfdff",
+  blanket: "#5b78b4",
+  blanketDeep: "#4a649b",
+  bowl: "#2b2f3a",
+  bowlInner: "#3b414f",
+  rice: "#f4efe6",
+  salmon: "#e8855a",
+  avocado: "#8bbf5a",
+  edamame: "#6fae4c",
+  car: "#222530",
+  carTrim: "#15171f",
+  dash: "#2b2f3a",
+  glass: "#bcd2ec",
 };
 
 export type MiiMode = "idle" | "sleep" | "work" | "eat" | "chill" | "commute";
@@ -34,7 +50,8 @@ interface MiiProps {
 
 /**
  * Procedural Mii of Donald: Korean middle-part perm, black un-zipped
- * quarter-zip, blue jeans. Looks toward the pointer, blinks, waves on tap.
+ * quarter-zip over a white tee, blue jeans. Looks toward the pointer, blinks,
+ * waves on tap, and acts out a little scene per "mode".
  */
 export default function Mii({
   waveKey = 0,
@@ -51,17 +68,18 @@ export default function Mii({
   const waveStart = useRef(-10);
 
   const sleeping = mode === "sleep";
-  const holding =
-    mode === "work" || mode === "eat" || mode === "chill" || mode === "commute";
+  const driving = mode === "commute";
+  const eating = mode === "eat";
+  const holding = mode === "work" || eating || mode === "chill" || driving;
 
   // resting / holding targets per arm: [rotZ, rotX]
   const armPose = (side: "l" | "r"): [number, number] => {
     const sign = side === "l" ? 1 : -1;
-    if (mode === "eat") {
-      // left cups the plate low, right brings chopsticks to the mouth
-      return side === "l" ? [0.45, -1.0] : [-0.7, -1.35];
+    if (driving) return [sign * 0.5, -1.2]; // both hands up on the wheel
+    if (eating) {
+      // left cups the bowl low, right works the chopsticks
+      return side === "l" ? [0.5, -1.05] : [-0.6, -1.2];
     }
-    // bring forearms forward (x) and inward (z) to meet the held prop
     if (holding) return [sign * 0.62, -1.1];
     return [sign * 0.33, 0];
   };
@@ -76,24 +94,35 @@ export default function Mii({
     }
 
     if (root.current) {
-      root.current.position.y = Math.sin(now * 0.9) * 0.05;
-      root.current.rotation.z = Math.sin(now * 0.6) * 0.012;
+      if (sleeping) {
+        // settle low and still, gentle breathing
+        root.current.position.y += (-0.55 - root.current.position.y) * 0.08;
+        root.current.rotation.z += (0 - root.current.rotation.z) * 0.08;
+      } else if (driving) {
+        // road buzz
+        root.current.position.y = Math.sin(now * 9) * 0.012;
+        root.current.rotation.z = Math.sin(now * 0.6) * 0.01;
+      } else {
+        root.current.position.y = Math.sin(now * 0.9) * 0.05;
+        root.current.rotation.z = Math.sin(now * 0.6) * 0.012;
+      }
     }
 
     if (head.current) {
       const lookDown =
-        mode === "chill" ? 0.34 : mode === "work" ? 0.16 : 0;
+        mode === "chill" ? 0.34 : mode === "work" ? 0.16 : eating ? 0.22 : 0;
       const targetY = sleeping
-        ? 0
-        : p.x * 0.45 * follow + Math.sin(now * 0.5) * 0.04;
+        ? 0.12
+        : driving
+          ? Math.sin(now * 0.5) * 0.12
+          : p.x * 0.45 * follow + Math.sin(now * 0.5) * 0.04;
       const targetX = sleeping
-        ? 0.18
+        ? 0.32
         : lookDown - p.y * 0.28 * follow + Math.sin(now * 0.7) * 0.02;
       head.current.rotation.y += (targetY - head.current.rotation.y) * 0.08;
       head.current.rotation.x += (targetX - head.current.rotation.x) * 0.08;
-      head.current.rotation.z = sleeping
-        ? 0.12
-        : Math.sin(now * 0.8) * 0.02;
+      const targetZ = sleeping ? 0.22 : Math.sin(now * 0.8) * 0.02;
+      head.current.rotation.z += (targetZ - head.current.rotation.z) * 0.08;
     }
 
     // left arm follows its pose target
@@ -113,17 +142,21 @@ export default function Mii({
       }
     }
 
-    // wave — the +x arm swings OUTWARD (positive z) so the hand stays
-    // clear of the head. Otherwise it follows its pose target.
+    // right arm: wave > eat cycle > pose
     if (waveArm.current) {
       const elapsed = now - waveStart.current;
-      const active = elapsed > 0 && elapsed < 2.2 && !sleeping;
+      const active = elapsed > 0 && elapsed < 2.2 && !sleeping && !eating;
       const [restZ, restX] = armPose("r");
       if (active) {
         const lift = Math.min(elapsed / 0.3, 1);
         const swing = Math.sin(elapsed * 11) * 0.32 * lift;
         waveArm.current.rotation.z = restZ + (2.3 - restZ) * lift + swing;
         waveArm.current.rotation.x = restX + (-0.2 - restX) * lift;
+      } else if (eating) {
+        // chopsticks travel from bowl up to the mouth, repeating
+        const bite = (Math.sin(now * 2.1) + 1) / 2; // 0..1
+        waveArm.current.rotation.x = restX + bite * 0.55;
+        waveArm.current.rotation.z += (restZ - waveArm.current.rotation.z) * 0.2;
       } else {
         waveArm.current.rotation.z +=
           (restZ - waveArm.current.rotation.z) * 0.1;
@@ -135,78 +168,86 @@ export default function Mii({
 
   return (
     <group ref={root} dispose={null}>
+      {/* ---------------- SCENE PROPS (behind the body) ---------------- */}
+      {sleeping && <Bed />}
+      {driving && <Car />}
+
       {/* ---------------- LOWER BODY: blue jeans ---------------- */}
       <group position={[0, -2.5, 0]}>
-        {/* hips */}
-        <mesh position={[0, 0.15, 0]} scale={[1, 0.8, 0.95]} castShadow>
-          <sphereGeometry args={[0.78, 40, 40]} />
+        <mesh position={[0, 0.15, 0]} scale={[1, 0.8, 0.95]}>
+          <sphereGeometry args={[0.78, 28, 24]} />
           <meshStandardMaterial color={COLORS.jeans} roughness={0.9} />
         </mesh>
-        {/* legs */}
         {[-0.36, 0.36].map((x) => (
           <group key={x} position={[x, -0.35, 0]}>
-            <mesh position={[0, -0.35, 0]} castShadow>
-              <capsuleGeometry args={[0.27, 0.7, 10, 24]} />
+            <mesh position={[0, -0.35, 0]}>
+              <capsuleGeometry args={[0.27, 0.7, 6, 16]} />
               <meshStandardMaterial color={COLORS.jeansDark} roughness={0.9} />
             </mesh>
-            {/* shoe */}
             <mesh position={[0, -0.92, 0.14]} scale={[1, 0.7, 1.5]}>
-              <sphereGeometry args={[0.26, 28, 28]} />
+              <sphereGeometry args={[0.26, 18, 16]} />
               <meshStandardMaterial color={COLORS.shoe} roughness={0.55} />
             </mesh>
             <mesh position={[0, -1.02, 0.2]} scale={[1, 0.4, 1.5]}>
-              <sphereGeometry args={[0.25, 24, 24]} />
+              <sphereGeometry args={[0.25, 16, 12]} />
               <meshStandardMaterial color={COLORS.shoeSole} roughness={0.6} />
             </mesh>
           </group>
         ))}
       </group>
 
-      {/* ---------------- TORSO: black quarter-zip (un-zipped) -------- */}
+      {/* blanket draped over the lap when in bed */}
+      {sleeping && (
+        <mesh position={[0, -2.55, 0.18]} scale={[1.5, 0.9, 1.25]}>
+          <sphereGeometry args={[0.86, 24, 20]} />
+          <meshStandardMaterial color={COLORS.blanket} roughness={0.95} />
+        </mesh>
+      )}
+
+      {/* ---------------- TORSO: black quarter-zip ---------------- */}
       <group position={[0, -1.5, 0]}>
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <sphereGeometry args={[0.95, 48, 48]} />
-          <meshStandardMaterial color={COLORS.zip} roughness={0.78} />
+        <mesh position={[0, -0.1, 0]}>
+          <sphereGeometry args={[0.95, 32, 28]} />
+          <meshStandardMaterial color={COLORS.zip} roughness={0.82} />
         </mesh>
-        <mesh position={[0, -0.7, 0]} scale={[1, 0.7, 1]} castShadow>
-          <sphereGeometry args={[0.8, 48, 48]} />
-          <meshStandardMaterial color={COLORS.zip} roughness={0.78} />
-        </mesh>
-
-        {/* inner tee showing through the open zip */}
-        <mesh position={[0, 0.18, 0.84]} scale={[0.5, 0.8, 0.3]}>
-          <sphereGeometry args={[0.3, 24, 24]} />
-          <meshStandardMaterial color={COLORS.innerTee} roughness={0.85} />
+        <mesh position={[0, -0.7, 0]} scale={[1, 0.7, 1]}>
+          <sphereGeometry args={[0.8, 28, 24]} />
+          <meshStandardMaterial color={COLORS.zip} roughness={0.82} />
         </mesh>
 
-        {/* open collar — two flaps forming a V */}
-        <mesh
-          position={[-0.2, 0.42, 0.7]}
-          rotation={[0.3, 0, 0.5]}
-          scale={[0.16, 0.42, 0.5]}
-        >
-          <sphereGeometry args={[1, 20, 20]} />
-          <meshStandardMaterial color={COLORS.collar} roughness={0.72} />
+        {/* white crew tee filling the open V */}
+        <mesh position={[0, 0.16, 0.82]} scale={[0.46, 0.66, 0.34]}>
+          <sphereGeometry args={[0.34, 20, 18]} />
+          <meshStandardMaterial color={COLORS.innerTee} roughness={0.9} />
         </mesh>
-        <mesh
-          position={[0.2, 0.42, 0.7]}
-          rotation={[0.3, 0, -0.5]}
-          scale={[0.16, 0.42, 0.5]}
-        >
-          <sphereGeometry args={[1, 20, 20]} />
-          <meshStandardMaterial color={COLORS.collar} roughness={0.72} />
+
+        {/* raised funnel collar — a soft ring around the neck */}
+        <mesh position={[0, 0.46, 0.06]} rotation={[0.18, 0, 0]} scale={[1, 1, 0.92]}>
+          <cylinderGeometry args={[0.46, 0.52, 0.42, 28, 1, true]} />
+          <meshStandardMaterial
+            color={COLORS.collar}
+            roughness={0.7}
+            side={THREE.DoubleSide}
+          />
         </mesh>
-        {/* short zipper pulled down (bottom half) */}
-        <mesh position={[0, -0.18, 0.92]}>
-          <boxGeometry args={[0.05, 0.55, 0.04]} />
+        {/* the open notch at the front of the collar (the unzipped V) */}
+        <mesh position={[0, 0.34, 0.52]} rotation={[0.5, 0, 0]} scale={[0.42, 0.5, 0.3]}>
+          <sphereGeometry args={[0.34, 18, 16]} />
+          <meshStandardMaterial color={COLORS.innerTee} roughness={0.9} />
+        </mesh>
+
+        {/* zipper placket running up the chest */}
+        <mesh position={[0, -0.05, 0.9]} rotation={[0.08, 0, 0]}>
+          <boxGeometry args={[0.06, 0.95, 0.04]} />
           <meshStandardMaterial
             color={COLORS.zipperTeeth}
             roughness={0.5}
             metalness={0.3}
           />
         </mesh>
-        <mesh position={[0, 0.08, 0.95]}>
-          <boxGeometry args={[0.09, 0.13, 0.05]} />
+        {/* zipper pull, sitting low (quarter-zip is open) */}
+        <mesh position={[0, -0.12, 0.94]}>
+          <boxGeometry args={[0.09, 0.14, 0.05]} />
           <meshStandardMaterial
             color={COLORS.zipperPull}
             roughness={0.3}
@@ -216,149 +257,74 @@ export default function Mii({
 
         {/* left arm */}
         <group ref={leftArm} position={[-0.92, 0.2, 0.18]} rotation={[0, 0, 0.34]}>
-          <mesh position={[0, -0.45, 0]} castShadow>
-            <capsuleGeometry args={[0.2, 0.72, 12, 24]} />
-            <meshStandardMaterial color={COLORS.zipPanel} roughness={0.78} />
+          <mesh position={[0, -0.45, 0]}>
+            <capsuleGeometry args={[0.2, 0.72, 6, 16]} />
+            <meshStandardMaterial color={COLORS.zipPanel} roughness={0.82} />
           </mesh>
           <mesh position={[0, -0.92, 0]}>
-            <sphereGeometry args={[0.18, 32, 32]} />
+            <sphereGeometry args={[0.18, 20, 18]} />
             <meshStandardMaterial color={COLORS.skin} roughness={0.6} />
           </mesh>
+          {/* poke bowl cupped in this hand while eating */}
+          {eating && <PokeBowl />}
         </group>
 
-        {/* right arm (waves) — pivot at shoulder, swings outward */}
+        {/* right arm (waves / eats) — swings outward */}
         <group
           ref={waveArm}
           position={[0.92, 0.34, 0.18]}
           rotation={[0, 0, 0.32]}
         >
-          <mesh position={[0, -0.45, 0]} castShadow>
-            <capsuleGeometry args={[0.2, 0.72, 12, 24]} />
-            <meshStandardMaterial color={COLORS.zipPanel} roughness={0.78} />
+          <mesh position={[0, -0.45, 0]}>
+            <capsuleGeometry args={[0.2, 0.72, 6, 16]} />
+            <meshStandardMaterial color={COLORS.zipPanel} roughness={0.82} />
           </mesh>
           <mesh position={[0, -0.92, 0]}>
-            <sphereGeometry args={[0.19, 32, 32]} />
+            <sphereGeometry args={[0.19, 20, 18]} />
             <meshStandardMaterial color={COLORS.skin} roughness={0.6} />
           </mesh>
+          {/* chopsticks held in this hand while eating */}
+          {eating && <Chopsticks />}
         </group>
       </group>
 
       {/* ---------------- NECK ---------------- */}
       <mesh position={[0, -0.92, 0]}>
-        <cylinderGeometry args={[0.28, 0.33, 0.5, 32]} />
+        <cylinderGeometry args={[0.28, 0.33, 0.5, 24]} />
         <meshStandardMaterial color={COLORS.skinDark} roughness={0.62} />
       </mesh>
 
       {/* ---------------- HEAD ---------------- */}
       <group ref={head} position={[0, 0, 0]}>
-        <mesh scale={[1, 1.08, 0.96]} castShadow>
-          <sphereGeometry args={[1, 64, 64]} />
+        <mesh scale={[1, 1.08, 0.96]}>
+          <sphereGeometry args={[1, 40, 36]} />
           <meshStandardMaterial color={COLORS.skin} roughness={0.58} />
         </mesh>
 
-        {/* ears (visible, tapered hair leaves them out) */}
+        {/* ears */}
         <mesh position={[-0.99, -0.06, 0.02]} scale={[0.45, 0.68, 0.5]}>
-          <sphereGeometry args={[0.2, 24, 24]} />
+          <sphereGeometry args={[0.2, 16, 14]} />
           <meshStandardMaterial color={COLORS.skin} roughness={0.58} />
         </mesh>
         <mesh position={[0.99, -0.06, 0.02]} scale={[0.45, 0.68, 0.5]}>
-          <sphereGeometry args={[0.2, 24, 24]} />
+          <sphereGeometry args={[0.2, 16, 14]} />
           <meshStandardMaterial color={COLORS.skin} roughness={0.58} />
         </mesh>
 
-        {/* ---- HAIR: Korean middle-part perm ---- */}
-        {/* voluminous crown, raised for height */}
-        <mesh position={[0, 0.28, -0.05]} scale={[1.04, 1.2, 1.08]}>
-          <sphereGeometry
-            args={[0, 0.5, 0.5, 0.5, Math.PI * 4, 0, Math.PI * 0.5]}
-          />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.52} />
-        </mesh>
-        {/* back coverage */}
-        <mesh position={[0, 0.08, -0.34]} scale={[1.02, 1.05, 0.92]}>
-          <sphereGeometry args={[1, 48, 48]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.52} />
-        </mesh>
-
-        {/* two swept wings rising from the centre part */}
-        <mesh
-          position={[-0.3, 0.54, 0.3]}
-          rotation={[0.15, 0.3, 0.22]}
-          scale={[0.56, 0.52, 0.7]}
-        >
-          <sphereGeometry args={[1, 40, 40]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        <mesh
-          position={[0.3, 0.54, 0.3]}
-          rotation={[0.15, -0.3, -0.22]}
-          scale={[0.56, 0.52, 0.7]}
-        >
-          <sphereGeometry args={[1, 40, 40]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        {/* centre crown filler so the part reads as a part, not a gap */}
-        <mesh position={[0, 0.7, 0.04]} scale={[0.64, 0.46, 0.7]}>
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-
-        {/* front bangs sweeping down + flipping outward from the part */}
-        <mesh
-          position={[-0.28, 0.46, 0.74]}
-          rotation={[0.5, 0.25, 0.55]}
-          scale={[0.4, 0.5, 0.26]}
-        >
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        <mesh
-          position={[0.28, 0.46, 0.74]}
-          rotation={[0.5, -0.25, -0.55]}
-          scale={[0.4, 0.5, 0.26]}
-        >
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        {/* flipped ends near the temples (the perm flick) */}
-        <mesh
-          position={[-0.7, 0.40, 0.25]}
-          rotation={[0, 0.4, -0.4]}
-          scale={[0.34, 0.5, 0.54]}
-        >
-          <sphereGeometry args={[1, 28, 28]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        <mesh
-          position={[0.7, 0.40, 0.25]}
-          rotation={[0, -0.4, 0.4]}
-          scale={[0.34, 0.5, 0.54]}
-        >
-          <sphereGeometry args={[1, 28, 28]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        {/* short tapered sideburns (ears stay visible) */}
-        <mesh position={[-0.84, 0.12, 0.28]} scale={[0.18, 0.34, 0.24]}>
-          <sphereGeometry args={[1, 24, 24]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
-        <mesh position={[0.84, 0.12, 0.28]} scale={[0.18, 0.34, 0.24]}>
-          <sphereGeometry args={[1, 24, 24]} />
-          <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
-        </mesh>
+        <Hair />
 
         {/* ---- FACE ---- */}
         <group ref={lid}>
           <mesh position={[-0.33, 0.06, 0.9]} scale={[1.15, 1.0, 0.5]}>
-            <sphereGeometry args={[0.12, 32, 32]} />
+            <sphereGeometry args={[0.12, 20, 18]} />
             <meshStandardMaterial color={COLORS.eye} roughness={0.3} />
           </mesh>
           <mesh position={[0.33, 0.06, 0.9]} scale={[1.15, 1.0, 0.5]}>
-            <sphereGeometry args={[0.12, 32, 32]} />
+            <sphereGeometry args={[0.12, 20, 18]} />
             <meshStandardMaterial color={COLORS.eye} roughness={0.3} />
           </mesh>
           <mesh position={[-0.29, 0.1, 0.99]}>
-            <sphereGeometry args={[0.028, 16, 16]} />
+            <sphereGeometry args={[0.028, 10, 10]} />
             <meshStandardMaterial
               color="#ffffff"
               emissive="#ffffff"
@@ -366,7 +332,7 @@ export default function Mii({
             />
           </mesh>
           <mesh position={[0.37, 0.1, 0.99]}>
-            <sphereGeometry args={[0.028, 16, 16]} />
+            <sphereGeometry args={[0.028, 10, 10]} />
             <meshStandardMaterial
               color="#ffffff"
               emissive="#ffffff"
@@ -375,7 +341,7 @@ export default function Mii({
           </mesh>
         </group>
 
-        {/* fuller, fairly straight brows */}
+        {/* brows */}
         <mesh position={[-0.33, 0.32, 0.92]} rotation={[0, 0, -0.05]}>
           <boxGeometry args={[0.3, 0.06, 0.05]} />
           <meshStandardMaterial color={COLORS.brow} roughness={0.5} />
@@ -387,46 +353,109 @@ export default function Mii({
 
         {/* nose */}
         <mesh position={[0, -0.08, 1.0]} scale={[0.62, 0.85, 0.7]}>
-          <sphereGeometry args={[0.1, 24, 24]} />
+          <sphereGeometry args={[0.1, 16, 14]} />
           <meshStandardMaterial color={COLORS.skinDark} roughness={0.55} />
         </mesh>
 
-        {/* soft confident smile */}
+        {/* smile */}
         <mesh position={[0, -0.4, 0.9]} rotation={[0, 0, Math.PI]}>
-          <torusGeometry args={[0.17, 0.03, 16, 32, Math.PI * 0.8]} />
+          <torusGeometry args={[0.17, 0.03, 10, 24, Math.PI * 0.8]} />
           <meshStandardMaterial color={COLORS.mouth} roughness={0.5} />
         </mesh>
 
-        {/* zzz when sleeping */}
         {sleeping && <Zzz />}
       </group>
 
       {/* ---------------- HELD PROPS ---------------- */}
       {mode === "work" && <Laptop />}
       {mode === "chill" && <Phone />}
-      {mode === "eat" && <Sushi />}
-      {mode === "commute" && <SteeringWheel />}
     </group>
   );
 }
 
+/* ----------------------------------------------------------------------------
+   HAIR — Korean middle-part perm: volume up top, a clear centre part, fringe
+   sweeping down at the temples, ears left visible.
+---------------------------------------------------------------------------- */
+function Hair() {
+  const hair = COLORS.hair;
+  // one consistent matte material so the pieces read as a single mass, not
+  // a cluster of shiny beads
+  const mat = (
+    <meshStandardMaterial color={hair} roughness={0.62} metalness={0} />
+  );
+  return (
+    <group>
+      {/* main shell: covers crown + back, front hairline kept high so the
+          forehead stays open for the part */}
+      <mesh position={[0, 0.36, -0.12]} scale={[1.05, 1.02, 1.04]}>
+        <sphereGeometry args={[0.99, 36, 32]} />
+        {mat}
+      </mesh>
+      {/* back/nape coverage */}
+      <mesh position={[0, 0.0, -0.34]} scale={[1.0, 1.05, 0.92]}>
+        <sphereGeometry args={[0.96, 28, 24]} />
+        {mat}
+      </mesh>
+
+      {/* left side-swept mass, from the centre part down to the temple */}
+      <mesh
+        position={[-0.4, 0.5, 0.42]}
+        rotation={[0.35, 0.2, 0.34]}
+        scale={[0.52, 0.46, 0.62]}
+      >
+        <sphereGeometry args={[1, 28, 26]} />
+        {mat}
+      </mesh>
+      {/* right side-swept mass */}
+      <mesh
+        position={[0.4, 0.5, 0.42]}
+        rotation={[0.35, -0.2, -0.34]}
+        scale={[0.52, 0.46, 0.62]}
+      >
+        <sphereGeometry args={[1, 28, 26]} />
+        {mat}
+      </mesh>
+
+      {/* a small peak at the very top where the part begins */}
+      <mesh position={[0, 0.74, 0.04]} scale={[0.5, 0.34, 0.5]}>
+        <sphereGeometry args={[1, 24, 20]} />
+        {mat}
+      </mesh>
+
+      {/* the centre part: a thin skin-toned sliver dividing the two masses */}
+      <mesh position={[0, 0.66, 0.56]} rotation={[0.5, 0, 0]} scale={[0.05, 0.34, 0.18]}>
+        <sphereGeometry args={[1, 12, 12]} />
+        <meshStandardMaterial color={COLORS.skin} roughness={0.6} />
+      </mesh>
+
+      {/* short tapered sideburns, ears stay clear */}
+      <mesh position={[-0.84, 0.08, 0.3]} scale={[0.15, 0.3, 0.2]}>
+        <sphereGeometry args={[1, 16, 14]} />
+        {mat}
+      </mesh>
+      <mesh position={[0.84, 0.08, 0.3]} scale={[0.15, 0.3, 0.2]}>
+        <sphereGeometry args={[1, 16, 14]} />
+        {mat}
+      </mesh>
+    </group>
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   HELD PROPS
+---------------------------------------------------------------------------- */
 function Laptop() {
   return (
     <group position={[0, -1.4, 1.45]} rotation={[0.1, 3.3, 0]}>
-      {/* base */}
       <mesh rotation={[-0.35, 0, 0]} position={[0, -0.05, 0.18]}>
         <boxGeometry args={[1.25, 0.07, 0.85]} />
         <meshStandardMaterial color="#c7ccd4" roughness={0.4} metalness={0.5} />
       </mesh>
-      {/* lid */}
-      <group position={[0, 0.2, -0.18]} rotation={[0, 0, 0]}>
+      <group position={[0, 0.2, -0.18]}>
         <mesh>
           <boxGeometry args={[1.25, 0.82, 0.05]} />
-          <meshStandardMaterial
-            color="#b9bec7"
-            roughness={0.4}
-            metalness={0.5}
-          />
+          <meshStandardMaterial color="#b9bec7" roughness={0.4} metalness={0.5} />
         </mesh>
         <mesh position={[0, 0, 0.03]}>
           <planeGeometry args={[1.12, 0.7]} />
@@ -437,9 +466,8 @@ function Laptop() {
             roughness={0.3}
           />
         </mesh>
-        {/* glowing apple-ish dot on the lid back */}
         <mesh position={[0, 0, -0.03]} rotation={[0, Math.PI, 0]}>
-          <circleGeometry args={[0.08, 24]} />
+          <circleGeometry args={[0.08, 20]} />
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
@@ -471,52 +499,134 @@ function Phone() {
   );
 }
 
-function Sushi() {
+/** A bowl of poke, cupped in the left hand. Sits in the leftArm group space. */
+function PokeBowl() {
   return (
-    <group position={[0.18, -0.18, 1.25]}>
-      {/* rice */}
-      <mesh position={[0, 0, 0]} scale={[1, 0.7, 1]}>
-        <boxGeometry args={[0.26, 0.2, 0.18]} />
-        <meshStandardMaterial color="#f4efe6" roughness={0.8} />
+    <group position={[0, -1.05, 0.22]}>
+      {/* bowl */}
+      <mesh scale={[1, 0.6, 1]}>
+        <sphereGeometry args={[0.34, 22, 18, 0, Math.PI * 2, Math.PI * 0.5, Math.PI * 0.5]} />
+        <meshStandardMaterial color={COLORS.bowl} roughness={0.4} />
       </mesh>
-      {/* salmon */}
-      <mesh position={[0, 0.12, 0]} rotation={[0.1, 0, 0]} scale={[1, 0.45, 1]}>
-        <boxGeometry args={[0.28, 0.2, 0.2]} />
-        <meshStandardMaterial color="#e8855a" roughness={0.55} />
+      <mesh position={[0, 0.02, 0]} scale={[1, 0.4, 1]}>
+        <cylinderGeometry args={[0.32, 0.3, 0.12, 22]} />
+        <meshStandardMaterial color={COLORS.bowlInner} roughness={0.5} />
       </mesh>
-      {/* chopsticks coming from the right hand */}
-      {[-0.04, 0.04].map((o) => (
-        <mesh
-          key={o}
-          position={[0.5 + o, 0.25, 0.1]}
-          rotation={[0, 0, -0.7]}
-        >
-          <cylinderGeometry args={[0.018, 0.012, 0.9, 8]} />
-          <meshStandardMaterial color="#b98a52" roughness={0.7} />
+      {/* rice base */}
+      <mesh position={[0, 0.06, 0]} scale={[1, 0.4, 1]}>
+        <sphereGeometry args={[0.27, 18, 14]} />
+        <meshStandardMaterial color={COLORS.rice} roughness={0.85} />
+      </mesh>
+      {/* toppings */}
+      {[
+        [0.1, 0.16, 0.08, COLORS.salmon],
+        [-0.12, 0.15, 0.05, COLORS.salmon],
+        [0.02, 0.17, -0.1, COLORS.avocado],
+        [0.14, 0.15, -0.08, COLORS.edamame],
+        [-0.08, 0.16, -0.12, COLORS.avocado],
+      ].map(([x, y, z, c], i) => (
+        <mesh key={i} position={[x as number, y as number, z as number]} scale={[1, 0.7, 1]}>
+          <boxGeometry args={[0.1, 0.08, 0.1]} />
+          <meshStandardMaterial color={c as string} roughness={0.55} />
         </mesh>
       ))}
     </group>
   );
 }
 
-function SteeringWheel() {
+/** Chopsticks held in the right hand, angled toward the mouth. */
+function Chopsticks() {
   return (
-    <group position={[0, -0.78, 1.55]} rotation={[1.15, 0, 0]}>
-      <mesh>
-        <torusGeometry args={[0.6, 0.08, 20, 40]} />
-        <meshStandardMaterial color="#1a1a1d" roughness={0.6} />
-      </mesh>
-      {/* spokes */}
-      {[0, (2 * Math.PI) / 3, (4 * Math.PI) / 3].map((a) => (
-        <mesh key={a} rotation={[0, 0, a]} position={[0, 0, 0]}>
-          <boxGeometry args={[0.55, 0.07, 0.05]} />
-          <meshStandardMaterial color="#26262b" roughness={0.6} />
+    <group position={[0, -0.92, 0.18]} rotation={[0, 0, -0.5]}>
+      {[-0.04, 0.04].map((o) => (
+        <mesh key={o} position={[o, 0.32, 0.06]} rotation={[0, 0, 0.12]}>
+          <cylinderGeometry args={[0.016, 0.011, 0.78, 8]} />
+          <meshStandardMaterial color="#b98a52" roughness={0.7} />
         </mesh>
       ))}
-      {/* hub */}
-      <mesh>
-        <cylinderGeometry args={[0.16, 0.16, 0.08, 24]} />
-        <meshStandardMaterial color="#2c2c31" roughness={0.5} />
+      {/* a morsel pinched at the tips */}
+      <mesh position={[0, 0.7, 0.06]} scale={[1, 0.7, 1]}>
+        <boxGeometry args={[0.08, 0.07, 0.08]} />
+        <meshStandardMaterial color={COLORS.salmon} roughness={0.55} />
+      </mesh>
+    </group>
+  );
+}
+
+/** A simple bed: a headboard and mattress the figure sits propped against. */
+function Bed() {
+  return (
+    <group position={[0, 0, 0]}>
+      {/* headboard behind the back */}
+      <mesh position={[0, -1.5, -1.05]}>
+        <boxGeometry args={[3.4, 2.6, 0.3]} />
+        <meshStandardMaterial color={COLORS.sheetDeep} roughness={0.9} />
+      </mesh>
+      {/* big pillow propping him up */}
+      <mesh position={[0, -0.6, -0.75]} rotation={[0.3, 0, 0]} scale={[1.5, 0.9, 0.6]}>
+        <sphereGeometry args={[1, 24, 20]} />
+        <meshStandardMaterial color={COLORS.pillow} roughness={0.95} />
+      </mesh>
+      {/* mattress slab under the lap */}
+      <mesh position={[0, -3.5, 0.2]}>
+        <boxGeometry args={[3.4, 0.8, 2.6]} />
+        <meshStandardMaterial color={COLORS.sheet} roughness={0.92} />
+      </mesh>
+    </group>
+  );
+}
+
+/** A little car cockpit: dashboard, windshield frame, wheel, mirror. */
+function Car() {
+  return (
+    <group position={[0, 0, 0]}>
+      {/* seat back behind him */}
+      <mesh position={[0, -1.6, -1.0]} scale={[1.5, 1.5, 0.6]}>
+        <sphereGeometry args={[1, 22, 18]} />
+        <meshStandardMaterial color={COLORS.carTrim} roughness={0.85} />
+      </mesh>
+      {/* dashboard lip across the front, low so it frames without crowding */}
+      <mesh position={[0, -3.05, 1.5]} rotation={[0.26, 0, 0]}>
+        <boxGeometry args={[3.5, 0.45, 0.8]} />
+        <meshStandardMaterial color={COLORS.dash} roughness={0.7} />
+      </mesh>
+      {/* steering wheel in his hands */}
+      <group position={[0, -1.55, 1.4]} rotation={[1.12, 0, 0]}>
+        <mesh>
+          <torusGeometry args={[0.62, 0.08, 16, 36]} />
+          <meshStandardMaterial color={COLORS.carTrim} roughness={0.6} />
+        </mesh>
+        {[0, (2 * Math.PI) / 3, (4 * Math.PI) / 3].map((a) => (
+          <mesh key={a} rotation={[0, 0, a]}>
+            <boxGeometry args={[0.56, 0.07, 0.05]} />
+            <meshStandardMaterial color={COLORS.dash} roughness={0.6} />
+          </mesh>
+        ))}
+        <mesh>
+          <cylinderGeometry args={[0.16, 0.16, 0.09, 20]} />
+          <meshStandardMaterial color={COLORS.dash} roughness={0.5} />
+        </mesh>
+      </group>
+      {/* windshield A-pillars */}
+      {[-1.7, 1.7].map((x) => (
+        <mesh key={x} position={[x, -0.2, 1.5]} rotation={[0, 0, x > 0 ? 0.22 : -0.22]}>
+          <boxGeometry args={[0.18, 3.2, 0.18]} />
+          <meshStandardMaterial color={COLORS.carTrim} roughness={0.7} />
+        </mesh>
+      ))}
+      {/* windshield header */}
+      <mesh position={[0, 1.4, 1.55]}>
+        <boxGeometry args={[3.6, 0.22, 0.2]} />
+        <meshStandardMaterial color={COLORS.carTrim} roughness={0.7} />
+      </mesh>
+      {/* rear-view mirror */}
+      <mesh position={[0, 1.15, 1.2]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[0.6, 0.16, 0.08]} />
+        <meshStandardMaterial
+          color={COLORS.glass}
+          roughness={0.2}
+          metalness={0.3}
+        />
       </mesh>
     </group>
   );

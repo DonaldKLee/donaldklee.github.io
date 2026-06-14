@@ -44,11 +44,15 @@ Defined as Tailwind v4 `@theme` tokens in `src/app/globals.css`.
   real sequence) + a filterable grid for the rest.
 - **SideQuests** — horizontal "memory wall" of tilted polaroids with themed
   gradient scenes (not stock photos).
-- **Footer** — waving compact Mii, email CTA, socials.
+- **Footer** — waving compact Mii, email CTA, socials. Shares its opening
+  colour with the side-quests wash so the two read as one closing scene.
+- **SideRails** — fixed left social glyphs + right vertical email (≥1180px).
 
 ## Layout & Motion
 - Max content width ~6xl, fluid `clamp()` spacing, generous section padding.
 - Semantic z-index scale (`--z-sticky` → `--z-loader`) in tokens.
 - Easing: `ease-out-expo` / quint (cubic-bezier 0.16,1,0.3,1). No bounce.
-- Lenis smooth scroll (disabled for reduced-motion and `?static`).
+- Native scroll (no smooth-scroll library, kept snappy on purpose). The
+  featured carousel redirects horizontal wheel + click-drag into page scroll,
+  so every gesture moves the page forward.
 - Every reveal enhances already-rendered, SEO-visible content.

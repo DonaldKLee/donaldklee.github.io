@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { EMAIL } from "@/data/content";
 
 const LINKS = [
-  { label: "about", href: "#about" },
-  { label: "experience", href: "#experience" },
-  { label: "projects", href: "#projects" },
-  { label: "side quests", href: "#side-quests" },
+  { label: "about", href: "/#about" },
+  { label: "experience", href: "/#experience" },
+  { label: "projects", href: "/#projects" },
+  { label: "side quests", href: "/#side-quests" },
 ];
 
 export default function Nav() {
@@ -36,7 +36,7 @@ export default function Nav() {
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
         <a
-          href="#top"
+          href="/"
           className="group flex items-center gap-2.5"
           aria-label="Donald Lee, back to top"
         >

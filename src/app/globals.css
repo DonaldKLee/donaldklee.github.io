@@ -71,18 +71,6 @@ body {
   color: var(--color-accent-ink);
 }
 
-/* Lenis */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
 /* Display heading defaults */
 .font-display {
   font-family: var(--font-display);
@@ -113,6 +101,48 @@ html.lenis body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Marquee edge fade. A gentle vignette by default; on wide screens the fade
+   widens so streaming photos stay clear of the fixed social/email rails
+   (which only appear at >=1280px) instead of sliding underneath them. */
+.marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent
+  );
+}
+@media (min-width: 1280px) {
+  .marquee-fade {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      transparent 52px,
+      #000 120px,
+      #000 calc(100% - 120px),
+      transparent calc(100% - 52px),
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      transparent 52px,
+      #000 120px,
+      #000 calc(100% - 120px),
+      transparent calc(100% - 52px),
+      transparent
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
