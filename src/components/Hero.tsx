@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { currentlyDoing, EMAIL } from "@/data/content";
 import { getMiiStatus, type MiiStatus } from "@/lib/miiMode";
-import InView from "./InView";
 
 const MiiScene = dynamic(() => import("@/components/mii/MiiScene"), {
   ssr: false,
@@ -25,6 +24,12 @@ export default function Hero({ ready }: { ready: boolean }) {
   const [wave, setWave] = useState(0);
   const [idx, setIdx] = useState(0);
   const [status, setStatus] = useState<MiiStatus | null>(null);
+
+  // warm the 3D chunk on first paint so the Mii is ready the instant the
+  // loading screen lifts, instead of fetching it lazily afterward
+  useEffect(() => {
+    void import("@/components/mii/MiiScene");
+  }, []);
 
   // resolve Donald's live "mode" from Vancouver time, refresh each minute
   useEffect(() => {
@@ -164,9 +169,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           role="img"
           aria-label="A 3D Mii of Donald with a black middle-part perm and a black quarter-zip over blue jeans. Tap to make him wave."
         >
-          <InView className="h-full w-full" rootMargin="300px">
-            <MiiScene waveKey={wave} mode={status?.mode ?? "idle"} />
-          </InView>
+          <MiiScene waveKey={wave} mode={status?.mode ?? "idle"} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}

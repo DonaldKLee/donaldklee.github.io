@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import {
   motion,
@@ -10,6 +18,13 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import type { Project } from "@/data/content";
+
+type TipData = { project: Project; index: number; total: number };
+type MetaTipHandle = {
+  show: (d: TipData) => void;
+  move: (x: number, y: number) => void;
+  hide: () => void;
+};
 
 /**
  * Projects sit on the faces of a vertical cylinder. Scrolling the pinned
@@ -33,6 +48,7 @@ export default function FeaturedCarousel({
 
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const tipRef = useRef<MetaTipHandle>(null);
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
@@ -50,36 +66,89 @@ export default function FeaturedCarousel({
     const el = stageRef.current;
     if (!el || reduce) return;
 
+    // instant, not smooth: the page sets scroll-behavior:smooth for anchor
+    // links, but redirecting wheel/drag through a smooth scrollBy queues an
+    // animation per event, which stacks up into lag and eats the gesture
+    const advance = (by: number) => window.scrollBy({ top: by, behavior: "instant" });
+
     const onWheel = (e: WheelEvent) => {
       // when the horizontal intent dominates, push it into the page scroll
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        window.scrollBy({ top: e.deltaX });
+        advance(e.deltaX);
         e.preventDefault();
       }
     };
 
+    let pointerId = -1;
     let dragging = false;
+    let startX = 0;
+    let startY = 0;
     let lastY = 0;
     let lastX = 0;
     const onDown = (e: PointerEvent) => {
       // leave touch alone so phones keep native vertical scrolling
       if (e.button !== 0 || e.pointerType === "touch") return;
-      dragging = true;
-      lastY = e.clientY;
-      lastX = e.clientX;
-      el.setPointerCapture(e.pointerId);
+      // arm a potential drag, but don't capture yet — capturing on a plain
+      // click would steal the click from the card link underneath
+      pointerId = e.pointerId;
+      dragging = false;
+      startX = lastX = e.clientX;
+      startY = lastY = e.clientY;
     };
     const onMove = (e: PointerEvent) => {
-      if (!dragging) return;
+      if (e.pointerId !== pointerId) return;
+      if (!dragging) {
+        // only become a drag once the pointer clearly moves; below this a
+        // click passes straight through to the project link
+        if (Math.abs(e.clientX - startX) + Math.abs(e.clientY - startY) < 6)
+          return;
+        dragging = true;
+        el.setPointerCapture(pointerId);
+        lastX = e.clientX;
+        lastY = e.clientY;
+        return;
+      }
       // dragging up or left walks the page forward
       const dy = e.clientY - lastY;
       const dx = e.clientX - lastX;
       lastY = e.clientY;
       lastX = e.clientX;
-      window.scrollBy({ top: -(dy + dx) * 1.4 });
+      advance(-(dy + dx));
     };
     const stop = () => {
+      if (pointerId !== -1 && el.hasPointerCapture(pointerId)) {
+        el.releasePointerCapture(pointerId);
+      }
+      pointerId = -1;
       dragging = false;
+    };
+
+    // touch: a sideways swipe advances the page too, while a vertical swipe is
+    // left to native scrolling (which already moves the cylinder)
+    let tStartX = 0;
+    let tStartY = 0;
+    let tLastX = 0;
+    let axis: "?" | "x" | "y" = "?";
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      axis = "?";
+      tStartX = tLastX = e.touches[0].clientX;
+      tStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      if (axis === "?") {
+        const dx = Math.abs(x - tStartX);
+        const dy = Math.abs(y - tStartY);
+        if (dx > 8 || dy > 8) axis = dx > dy ? "x" : "y";
+      }
+      if (axis === "x") {
+        advance(-(x - tLastX) * 1.2);
+        e.preventDefault(); // we own this gesture; stop the page from panning
+      }
+      tLastX = x;
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -87,12 +156,16 @@ export default function FeaturedCarousel({
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerup", stop);
     el.addEventListener("pointercancel", stop);
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
     return () => {
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("pointerdown", onDown);
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerup", stop);
       el.removeEventListener("pointercancel", stop);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
     };
   }, [reduce]);
 
@@ -111,31 +184,23 @@ export default function FeaturedCarousel({
           {projects.map((p, i) => (
             <div
               key={p.name}
-              className="aspect-[16/10] w-[88vw] shrink-0 snap-center sm:w-[580px]"
+              className="aspect-[5/6] w-[82vw] shrink-0 snap-center sm:aspect-[16/10] sm:w-[580px]"
             >
-              <CarouselCard project={p} index={i} total={n} active />
+              <CarouselCard project={p} index={i} total={n} active tip={tipRef} />
             </div>
           ))}
           <div className="w-1 shrink-0" aria-hidden />
         </div>
+        <MetaTooltip ref={tipRef} />
       </div>
     );
   }
-
-  const stageVars = {
-    // landscape cards: a wide rectangle (~half the screen on desktop) with the
-    // image on the left and the copy on the right
-    "--card-w": "min(92vw, 720px)",
-    "--card-h": "max(calc(var(--card-w) * 0.58), 232px)",
-    "--radius": "calc(var(--card-w) / 1.04)",
-    "--persp": "calc(var(--radius) * 10)",
-  } as CSSProperties;
 
   return (
     <div
       ref={trackRef}
       className="relative"
-      style={{ height: `${n * 72}svh` }}
+      style={{ height: `${n * 100}svh` }}
     >
       <div
         ref={stageRef}
@@ -155,10 +220,7 @@ export default function FeaturedCarousel({
         </div>
 
         {/* perspective stage in the space below the heading; hub centred in it */}
-        <div
-          className="absolute inset-x-0 bottom-[72px] top-[152px] grid place-items-center sm:top-[176px]"
-          style={{ ...stageVars, perspective: "var(--persp)" }}
-        >
+        <div className="cylinder-stage absolute inset-x-0 bottom-[72px] top-[152px] grid place-items-center sm:top-[176px]">
           {/* hub: sized to one card; every card fills it and rotates around its shared centre (the cylinder axis) */}
           <motion.div
             className="relative"
@@ -179,10 +241,9 @@ export default function FeaturedCarousel({
                     transform: `rotateY(${i * step}deg) translateZ(var(--radius))`,
                     transformOrigin: "center center",
                     backfaceVisibility: "hidden",
-                    opacity: active ? 1 : 0.22,
-                    filter: active ? "none" : "blur(3px)",
+                    opacity: active ? 1 : 0.14,
                     pointerEvents: active ? "auto" : "none",
-                    transition: "opacity 0.5s ease, filter 0.5s ease",
+                    transition: "opacity 0.4s ease",
                   }}
                 >
                   <CarouselCard
@@ -190,12 +251,15 @@ export default function FeaturedCarousel({
                     index={i}
                     total={n}
                     active={active}
+                    tip={tipRef}
                   />
                 </div>
               );
             })}
           </motion.div>
         </div>
+
+        <MetaTooltip ref={tipRef} />
 
         {/* progress overlay — sits over the scene, doesn't shift the cards */}
         <div className="pointer-events-none absolute inset-x-0 bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex justify-center">
@@ -217,8 +281,19 @@ export default function FeaturedCarousel({
                 />
               ))}
             </div>
-            <span className="hidden font-mono text-xs text-muted sm:inline">
-              scroll to spin ↓
+            <span className="flex items-center gap-1.5 font-mono text-xs text-ink-soft">
+              keep scrolling
+              <motion.span
+                aria-hidden
+                animate={reduce ? {} : { y: [0, 3, 0] }}
+                transition={{
+                  duration: 1.3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                ↓
+              </motion.span>
             </span>
           </div>
         </div>
@@ -232,33 +307,62 @@ function CarouselCard({
   index,
   total,
   active,
+  tip,
 }: {
   project: Project;
   index: number;
   total: number;
   active: boolean;
+  tip: RefObject<MetaTipHandle | null>;
 }) {
   const internal = Boolean(project.slug);
   const linkProps = internal
     ? { href: `/work/${project.slug}/` }
     : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
+
+  // only fine pointers get the cursor-following tooltip; touch keeps the
+  // static label below
+  const fine = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover)").matches;
+
   return (
     <a
       {...linkProps}
+      aria-label={`${project.name}. ${project.tagline}. ${project.description}`}
       tabIndex={active ? 0 : -1}
-      className="group grid h-full grid-cols-2 overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
+      onMouseEnter={(e) => {
+        if (!fine()) return;
+        tip.current?.show({ project, index, total });
+        tip.current?.move(e.clientX, e.clientY);
+      }}
+      onMouseMove={(e) => {
+        if (!fine()) return;
+        // show() is a no-op once this card is already the shown one, so this
+        // stays off the render path while the cursor moves
+        tip.current?.show({ project, index, total });
+        tip.current?.move(e.clientX, e.clientY);
+      }}
+      onMouseLeave={() => tip.current?.hide()}
+      className="group relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
     >
-      <div className="relative h-full overflow-hidden bg-surface">
+      {/* image: fills the whole card on desktop (text block is hidden there),
+          sits on top on phones where the text block takes the space below */}
+      <div className="relative min-h-0 grow overflow-hidden bg-surface">
         <Image
           src={project.image}
           alt={`${project.name} — ${project.tagline}`}
           fill
-          sizes="(max-width: 640px) 46vw, 360px"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          sizes="(max-width: 640px) 86vw, 720px"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
       </div>
-      <div className="flex h-full flex-col justify-center gap-2 p-5 sm:p-7">
-        <div className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem]">
+
+      {/* metadata, in-flow under the image. Visible on small screens and on
+          touch; hidden only on wide, hover-capable pointers, where the cursor
+          tooltip takes over and the image grows to fill the whole card. */}
+      <div className="shrink-0 border-t border-line p-4 [@media(min-width:640px)_and_(hover:hover)]:hidden">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-[0.68rem]">
           <span className="text-muted">
             {String(index + 1).padStart(2, "0")} /{" "}
             {String(total).padStart(2, "0")}
@@ -270,22 +374,119 @@ function CarouselCard({
             <span className="text-muted">· {project.award}</span>
           )}
         </div>
-        <h3 className="font-display text-[clamp(1.3rem,2.7vw,2rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
+        <h3 className="mt-1.5 font-display text-lg font-bold leading-tight tracking-[-0.02em] text-ink">
           {project.name}
         </h3>
-        <p className="line-clamp-1 text-base font-medium text-accent">
+        <p className="mt-0.5 text-sm font-medium text-accent">
           {project.tagline}
         </p>
-        <p className="line-clamp-3 text-[0.9rem] leading-relaxed text-ink-soft">
+        <p className="mt-1 line-clamp-2 text-[0.82rem] leading-relaxed text-ink-soft">
           {project.description}
         </p>
-        <span className="mt-1 inline-flex items-center gap-2 font-mono text-[0.8rem] text-ink">
-          {internal ? "Read the story" : "View project"}
-          <span className="transition-transform duration-200 group-hover:translate-x-1">
-            →
-          </span>
-        </span>
       </div>
     </a>
   );
 }
+
+/**
+ * A small metadata card that follows the cursor, portaled to <body> so the
+ * cylinder's 3D transform can't skew it. Position is set imperatively to keep
+ * mouse-move off React's render path.
+ */
+const MetaTooltip = forwardRef<MetaTipHandle>(function MetaTooltip(_props, ref) {
+  const elRef = useRef<HTMLDivElement>(null);
+  const shownRef = useRef<string | null>(null);
+  const [data, setData] = useState<TipData | null>(null);
+  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      show(d) {
+        // only re-render when the hovered card actually changes
+        if (shownRef.current !== d.project.name) {
+          shownRef.current = d.project.name;
+          setData(d);
+        }
+        setVisible(true);
+      },
+      move(x, y) {
+        const el = elRef.current;
+        if (!el) return;
+        const w = el.offsetWidth || 300;
+        const h = el.offsetHeight || 180;
+        const pad = 14;
+        const off = 20;
+        let left = x + off;
+        let top = y + off;
+        if (left + w + pad > window.innerWidth) left = x - off - w;
+        if (top + h + pad > window.innerHeight) top = y - off - h;
+        left = Math.max(pad, Math.min(left, window.innerWidth - w - pad));
+        top = Math.max(pad, Math.min(top, window.innerHeight - h - pad));
+        el.style.transform = `translate(${left}px, ${top}px)`;
+      },
+      hide() {
+        shownRef.current = null;
+        setVisible(false);
+      },
+    }),
+    [],
+  );
+
+  if (!mounted) return null;
+  const p = data?.project;
+
+  return createPortal(
+    <div
+      ref={elRef}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: "var(--z-tooltip)" as unknown as number,
+        willChange: "transform",
+      }}
+      className="pointer-events-none"
+      aria-hidden
+    >
+      <div
+        className={`w-[clamp(244px,22vw,300px)] origin-top-left rounded-2xl border border-line bg-bg/95 p-4 shadow-[0_24px_60px_-24px_rgba(30,40,70,0.55)] backdrop-blur-sm transition-[opacity,transform] duration-200 ease-out ${
+          visible
+            ? "scale-100 opacity-100"
+            : "translate-y-1 scale-[0.97] opacity-0"
+        }`}
+      >
+        {p && data && (
+          <>
+            <div className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem]">
+              <span className="text-muted">
+                {String(data.index + 1).padStart(2, "0")} /{" "}
+                {String(data.total).padStart(2, "0")}
+              </span>
+              <span className="rounded-full bg-accent-wash px-2 py-0.5 text-accent-strong">
+                {p.category}
+              </span>
+              {p.award && <span className="text-muted">· {p.award}</span>}
+            </div>
+            <h3 className="mt-2 font-display text-xl font-bold leading-tight tracking-[-0.02em] text-ink">
+              {p.name}
+            </h3>
+            <p className="mt-0.5 text-sm font-medium text-accent">
+              {p.tagline}
+            </p>
+            <p className="mt-1.5 text-[0.85rem] leading-relaxed text-ink-soft">
+              {p.description}
+            </p>
+            <span className="mt-2.5 inline-flex items-center gap-1.5 font-mono text-[0.75rem] text-ink">
+              {p.slug ? "Read the story" : "View project"}
+              <span aria-hidden>→</span>
+            </span>
+          </>
+        )}
+      </div>
+    </div>,
+    document.body,
+  );
+});

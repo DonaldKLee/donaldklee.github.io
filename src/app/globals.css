@@ -39,6 +39,7 @@
   --z-base: 0;
   --z-sticky: 40;
   --z-nav: 60;
+  --z-tooltip: 70;
   --z-cursor: 80;
   --z-overlay: 100;
   --z-loader: 120;
@@ -122,6 +123,23 @@ body {
     transparent
   );
 }
+/* Featured cylinder sizing. Landscape (image-fill + cursor tooltip) on
+   desktop; portrait (image on top, metadata text below) on phones, where
+   there's no hover to surface a tooltip. */
+.cylinder-stage {
+  --card-w: min(92vw, 720px);
+  --card-h: max(calc(var(--card-w) * 0.58), 232px);
+  --radius: calc(var(--card-w) / 1.04);
+  --persp: calc(var(--radius) * 10);
+  perspective: var(--persp);
+}
+@media (max-width: 640px) {
+  .cylinder-stage {
+    --card-w: 86vw;
+    --card-h: max(calc(var(--card-w) * 1.26), 440px);
+  }
+}
+
 @media (min-width: 1280px) {
   .marquee-fade {
     -webkit-mask-image: linear-gradient(
