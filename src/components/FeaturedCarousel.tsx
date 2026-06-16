@@ -9,7 +9,7 @@ import {
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import CardMedia from "./CardMedia";
 import {
   motion,
   useScroll,
@@ -346,15 +346,15 @@ function CarouselCard({
       onMouseLeave={() => tip.current?.hide()}
       className="group relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
     >
-      {/* image: fills the whole card on desktop (text block is hidden there),
+      {/* media: fills the whole card on desktop (text block is hidden there),
           sits on top on phones where the text block takes the space below */}
       <div className="relative min-h-0 grow overflow-hidden bg-surface">
-        <Image
-          src={project.image}
-          alt={`${project.name} — ${project.tagline}`}
+        <CardMedia
+          project={project}
           fill
+          active={active}
           sizes="(max-width: 640px) 86vw, 720px"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="object-cover transition-transform duration-700 ease-out [transform:scale(var(--z))] group-hover:[transform:scale(calc(var(--z)*1.05))]"
         />
       </div>
 

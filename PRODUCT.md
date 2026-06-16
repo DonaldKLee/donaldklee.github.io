@@ -18,7 +18,7 @@ remembers the site (and Donald) afterward.
 
 ## Brand Personality
 Playful, warm, and quietly capable. The conceit: the whole site is "a rendered
-markdown file" (`donald.md`), which fits a builder of AI/dev tooling. Three
+markdown file" (`donaldlee.xyz`), which fits a builder of AI/dev tooling. Three
 words: friendly, crafted, curious. It should feel like a fun thing to poke at,
 not a résumé to read.
 

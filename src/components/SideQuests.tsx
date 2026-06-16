@@ -6,21 +6,15 @@ import { sideQuests, type SideQuest } from "@/data/content";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 
-/** scene gradients used as a stand-in until a real photo is added */
-const SCENES = [
-  "linear-gradient(160deg,#5d6c8c,#9aa9cf 60%,#cdd7ef)",
-  "linear-gradient(160deg,#3a6ea5,#79a7d6 60%,#cfe2f4)",
-  "linear-gradient(160deg,#2f7e8c,#73b9c2 60%,#cdebef)",
-  "linear-gradient(160deg,#7a5da8,#a98fd0 60%,#e0d4f2)",
-  "linear-gradient(160deg,#566f9c,#8aa0cc 60%,#d4def0)",
-  "linear-gradient(160deg,#c06a4f,#e0916f 55%,#f4cba0)",
-  "linear-gradient(160deg,#5d6c8c,#9aa9cf 60%,#cdd7ef)",
-  "linear-gradient(180deg,#10243a,#1f6f6a 55%,#5fd6a8)",
-  "linear-gradient(160deg,#b5485e,#e0866f 55%,#f4cba0)",
-  "linear-gradient(160deg,#caa24a,#e6c878 55%,#f3e3b8)",
-];
-
 const TILTS = [-3, 2, -1.5, 2.5, -2, 1.6, -2.4, 2.2, -1.4, 1.8];
+
+/**
+ * Default photo orientations (width / height) used for the stand-in and until
+ * a real photo loads, so the rail shows a mix of vertical, square, and
+ * horizontal frames. A loaded photo overrides this with its true ratio.
+ */
+const DEFAULT_RATIOS = [0.78, 1.34, 1, 0.8, 1.33, 0.75, 1.4, 1, 0.82, 1.3];
+const clampRatio = (r: number) => Math.max(0.66, Math.min(1.55, r));
 
 export default function SideQuests() {
   const reduce = useReducedMotion();
@@ -41,15 +35,15 @@ export default function SideQuests() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <SectionHeading
           marker="## side-quests"
-          title="Life outside the editor"
-          sub="The trips, the teams, and the late nights that don't fit on a résumé. A quick look at the person behind the projects."
+          title="Memories throughout the years"
+          sub="Some trips, team photos, and moments with friends."
         />
       </div>
 
       <Reveal>
         <PhotoRail reduce={!!reduce} />
         <p className="mx-auto max-w-6xl px-5 pb-10 pt-2 font-mono text-xs text-muted sm:px-8">
-          drag the photos, or let them roll by
+          scroll through the photos, or let them roll by
         </p>
       </Reveal>
     </section>
@@ -60,6 +54,12 @@ export default function SideQuests() {
 function PhotoRail({ reduce }: { reduce: boolean }) {
   const railRef = useRef<HTMLDivElement>(null);
   const paused = useRef(false);
+  // one shared ratio per photo: both copies of the doubled rail must always
+  // agree on widths, or the loop's teleport misaligns while a lazily loaded
+  // image has only reached one of the copies
+  const [ratios, setRatios] = useState<Record<string, number>>({});
+  const reportRatio = (slug: string, r: number) =>
+    setRatios((m) => (m[slug] === r ? m : { ...m, [slug]: r }));
 
   useEffect(() => {
     if (reduce) return;
@@ -70,11 +70,24 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
     const tick = (t: number) => {
       const dt = t - last;
       last = t;
-      if (!paused.current) {
-        el.scrollLeft += dt * 0.03; // ~30px/s
-        const half = el.scrollWidth / 2;
-        if (half > 0 && el.scrollLeft >= half) el.scrollLeft -= half;
+      // one copy's exact width, measured between the two copies' first items
+      // (scrollWidth / 2 is off by the edge padding + seam gap, which made
+      // the loop visibly skip at the wrap point)
+      const kids = el.children;
+      const n = kids.length / 2;
+      const period =
+        Number.isInteger(n) && n >= 1
+          ? (kids[n] as HTMLElement).offsetLeft -
+            (kids[0] as HTMLElement).offsetLeft
+          : 0;
+      // teleporting by one copy is invisible; wrapping both ways (outside
+      // the pause check) lets you scroll backwards forever instead of
+      // hitting a wall at the start
+      if (period > 0) {
+        if (el.scrollLeft >= period + 1) el.scrollLeft -= period;
+        else if (el.scrollLeft < 1) el.scrollLeft += period;
       }
+      if (!paused.current) el.scrollLeft += dt * 0.03; // ~30px/s
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -90,10 +103,21 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
       onPointerLeave={() => (paused.current = false)}
       onPointerDown={() => (paused.current = true)}
       onPointerUp={() => (paused.current = false)}
-      className="marquee-fade no-scrollbar flex gap-6 overflow-x-auto px-5 pb-6 pt-2 sm:gap-9 sm:px-8"
+      // pt makes room for the hover lift, pb for the polaroid drop shadow —
+      // a scroll container clips both, so tight padding shows a sheared edge
+      className="marquee-fade no-scrollbar flex gap-6 overflow-x-auto overscroll-x-contain px-5 pb-12 pt-7 sm:gap-9 sm:px-8"
     >
       {items.map((q, i) => (
-        <Polaroid key={`${q.slug}-${i}`} quest={q} index={i} reduce={reduce} />
+        <Polaroid
+          key={`${q.slug}-${i}`}
+          quest={q}
+          // per-copy index: both copies must style identically (tilt, default
+          // ratio), or the loop's teleport stops being invisible
+          index={i % sideQuests.length}
+          reduce={reduce}
+          ratio={ratios[q.slug]}
+          onRatio={reportRatio}
+        />
       ))}
     </div>
   );
@@ -103,52 +127,77 @@ function Polaroid({
   quest,
   index,
   reduce,
+  ratio,
+  onRatio,
 }: {
   quest: SideQuest;
   index: number;
   reduce: boolean;
+  /** the photo's true ratio once it has loaded anywhere in the rail */
+  ratio?: number;
+  onRatio: (slug: string, r: number) => void;
 }) {
   const tilt = TILTS[index % TILTS.length];
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+  // photo shape: a varied default until the real image loads, then its true
+  // ratio so vertical, square, and horizontal photos all sit right
+  const shape = ratio ?? DEFAULT_RATIOS[index % DEFAULT_RATIOS.length];
 
   return (
     <figure
-      className="group relative w-[74vw] shrink-0 rounded-[14px] bg-white p-3 pb-4 shadow-[0_18px_40px_-22px_rgba(30,40,70,0.5)] transition-transform duration-300 ease-out sm:w-[300px]"
+      className="group relative shrink-0 rounded-[14px] bg-white p-3 pb-4 shadow-[0_18px_40px_-22px_rgba(30,40,70,0.5)] transition-transform duration-300 ease-out"
       style={{ transform: `rotate(${tilt}deg)`, transformOrigin: "center bottom" }}
       onMouseEnter={(e) => {
         if (!reduce)
           e.currentTarget.style.transform =
-            "rotate(0deg) translateY(-10px) scale(1.03)";
+            "rotate(0deg) translateY(-8px) scale(1.02)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = `rotate(${tilt}deg)`;
       }}
     >
-      <div className="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[7px]">
-        {/* stand-in shown until a real photo loads */}
+      {/* constant height, width follows the photo's orientation -> a tidy
+          film strip of mixed vertical / square / horizontal frames */}
+      <div
+        className="relative grid h-[48vw] max-h-[250px] min-h-[190px] place-items-center overflow-hidden rounded-[7px] sm:h-[290px] sm:max-h-none sm:min-h-0"
+        style={{ aspectRatio: shape }}
+      >
+        {/* quiet neutral slot until the real photo is dropped in */}
         {!loaded && (
-          <div
-            className="grid h-full w-full place-items-center"
-            style={{ background: SCENES[index % SCENES.length] }}
-          >
-            <span
-              className="text-6xl drop-shadow-sm transition-transform duration-500 group-hover:scale-110"
+          <div className="grid h-full w-full place-items-center bg-surface-2">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-8 w-8 text-line-strong"
               aria-hidden
             >
-              {quest.emoji}
-            </span>
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.35),transparent_55%)]" />
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <circle cx="8.5" cy="10" r="1.4" />
+              <path d="M21 15.5 16 11l-8 7.5" />
+            </svg>
           </div>
         )}
-        {/* real photo, if present in /public/images/sidequests/<slug>.jpg */}
+        {/* real photo, if present in /public/images/sidequests/<slug> */}
         {!failed && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`/images/sidequests/${quest.slug}.jpg`}
+            src={`/images/sidequests/${quest.slug}`}
             alt={quest.title}
             loading="lazy"
-            onLoad={() => setLoaded(true)}
+            onLoad={(e) => {
+              const el = e.currentTarget;
+              if (el.naturalWidth && el.naturalHeight)
+                onRatio(
+                  quest.slug,
+                  clampRatio(el.naturalWidth / el.naturalHeight),
+                );
+              setLoaded(true);
+            }}
             onError={() => setFailed(true)}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
               loaded ? "opacity-100" : "opacity-0"
@@ -159,7 +208,9 @@ function Polaroid({
           {quest.tag}
         </span>
       </div>
-      <figcaption className="px-1 pt-3">
+      {/* w-0 + min-w-full: the photo sets the card's width; long captions
+          wrap instead of stretching the polaroid frame */}
+      <figcaption className="w-0 min-w-full px-1 pt-3">
         <h3 className="font-display text-base font-semibold text-ink">
           {quest.title}
         </h3>

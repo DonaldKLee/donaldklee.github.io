@@ -8,7 +8,6 @@ interface RevealProps {
   className?: string;
   delay?: number;
   y?: number;
-  as?: "div" | "li" | "section";
 }
 
 /**

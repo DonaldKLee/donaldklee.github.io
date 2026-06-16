@@ -78,8 +78,8 @@ export default function CursorWii() {
       style={{
         zIndex: "var(--z-cursor)" as unknown as number,
         // hotspot near the fingertip
-        marginLeft: -14,
-        marginTop: -4,
+        marginLeft: -7,
+        marginTop: -2,
         transition: "opacity 0.2s ease",
         filter: "drop-shadow(0 3px 5px rgba(20,30,60,0.28))",
         willChange: "transform",
@@ -101,13 +101,13 @@ function WiiHand({
   const scale = pressing ? 0.86 : pointing ? 1.06 : 1;
   return (
     <svg
-      width="46"
-      height="58"
+      width="23"
+      height="29"
       viewBox="0 0 46 58"
       fill="none"
       style={{
         transform: `scale(${scale})`,
-        transformOrigin: "16px 6px",
+        transformOrigin: "8px 3px",
         transition: "transform 0.12s cubic-bezier(0.16,1,0.3,1)",
       }}
     >

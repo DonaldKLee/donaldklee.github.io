@@ -21,7 +21,7 @@ export default function Home() {
       <CursorWii />
       <Nav />
       <SideRails />
-      <main>
+      <main id="main">
         <Hero ready={ready} />
         <About />
         <Experience />

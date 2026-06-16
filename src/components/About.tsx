@@ -9,15 +9,15 @@ const STACK: { group: string; items: string[] }[] = [
   },
   {
     group: "Backend",
-    items: ["Python", "Node.js", "Go", "Java", "MongoDB"],
+    items: ["Python", "Node.js", "Go", "Java"],
   },
   {
     group: "AI & tooling",
-    items: ["AI agents", "MCP", "Web automation", "Data science (R)"],
+    items: ["AI agents", "MCP", "Web automation", "Data science"],
   },
   {
-    group: "Cloud",
-    items: ["AWS", "Firebase", "Git"],
+    group: "Cloud & Infrastructure",
+    items: ["AWS", "Firebase", "MongoDB", "Docker", "Git"],
   },
 ];
 
@@ -46,14 +46,10 @@ export default function About() {
             <div className="space-y-4 text-lg leading-relaxed text-ink-soft">
               <p>
                 I&apos;m Donald, a self-taught programmer studying at the
-                University of British Columbia. I&apos;m drawn to startups and
-                to building things that make someone&apos;s day a little
-                easier.
+                University of British Columbia. I have a passion for building things that make lives easier whether that be consumer products or internal tools.
               </p>
               <p>
-                Most of what I make starts as a &quot;wouldn&apos;t it be funny
-                if&quot; and ends up shipped. The rest of the time I&apos;m
-                organizing hackathons or chasing a good idea past midnight.
+                Currently exploring how to leverage AI to build more impactful projects surrounding my interests in productivity, fintech, and education, but always open to chatting about new ideas and opportunities!
               </p>
             </div>
           </div>
@@ -63,7 +59,7 @@ export default function About() {
         <Reveal delay={0.1}>
           <div>
             <p className="mb-6 font-mono text-sm text-muted">
-              things I build with
+              things I can do
             </p>
             <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
               {STACK.map((col) => (

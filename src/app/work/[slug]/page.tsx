@@ -51,7 +51,7 @@ export default async function WorkPage({
   return (
     <>
       <Nav />
-      <main>
+      <main id="main">
         <WriteupView writeup={writeup} next={next} />
       </main>
       <Footer />

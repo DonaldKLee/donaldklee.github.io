@@ -17,7 +17,7 @@ export default function Experience() {
       <SectionHeading
         marker="## experience"
         title="Where I've worked"
-        sub="Internships, exec roles, and a few hackathon trophies along the way."
+        sub="a mix of work experience and leadership positions"
       />
 
       <Reveal>
@@ -41,7 +41,7 @@ export default function Experience() {
                         src={group.logo}
                         alt=""
                         aria-hidden
-                        className="h-[22px] w-[22px] object-contain"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
                       <span className="font-display text-sm font-bold text-ink">

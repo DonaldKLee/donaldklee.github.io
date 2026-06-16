@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   featuredProjects,
@@ -11,6 +10,7 @@ import {
 } from "@/data/content";
 import Reveal from "./Reveal";
 import FeaturedCarousel from "./FeaturedCarousel";
+import CardMedia from "./CardMedia";
 
 const FILTERS: (Category | "All")[] = ["All", "Hackathon", "Side-Project"];
 const PAGE_SIZE = 6;
@@ -39,7 +39,7 @@ export default function Projects() {
         projects={featuredProjects}
         marker="## projects"
         title="Some things I've built"
-        sub="A few wins, a few experiments, and a couple of April Fools jokes that got out of hand."
+        sub="a few favourite projects and hackathon wins."
       />
 
       {/* the rest — a whiteboard of taped-up projects */}
@@ -50,7 +50,7 @@ export default function Projects() {
               More from the shelf
             </h3>
             <p className="mt-1 font-mono text-xs text-muted">
-              older experiments and weekend builds · tap any to open
+              a few experiments and old projects · tap any to open
             </p>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -152,12 +152,11 @@ function PinnedCard({ project, index }: { project: Project; index: number }) {
         style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.08)" }}
       />
       <div className="aspect-[16/11] overflow-hidden rounded-[5px] bg-surface">
-        <Image
-          src={project.image}
-          alt={`${project.name} — ${project.tagline}`}
+        <CardMedia
+          project={project}
           width={640}
           height={440}
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="object-cover transition-transform duration-500 ease-out [transform:scale(var(--z))] group-hover:[transform:scale(calc(var(--z)*1.06))]"
         />
       </div>
       <div className="px-1 pt-3">

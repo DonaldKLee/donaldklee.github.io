@@ -43,7 +43,7 @@ export default function Nav() {
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink font-display text-sm font-bold text-bg transition-transform duration-300 group-hover:-rotate-6">
             DL
           </span>
-          <span className="font-mono text-sm text-ink-soft">donald.md</span>
+          <span className="font-mono text-sm text-ink-soft">donaldlee.xyz</span>
         </a>
 
         <div className="hidden items-center gap-1 md:flex">
@@ -88,9 +88,10 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* mobile sheet */}
+      {/* mobile sheet; inert while closed so its links can't take focus */}
       <motion.div
         initial={false}
+        inert={!open}
         animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="overflow-hidden border-t border-line bg-bg md:hidden"

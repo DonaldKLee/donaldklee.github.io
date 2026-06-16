@@ -8,22 +8,40 @@ import { getMiiStatus, type MiiStatus } from "@/lib/miiMode";
 
 const MiiScene = dynamic(() => import("@/components/mii/MiiScene"), {
   ssr: false,
-  loading: () => <MiiPlaceholder />,
 });
 
-function MiiPlaceholder() {
-  return (
-    <div className="grid h-full w-full place-items-center">
-      <div className="h-28 w-28 animate-pulse rounded-full bg-surface-2" />
-    </div>
-  );
-}
+const MII_MODES = new Set(["idle", "sleep", "work", "eat", "chill", "commute"]);
+const isMiiMode = (v: string): v is MiiStatus["mode"] => MII_MODES.has(v);
+
+// mini render-log shown while the 3D chunk loads; sibling in spirit to the
+// loading screen's "render donaldlee.xyz" exchange
+const SPAWN_LOG = [
+  "> spawning donald…",
+  "> combing the middle part…",
+  "> zipping the quarter-zip…",
+  "> lacing the shoes…",
+  "> almost there…",
+];
 
 export default function Hero({ ready }: { ready: boolean }) {
   const reduce = useReducedMotion();
   const [wave, setWave] = useState(0);
   const [idx, setIdx] = useState(0);
   const [status, setStatus] = useState<MiiStatus | null>(null);
+  // true once the canvas has painted its first frame; until then a
+  // placeholder holds the spot so the hero never looks broken
+  const [miiReady, setMiiReady] = useState(false);
+  const [logIdx, setLogIdx] = useState(0);
+
+  // walk the spawn log while the Mii loads, resting on the last line
+  useEffect(() => {
+    if (miiReady) return;
+    const t = window.setInterval(
+      () => setLogIdx((i) => Math.min(i + 1, SPAWN_LOG.length - 1)),
+      700,
+    );
+    return () => window.clearInterval(t);
+  }, [miiReady]);
 
   // warm the 3D chunk on first paint so the Mii is ready the instant the
   // loading screen lifts, instead of fetching it lazily afterward
@@ -31,16 +49,13 @@ export default function Hero({ ready }: { ready: boolean }) {
     void import("@/components/mii/MiiScene");
   }, []);
 
-  // resolve Donald's live "mode" from Vancouver time, refresh each minute
+  // resolve Donald's live "mode" from Vancouver time, refresh each minute.
+  // ?mii=<mode> pins a specific scene for previewing; unknown values are
+  // ignored rather than rendered into the page
   useEffect(() => {
     const forced = new URLSearchParams(window.location.search).get("mii");
-    if (forced) {
-      setStatus(getMiiStatus());
-      setStatus((s) => ({
-        mode: forced as MiiStatus["mode"],
-        emoji: s?.emoji ?? "👋",
-        label: forced,
-      }));
+    if (forced && isMiiMode(forced)) {
+      setStatus({ ...getMiiStatus(), mode: forced, label: forced });
       return;
     }
     const update = () => setStatus(getMiiStatus());
@@ -169,7 +184,38 @@ export default function Hero({ ready }: { ready: boolean }) {
           role="img"
           aria-label="A 3D Mii of Donald with a black middle-part perm and a black quarter-zip over blue jeans. Tap to make him wave."
         >
-          <MiiScene waveKey={wave} mode={status?.mode ?? "idle"} />
+          {/* covers both the chunk download and WebGL warm-up, then hands
+              off the moment the first real frame is on screen (the scene
+              itself plays a spawn pop-in from there) */}
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-0 grid place-items-center transition-opacity duration-300 ${
+              miiReady ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <div className="flex flex-col items-center gap-4">
+              {/* spawn pad: a soft ring where the Mii will land */}
+              <div className="relative grid h-28 w-28 place-items-center">
+                <div className="absolute inset-0 animate-ping rounded-full border border-line-strong opacity-40 [animation-duration:1.6s]" />
+                <div className="h-20 w-20 animate-pulse rounded-full bg-surface-2" />
+              </div>
+              <span className="font-mono text-xs text-muted">
+                {SPAWN_LOG[logIdx]}
+                <span className="animate-pulse">▌</span>
+              </span>
+            </div>
+          </div>
+          <div
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              miiReady ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <MiiScene
+              waveKey={wave}
+              mode={status?.mode ?? "idle"}
+              onReady={() => setMiiReady(true)}
+            />
+          </div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}

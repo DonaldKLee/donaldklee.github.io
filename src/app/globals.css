@@ -190,11 +190,6 @@ body {
   animation: blink-caret 1s steps(1) infinite;
 }
 
-@keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
 /* Wii hand cursor — hide the native pointer while it's active */
 .wii-cursor,
 .wii-cursor a,

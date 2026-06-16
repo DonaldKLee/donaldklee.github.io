@@ -1,7 +1,7 @@
 # donaldlee.xyz — portfolio v4
 
 A sleek, white, single-page portfolio built around one idea: the site *is* a
-rendered markdown file. It opens with a chatbot "render donald.md" animation,
+rendered markdown file. It opens with a chatbot "render donaldlee.xyz" animation,
 then flows through a 3D Mii of Donald, his work, projects, and side quests.
 
 Live at [donaldlee.xyz](https://donaldlee.xyz).

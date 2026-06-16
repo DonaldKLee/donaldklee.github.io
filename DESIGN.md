@@ -31,7 +31,7 @@ Defined as Tailwind v4 `@theme` tokens in `src/app/globals.css`.
   `text-wrap: balance`. Hero max ~5rem.
 
 ## Components
-- **LoadingScreen** — chatbot "render donald.md" exchange with a streaming render
+- **LoadingScreen** — chatbot "render donaldlee.xyz" exchange with a streaming render
   log, then a blur-fade reveal. Plays once per session; skippable; reduced-motion safe.
 - **Nav** — fixed, transparent → white hairline + blur on scroll. Mono links.
 - **Hero** — copy + rotating `currently →` line beside the interactive Mii.
@@ -42,8 +42,9 @@ Defined as Tailwind v4 `@theme` tokens in `src/app/globals.css`.
 - **Experience** — single-open accordion grouped by org.
 - **Projects** — featured projects as flowing alternating rows (numbered as a
   real sequence) + a filterable grid for the rest.
-- **SideQuests** — horizontal "memory wall" of tilted polaroids with themed
-  gradient scenes (not stock photos).
+- **SideQuests** — horizontal "memory wall" of tilted polaroids showing real
+  photos (`public/images/sidequests/<slug>`); mixed vertical / square /
+  horizontal frames, auto-scrolls and loops seamlessly in both directions.
 - **Footer** — waving compact Mii, email CTA, socials. Shares its opening
   colour with the side-quests wash so the two read as one closing scene.
 - **SideRails** — fixed left social glyphs + right vertical email (≥1180px).
@@ -54,5 +55,6 @@ Defined as Tailwind v4 `@theme` tokens in `src/app/globals.css`.
 - Easing: `ease-out-expo` / quint (cubic-bezier 0.16,1,0.3,1). No bounce.
 - Native scroll (no smooth-scroll library, kept snappy on purpose). The
   featured carousel redirects horizontal wheel + click-drag into page scroll,
-  so every gesture moves the page forward.
+  so every gesture moves the page forward; if the visitor idles on the pinned
+  stage ~4.5s it gently advances one card to teach the interaction.
 - Every reveal enhances already-rendered, SEO-visible content.

@@ -121,7 +121,6 @@ export const writeups: Writeup[] = [
     year: "2023",
     date: "May 2023",
     collaborators: ["Vaibhav Sharma", "Pranav Karthik", "Rosa Chen"],
-    award: "StormHacks 2023",
     hero: "/images/projects/home/travoai.jpg",
     video: "https://www.youtube.com/embed/78VAqvWSsDg",
     links: [

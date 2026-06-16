@@ -8,7 +8,7 @@ export interface MiiStatus {
 
 const META: Record<MiiMode, { emoji: string; label: string }> = {
   sleep: { emoji: "💤", label: "asleep (it's late in Vancouver)" },
-  commute: { emoji: "🚗", label: "on the road" },
+  commute: { emoji: "🍵", label: "exploring" },
   work: { emoji: "💻", label: "building something" },
   eat: { emoji: "🍣", label: "snacking" },
   chill: { emoji: "📱", label: "doomscrolling" },
@@ -50,7 +50,7 @@ export function getMiiStatus(date = new Date()): MiiStatus {
     else if (hour < 17) mode = "commute";
     else if (hour < 18) mode = "chill";
     else if (hour < 19) mode = "eat";
-    else mode = pick(["chill", "work", "commute"], hour, date);
+    else mode = pick(["chill", "work"], hour, date);
   } else {
     if (hour < 8) mode = "sleep";
     else if (hour < 9) mode = "commute";

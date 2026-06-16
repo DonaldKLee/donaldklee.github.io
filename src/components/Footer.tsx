@@ -48,11 +48,10 @@ export default function Footer() {
 
         <p className="mt-2 font-mono text-sm text-accent">## say-hi</p>
         <h2 className="mt-3 font-display text-[clamp(2.2rem,5vw,4rem)] font-bold tracking-[-0.035em] text-ink">
-          Let&apos;s build something.
+          Thanks for visiting!
         </h2>
         <p className="mt-4 max-w-[46ch] text-lg leading-relaxed text-muted">
-          I&apos;m always happy to chat, whether it&apos;s a role, an idea, or
-          just a hello. Drop me a line and I&apos;ll get back to you.
+          My inbox is always open. Have a question or want to say hi? Feel free to shoot me an email, I will try my best to get back to you!
         </p>
 
         <a
@@ -80,7 +79,7 @@ export default function Footer() {
 
       <div className="mx-auto mt-20 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-line pt-6 font-mono text-xs text-muted sm:flex-row">
         <span>© {new Date().getFullYear()} Donald Lee</span>
-        <span>designed &amp; built by Donald Lee · rendered from donald.md</span>
+        <span>designed &amp; built by Donald Lee</span>
       </div>
     </footer>
   );

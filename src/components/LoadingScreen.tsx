@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const RENDER_STEPS = [
-  "parsing donald.md",
+  "parsing donaldlee.xyz",
   "# home",
   "## about",
   "## experience",
@@ -19,6 +19,7 @@ export default function LoadingScreen({
 }) {
   const reduce = useReducedMotion();
   const [show, setShow] = useState(true);
+  const [gone, setGone] = useState(false);
   const [phase, setPhase] = useState<0 | 1 | 2>(0); // 0 user, 1 bot reply, 2 log
   const [done, setDone] = useState(0); // how many steps rendered
   const finished = useRef(false);
@@ -30,6 +31,10 @@ export default function LoadingScreen({
     setShow(false);
     // let the exit animation play
     window.setTimeout(onComplete, reduce ? 0 : 620);
+    // hard-remove the overlay even if the exit animation never runs (rAF is
+    // throttled in background tabs, and AnimatePresence only unmounts after
+    // the exit completes) — the loader must never be able to block the site
+    window.setTimeout(() => setGone(true), reduce ? 50 : 1300);
   };
 
   useEffect(() => {
@@ -40,6 +45,7 @@ export default function LoadingScreen({
     ) {
       finished.current = true;
       setShow(false);
+      setGone(true);
       onComplete();
       return;
     }
@@ -61,6 +67,8 @@ export default function LoadingScreen({
     return () => timers.forEach(window.clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduce]);
+
+  if (gone) return null;
 
   return (
     <AnimatePresence>
@@ -97,7 +105,7 @@ export default function LoadingScreen({
               >
                 hey, can you render this markdown file?
                 <span className="mt-2 flex items-center gap-1.5 rounded-md bg-white/15 px-2 py-1 font-mono text-xs">
-                  <span aria-hidden>📄</span> donald.md
+                  <span aria-hidden>📄</span> donaldlee.xyz
                 </span>
               </motion.div>
 
