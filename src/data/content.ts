@@ -455,6 +455,7 @@ export const socials = [
 ];
 
 export const EMAIL = "donaldkevlee@gmail.com";
+export const EMAIL_TEMPLATE = "?subject=[Subject Goes Here] - Sent From Donald Lee's Portfolio Site&body=Sent from Donald Lee's Portfolio Site"
 
 /* Rotating "currently" lines for the hero */
 export const currentlyDoing = [

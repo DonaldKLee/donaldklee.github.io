@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { EMAIL, socials } from "@/data/content";
+import { EMAIL, EMAIL_TEMPLATE, socials } from "@/data/content";
+import { track } from "@/lib/analytics";
 
 /** Inline glyphs so the rails ship zero extra requests. */
 const ICONS: Record<string, React.ReactNode> = {
@@ -39,6 +40,9 @@ export default function SideRails() {
             rel="noopener noreferrer"
             tabIndex={-1}
             aria-label={s.label}
+            onClick={() =>
+              track("social_click", { network: s.label, location: "side_rail" })
+            }
             className="text-muted transition-all duration-200 hover:-translate-y-1 hover:text-accent"
           >
             <svg
@@ -63,8 +67,9 @@ export default function SideRails() {
         aria-hidden
       >
         <a
-          href={`mailto:${EMAIL}`}
+          href={`mailto:${EMAIL}${EMAIL_TEMPLATE}`}
           tabIndex={-1}
+          onClick={() => track("contact_click", { location: "side_rail" })}
           className="font-mono text-xs tracking-widest text-muted transition-colors duration-200 hover:text-accent"
           style={{ writingMode: "vertical-rl" }}
         >

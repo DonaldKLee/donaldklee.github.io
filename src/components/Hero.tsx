@@ -3,8 +3,9 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { currentlyDoing, EMAIL } from "@/data/content";
+import { currentlyDoing, EMAIL, EMAIL_TEMPLATE } from "@/data/content";
 import { getMiiStatus, type MiiStatus } from "@/lib/miiMode";
+import { track } from "@/lib/analytics";
 
 const MiiScene = dynamic(() => import("@/components/mii/MiiScene"), {
   ssr: false,
@@ -157,6 +158,7 @@ export default function Hero({ ready }: { ready: boolean }) {
         <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
           <a
             href="#projects"
+            onClick={() => track("cta_click", { cta: "see_what_ive_built" })}
             className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-bg transition-transform duration-200 hover:-translate-y-0.5"
           >
             See what I&apos;ve built
@@ -165,7 +167,8 @@ export default function Hero({ ready }: { ready: boolean }) {
             </span>
           </a>
           <a
-            href={`mailto:${EMAIL}`}
+            href={`mailto:${EMAIL}${EMAIL_TEMPLATE}`}
+            onClick={() => track("contact_click", { location: "hero" })}
             className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-surface"
           >
             Say hi
@@ -180,7 +183,11 @@ export default function Hero({ ready }: { ready: boolean }) {
           animate={ready ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           className="relative mx-auto aspect-square w-[min(80vw,460px)] cursor-pointer select-none"
-          onClick={() => setWave((w) => w + 1)}
+          onClick={() => {
+            setWave((w) => w + 1);
+            // the mode tells us what pose they saw when they poked him
+            track("mii_tap", { location: "hero", mode: status?.mode ?? "idle" });
+          }}
           role="img"
           aria-label="A 3D Mii of Donald with a black middle-part perm and a black quarter-zip over blue jeans. Tap to make him wave."
         >

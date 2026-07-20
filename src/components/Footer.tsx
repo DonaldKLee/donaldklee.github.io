@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { EMAIL, socials } from "@/data/content";
+import { EMAIL, EMAIL_TEMPLATE, socials } from "@/data/content";
+import { track } from "@/lib/analytics";
 import Reveal from "./Reveal";
 import InView from "./InView";
 
@@ -33,7 +34,10 @@ export default function Footer() {
         {/* waving guide Mii — home at the end of the road */}
         <div
           className="relative h-44 w-44 cursor-pointer select-none sm:h-52 sm:w-52"
-          onClick={() => setWave((w) => w + 1)}
+          onClick={() => {
+            setWave((w) => w + 1);
+            track("mii_tap", { location: "footer" });
+          }}
           onMouseEnter={() => setWave((w) => w + 1)}
           role="img"
           aria-label="The Mii of Donald, waving goodbye"
@@ -55,7 +59,8 @@ export default function Footer() {
         </p>
 
         <a
-          href={`mailto:${EMAIL}`}
+          href={`mailto:${EMAIL}${EMAIL_TEMPLATE}`}
+          onClick={() => track("contact_click", { location: "footer" })}
           className="group mt-8 inline-flex items-center gap-3 rounded-full bg-ink px-6 py-3.5 text-base font-medium text-bg transition-transform duration-200 hover:-translate-y-0.5"
         >
           <span className="font-mono text-sm opacity-70">→</span>
@@ -69,6 +74,9 @@ export default function Footer() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                track("social_click", { network: s.label, location: "footer" })
+              }
               className="font-mono text-sm text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
             >
               {s.label}

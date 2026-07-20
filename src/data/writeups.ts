@@ -121,7 +121,7 @@ export const writeups: Writeup[] = [
     year: "2023",
     date: "May 2023",
     collaborators: ["Vaibhav Sharma", "Pranav Karthik", "Rosa Chen"],
-    hero: "/images/projects/home/travoai.jpg",
+    hero: "/images/projects/home/travoai.png",
     video: "https://www.youtube.com/embed/78VAqvWSsDg",
     links: [
       { label: "GitHub", href: "https://github.com/DonaldKLee/TravoAI", primary: true },

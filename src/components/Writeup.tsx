@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect } from "react";
 import type { Writeup } from "@/data/writeups";
+import { track } from "@/lib/analytics";
 import Reveal from "./Reveal";
 
 /* turn "What's next" into a markdown-style slug marker: "## whats-next" */
@@ -66,6 +68,11 @@ export default function Writeup({
     stack,
   } = writeup;
 
+  // which project stories people actually open, beyond the raw page view
+  useEffect(() => {
+    track("writeup_view", { slug, project: title, category });
+  }, [slug, title, category]);
+
   const people =
     role ??
     (collaborators.length
@@ -87,7 +94,7 @@ export default function Writeup({
               <span aria-hidden>←</span> all projects
             </Link>
             <p className="mt-6 font-mono text-sm text-accent">
-              ~/work/{slug}.md
+              ~/project/{slug}.md
             </p>
           </Reveal>
 
@@ -131,6 +138,13 @@ export default function Writeup({
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    track("outbound_click", {
+                      label: l.label,
+                      url: l.href,
+                      from: `writeup:${slug}`,
+                    })
+                  }
                   className={
                     l.primary
                       ? "group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-bg transition-transform duration-200 hover:-translate-y-0.5"
@@ -259,7 +273,7 @@ export default function Writeup({
       {/* ---- next project --------------------------------------------- */}
       <section className="px-5 pb-4 pt-10 sm:px-8">
         <Link
-          href={`/work/${next.slug}/`}
+          href={`/project/${next.slug}/`}
           aria-label={`Next project: ${next.title}`}
           className="group relative mx-auto block max-w-5xl overflow-hidden rounded-3xl border border-line-strong bg-surface"
         >

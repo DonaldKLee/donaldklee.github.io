@@ -7,3 +7,7 @@ next-env.d.ts
 
 # raw screen-recording sources (converted to mp4 in public/); too heavy for git
 media-src/
+
+# local env (never commit real analytics IDs / keys)
+.env.local
+.env*.local

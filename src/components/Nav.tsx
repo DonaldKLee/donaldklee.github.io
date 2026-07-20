@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { EMAIL } from "@/data/content";
+import { EMAIL, EMAIL_TEMPLATE } from "@/data/content";
+import { track } from "@/lib/analytics";
 
 const LINKS = [
   { label: "about", href: "/#about" },
@@ -57,7 +58,8 @@ export default function Nav() {
             </a>
           ))}
           <a
-            href={`mailto:${EMAIL}`}
+            href={`mailto:${EMAIL}${EMAIL_TEMPLATE}`}
+            onClick={() => track("contact_click", { location: "nav" })}
             className="ml-2 rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-bg transition-transform duration-200 hover:-translate-y-0.5"
           >
             Say hi
@@ -108,8 +110,11 @@ export default function Nav() {
             </a>
           ))}
           <a
-            href={`mailto:${EMAIL}`}
-            onClick={() => setOpen(false)}
+            href={`mailto:${EMAIL}${EMAIL_TEMPLATE}`}
+            onClick={() => {
+              setOpen(false);
+              track("contact_click", { location: "nav_mobile" });
+            }}
             className="mt-1 rounded-lg bg-ink px-3 py-2.5 text-center font-medium text-bg"
           >
             Say hi

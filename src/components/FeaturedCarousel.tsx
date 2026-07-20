@@ -18,6 +18,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import type { Project } from "@/data/content";
+import { track } from "@/lib/analytics";
 
 type TipData = { project: Project; index: number; total: number };
 type MetaTipHandle = {
@@ -55,8 +56,20 @@ export default function FeaturedCarousel({
   });
   const rotate = useTransform(scrollYProgress, [0, 1], [0, -(n - 1) * step]);
   const [current, setCurrent] = useState(0);
+  // furthest card reached, reported once each — a drop-off funnel for how far
+  // people actually rotate through the featured work
+  const furthest = useRef(0);
   useMotionValueEvent(scrollYProgress, "change", (p) => {
-    setCurrent(Math.min(n - 1, Math.max(0, Math.round(p * (n - 1)))));
+    const i = Math.min(n - 1, Math.max(0, Math.round(p * (n - 1))));
+    setCurrent(i);
+    if (i > furthest.current) {
+      furthest.current = i;
+      track("carousel_progress", {
+        reached: i + 1,
+        total: n,
+        project: projects[i]?.name,
+      });
+    }
   });
 
   // Any gesture over the pinned stage should advance the page: sideways
@@ -317,7 +330,7 @@ function CarouselCard({
 }) {
   const internal = Boolean(project.slug);
   const linkProps = internal
-    ? { href: `/work/${project.slug}/` }
+    ? { href: `/project/${project.slug}/` }
     : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
 
   // only fine pointers get the cursor-following tooltip; touch keeps the
@@ -331,6 +344,15 @@ function CarouselCard({
       {...linkProps}
       aria-label={`${project.name}. ${project.tagline}. ${project.description}`}
       tabIndex={active ? 0 : -1}
+      onClick={() =>
+        track("project_click", {
+          project: project.name,
+          category: project.category,
+          source: "featured_carousel",
+          position: index + 1,
+          link_type: internal ? "writeup" : "external",
+        })
+      }
       onMouseEnter={(e) => {
         if (!fine()) return;
         tip.current?.show({ project, index, total });

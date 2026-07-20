@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { experience } from "@/data/content";
+import { track } from "@/lib/analytics";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 
@@ -30,7 +31,11 @@ export default function Experience() {
                 className={i > 0 ? "border-t border-line" : ""}
               >
                 <button
-                  onClick={() => setOpen(isOpen ? -1 : i)}
+                  onClick={() => {
+                    setOpen(isOpen ? -1 : i);
+                    // only the opens are interesting: which employer they dug into
+                    if (!isOpen) track("experience_open", { org: group.org });
+                  }}
                   className="flex w-full items-center gap-4 px-5 py-5 text-left transition-colors hover:bg-surface sm:px-7"
                   aria-expanded={isOpen}
                 >

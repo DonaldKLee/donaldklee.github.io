@@ -31,6 +31,10 @@ jobs:
 
       - name: Build static site
         run: npm run build
+        env:
+          # Optional override — the GA4 property is baked into the source, so
+          # this only needs setting to report to a different property.
+          NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

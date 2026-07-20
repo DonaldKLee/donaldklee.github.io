@@ -11,6 +11,7 @@ import {
 import Reveal from "./Reveal";
 import FeaturedCarousel from "./FeaturedCarousel";
 import CardMedia from "./CardMedia";
+import { track } from "@/lib/analytics";
 
 const FILTERS: (Category | "All")[] = ["All", "Hackathon", "Side-Project"];
 const PAGE_SIZE = 6;
@@ -30,6 +31,7 @@ export default function Projects() {
   const choose = (f: Category | "All") => {
     setFilter(f);
     setPage(0);
+    track("shelf_filter", { filter: f });
   };
 
   return (
@@ -88,7 +90,10 @@ export default function Projects() {
           {pageCount > 1 && (
             <div className="mt-7 flex items-center justify-center gap-2.5 font-mono text-sm">
               <button
-                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                onClick={() => {
+                  setPage((p) => Math.max(0, p - 1));
+                  track("shelf_page", { direction: "prev", to: page, filter });
+                }}
                 disabled={page === 0}
                 className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-ink transition-colors hover:border-line-strong hover:bg-surface disabled:cursor-not-allowed disabled:border-line disabled:text-line-strong disabled:hover:bg-bg"
                 aria-label="Previous page"
@@ -110,7 +115,14 @@ export default function Projects() {
                 Page {page + 1} of {pageCount}
               </span>
               <button
-                onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+                onClick={() => {
+                  setPage((p) => Math.min(pageCount - 1, p + 1));
+                  track("shelf_page", {
+                    direction: "next",
+                    to: page + 2,
+                    filter,
+                  });
+                }}
                 disabled={page === pageCount - 1}
                 className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-ink transition-colors hover:border-line-strong hover:bg-surface disabled:cursor-not-allowed disabled:border-line disabled:text-line-strong disabled:hover:bg-bg"
                 aria-label="Next page"
@@ -131,12 +143,20 @@ function PinnedCard({ project, index }: { project: Project; index: number }) {
   const tilt = TILTS[index % TILTS.length];
   const internal = Boolean(project.slug);
   const linkProps = internal
-    ? { href: `/work/${project.slug}/` }
+    ? { href: `/project/${project.slug}/` }
     : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
   return (
     <motion.a
       layout
       {...linkProps}
+      onClick={() =>
+        track("project_click", {
+          project: project.name,
+          category: project.category,
+          source: "shelf",
+          link_type: internal ? "writeup" : "external",
+        })
+      }
       initial={{ opacity: 0, y: 18, rotate: tilt }}
       whileInView={{ opacity: 1, y: 0, rotate: tilt }}
       viewport={{ once: true, margin: "-40px" }}

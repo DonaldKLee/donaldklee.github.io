@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { track } from "@/lib/analytics";
 
 const RENDER_STEPS = [
   "parsing donaldlee.xyz",
@@ -88,7 +89,10 @@ export default function LoadingScreen({
           <div className="relative w-full max-w-[440px]">
             {/* skip */}
             <button
-              onClick={finish}
+              onClick={() => {
+                track("loader_skip");
+                finish();
+              }}
               className="absolute -top-9 right-0 font-mono text-xs text-muted transition-colors hover:text-ink"
             >
               skip →
