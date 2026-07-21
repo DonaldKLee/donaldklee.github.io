@@ -100,6 +100,17 @@ export default function RootLayout({
       lang="en"
       className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}
     >
+      <head>
+        {/* the hero Mii's instant poster — fetch it before anything else so the
+            character is painted in the first frame */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/mii/poster-idle.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
+      </head>
       <body>
         <a
           href="#main"

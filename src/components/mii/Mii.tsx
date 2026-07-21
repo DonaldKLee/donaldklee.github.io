@@ -341,7 +341,9 @@ export default function Mii({
       {/* ---------------- HEAD ---------------- */}
       <group ref={head} position={[0, 0, 0]}>
         <mesh scale={[1, 1.08, 0.96]} castShadow>
-          <sphereGeometry args={[1, 64, 64]} />
+          {/* 44×36 is visually identical to 64×64 on a smooth sphere this size,
+              at ~40% of the vertices — trims first-frame build cost */}
+          <sphereGeometry args={[1, 44, 36]} />
           <meshStandardMaterial color={COLORS.skin} roughness={0.58} />
         </mesh>
 
@@ -358,7 +360,7 @@ export default function Mii({
         {/* ---- HAIR: Korean middle-part perm ---- */}
         {/* back coverage */}
         <mesh position={[0, 0.08, -0.34]} scale={[1.02, 1.05, 0.92]}>
-          <sphereGeometry args={[1, 48, 48]} />
+          <sphereGeometry args={[1, 36, 32]} />
           <meshStandardMaterial color={COLORS.hair} roughness={0.52} />
         </mesh>
 

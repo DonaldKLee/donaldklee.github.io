@@ -180,6 +180,72 @@ body {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
 }
+
+/* ---- Mii spawn orbits ----
+   Shown while the live 3D wakes up behind the instant poster. Pure CSS on the
+   compositor, so the rings keep spinning smoothly even while the WebGL chunk
+   is parsing on the main thread. */
+@keyframes mii-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes mii-core-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.06);
+  }
+}
+/* the tilted stage gives the flat rings an atom-like sense of depth */
+.mii-orbits {
+  perspective: 620px;
+}
+.mii-orbits-tilt {
+  transform: rotateX(62deg);
+  transform-style: preserve-3d;
+}
+.mii-orbit {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 9999px;
+  border: 1.5px solid color-mix(in oklch, var(--color-accent) 38%, transparent);
+  animation: mii-orbit-spin linear infinite;
+}
+/* the bright electron riding each ring */
+.mii-orbit::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  height: 8px;
+  width: 8px;
+  margin-left: -4px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 1px color-mix(in oklch, var(--color-accent) 70%, transparent);
+}
+.mii-core {
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 50% 42%,
+    color-mix(in oklch, var(--color-accent) 55%, transparent),
+    color-mix(in oklch, var(--color-accent) 10%, transparent) 70%,
+    transparent
+  );
+  animation: mii-core-pulse 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mii-orbit,
+  .mii-core {
+    animation: none;
+  }
+}
 .caret {
   display: inline-block;
   width: 0.6ch;

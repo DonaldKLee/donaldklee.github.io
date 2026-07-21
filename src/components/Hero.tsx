@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { currentlyDoing, EMAIL, EMAIL_TEMPLATE } from "@/data/content";
 import { getMiiStatus, type MiiStatus } from "@/lib/miiMode";
 import { track } from "@/lib/analytics";
+import MiiLoader from "@/components/mii/MiiLoader";
 
 const MiiScene = dynamic(() => import("@/components/mii/MiiScene"), {
   ssr: false,
@@ -14,35 +15,23 @@ const MiiScene = dynamic(() => import("@/components/mii/MiiScene"), {
 const MII_MODES = new Set(["idle", "sleep", "work", "eat", "chill", "commute"]);
 const isMiiMode = (v: string): v is MiiStatus["mode"] => MII_MODES.has(v);
 
-// mini render-log shown while the 3D chunk loads; sibling in spirit to the
-// loading screen's "render donaldlee.xyz" exchange
-const SPAWN_LOG = [
-  "> spawning donald…",
-  "> combing the middle part…",
-  "> zipping the quarter-zip…",
-  "> lacing the shoes…",
-  "> almost there…",
-];
+// Static posters captured from the real scene, shown in the very first paint so
+// the Mii is on screen instantly instead of a loading blob. Only a few poses
+// are captured; anything else falls back to idle (a fine "materializing" stand-
+// in — the live canvas shows the correct pose the moment it's ready).
+const POSTER_BASE = "/images/mii/poster";
+const HAVE_POSTER = new Set(["idle", "work", "eat", "chill"]);
+const posterFor = (mode: MiiStatus["mode"]) =>
+  `${POSTER_BASE}-${HAVE_POSTER.has(mode) ? mode : "idle"}.webp`;
 
 export default function Hero({ ready }: { ready: boolean }) {
   const reduce = useReducedMotion();
   const [wave, setWave] = useState(0);
   const [idx, setIdx] = useState(0);
   const [status, setStatus] = useState<MiiStatus | null>(null);
-  // true once the canvas has painted its first frame; until then a
-  // placeholder holds the spot so the hero never looks broken
+  // true once the canvas has painted its first frame; until then the poster +
+  // orbits hold the spot so the Mii is visible immediately
   const [miiReady, setMiiReady] = useState(false);
-  const [logIdx, setLogIdx] = useState(0);
-
-  // walk the spawn log while the Mii loads, resting on the last line
-  useEffect(() => {
-    if (miiReady) return;
-    const t = window.setInterval(
-      () => setLogIdx((i) => Math.min(i + 1, SPAWN_LOG.length - 1)),
-      700,
-    );
-    return () => window.clearInterval(t);
-  }, [miiReady]);
 
   // warm the 3D chunk on first paint so the Mii is ready the instant the
   // loading screen lifts, instead of fetching it lazily afterward
@@ -191,35 +180,35 @@ export default function Hero({ ready }: { ready: boolean }) {
           role="img"
           aria-label="A 3D Mii of Donald with a black middle-part perm and a black quarter-zip over blue jeans. Tap to make him wave."
         >
-          {/* covers both the chunk download and WebGL warm-up, then hands
-              off the moment the first real frame is on screen (the scene
-              itself plays a spawn pop-in from there) */}
+          {/* instant paint: the real figure as a tiny webp, in the very first
+              frame, with orbits circling while the live scene wakes behind it.
+              Both fade out the moment the canvas has painted. */}
           <div
-            aria-hidden
-            className={`pointer-events-none absolute inset-0 grid place-items-center transition-opacity duration-300 ${
+            className={`absolute inset-0 transition-opacity duration-500 ${
               miiReady ? "opacity-0" : "opacity-100"
             }`}
           >
-            <div className="flex flex-col items-center gap-4">
-              {/* spawn pad: a soft ring where the Mii will land */}
-              <div className="relative grid h-28 w-28 place-items-center">
-                <div className="absolute inset-0 animate-ping rounded-full border border-line-strong opacity-40 [animation-duration:1.6s]" />
-                <div className="h-20 w-20 animate-pulse rounded-full bg-surface-2" />
-              </div>
-              <span className="font-mono text-xs text-muted">
-                {SPAWN_LOG[logIdx]}
-                <span className="animate-pulse">▌</span>
-              </span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={posterFor(status?.mode ?? "idle")}
+              alt=""
+              aria-hidden
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-contain"
+            />
+            {!miiReady && <MiiLoader />}
           </div>
           <div
-            className={`absolute inset-0 transition-opacity duration-300 ${
+            className={`absolute inset-0 transition-opacity duration-500 ${
               miiReady ? "opacity-100" : "opacity-0"
             }`}
           >
             <MiiScene
               waveKey={wave}
               mode={status?.mode ?? "idle"}
+              // the poster already showed the entrance, so skip the pop-in
+              spawn={false}
               onReady={() => setMiiReady(true)}
             />
           </div>
