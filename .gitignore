@@ -11,3 +11,6 @@ media-src/
 # local env (never commit real analytics IDs / keys)
 .env.local
 .env*.local
+
+# editor
+.vscode/

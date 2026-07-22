@@ -32,21 +32,6 @@ function FirstFrame({ onReady }: { onReady?: () => void }) {
   return null;
 }
 
-// TEMP poster capture: with ?poster=1, stash a webp of the settled scene on
-// window so tooling can save it. Removed after posters are generated.
-function PosterCapture() {
-  const n = useRef(0);
-  useFrame(({ gl }) => {
-    n.current++;
-    (window as unknown as Record<string, unknown>).__posterFrames = n.current;
-    if (n.current >= 5) {
-      (window as unknown as Record<string, unknown>).__posterCapture =
-        gl.domElement.toDataURL("image/webp", 0.92);
-    }
-  });
-  return null;
-}
-
 const SPAWN_DURATION = 0.65;
 
 /** Pops the figure in on mount: scale 0 → 1 with a small overshoot, like a
@@ -157,8 +142,6 @@ export default function MiiScene({
             frames={60}
           />
           <FirstFrame onReady={onReady} />
-          {typeof window !== "undefined" &&
-            window.location.search.includes("poster=1") && <PosterCapture />}
         </Suspense>
       </Canvas>
     </div>

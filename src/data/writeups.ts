@@ -4,7 +4,7 @@ import type { Category } from "./content";
    Project write-ups.
 
    One structured document per project. The reusable page at
-   /work/[slug] renders any of these, in this order, so the "next project"
+   /project/[slug] renders any of these, in this order, so the "next project"
    link at the bottom of each write-up cycles through the list below.
 
    Body text supports inline links written as markdown: [label](https://url).
@@ -199,7 +199,7 @@ export const writeups: Writeup[] = [
       {
         heading: "What's next",
         body: [
-          "Nothing planned for now, but there's room to optimize the game and give the graphics a pass down the road.",
+          "There are no current plans for Hakoten Fruits, but the game can be further optimized and the graphics in the game may be improved on in the future.",
         ],
       },
     ],
@@ -223,8 +223,7 @@ export const writeups: Writeup[] = [
     hero: "/images/projects/home/giftdex.png",
     video: "https://www.youtube.com/embed/3uVRyXzff60",
     links: [
-      { label: "Try it out", href: "https://giftdex.tech/", primary: true },
-      { label: "Devpost", href: "https://devpost.com/software/giftbase" },
+      { label: "Devpost", href: "https://devpost.com/software/giftbase", primary: true },
       { label: "GitHub", href: "https://github.com/DonaldKLee/GiftDex" },
     ],
     summary: [
@@ -287,8 +286,7 @@ export const writeups: Writeup[] = [
     hero: "/images/projects/home/sharkcult.png",
     video: "https://www.youtube.com/embed/Z_-SByZKyVs",
     links: [
-      { label: "Try it out", href: "https://sharkcult.tech/", primary: true },
-      { label: "Devpost", href: "https://devpost.com/software/shark-snatcher" },
+      { label: "Devpost", href: "https://devpost.com/software/shark-snatcher", primary: true },
       { label: "GitHub", href: "https://github.com/DonaldKLee/SharkCult" },
     ],
     summary: [
@@ -348,12 +346,7 @@ export const writeups: Writeup[] = [
     role: "Programmer, with Nikole Hu on design",
     hero: "/images/projects/home/vidnotes.png",
     links: [
-      {
-        label: "Try it out",
-        href: "https://usevidnotes.herokuapp.com/",
-        primary: true,
-      },
-      { label: "GitHub", href: "https://github.com/DonaldKLee/VidNotes" },
+      { label: "GitHub", href: "https://github.com/DonaldKLee/VidNotes", primary: true },
     ],
     summary: [
       "Ever wanted to take notes on a YouTube video without splitting your screen? Or send a video to a friend with instructions attached? Or take notes on someone else's device without logging into anything?",
@@ -450,6 +443,7 @@ export const writeups: Writeup[] = [
     date: "August–December 2020",
     collaborators: ["Rosa Chen", "Matthew Quock", "Kenny Kwan", "Samuel Wu"],
     hero: "/images/projects/home/covidbot.png",
+    video: "https://www.youtube.com/embed/AYMbxRRWwDA?si=3UEUgUlmuA8d0wKA",
     links: [
       {
         label: "Add to Discord",
@@ -541,6 +535,43 @@ export const writeups: Writeup[] = [
     ],
   },
   {
+    slug: "studyhawk",
+    title: "StudyHawk",
+    tagline: "A timer that nudges you to rest",
+    category: "Side-Project",
+    year: "2020",
+    date: "August 4–7, 2020",
+    collaborators: [],
+    hero: "/images/projects/home/studyhawk.png",
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/DonaldKLee/StudyHawk",
+        primary: true,
+      },
+    ],
+    summary: [
+      "With school and work moving home, procrastination got easier. StudyHawk is a productivity timer that pings you when it's time for a break and when the break is over, with a couple of friendly nudges in between: one halfway through your work session, in case you've drifted, and one when your break is about 75% done.",
+    ],
+    sections: [
+      {
+        heading: "Inspiration",
+        body: [
+          "Pomodoro timers, and the study timers at [Leading Learners](https://www.leadlearners.ca/).",
+        ],
+      },
+      {
+        heading: "What I learned",
+        body: [
+          "I planned to build the GUI with tkinter, but PyQt5 looked far more modern, so I switched even though it was harder to learn. As my first Python program with a GUI, wiring my functions to the interface objects was the tricky part, and a good learning experience.",
+        ],
+      },
+    ],
+    stack: [
+      { label: "Languages & libraries", items: ["Python", "PyQt5", "win10toast"] },
+    ],
+  },
+  {
     slug: "carepackages4u",
     title: "CarePackages4U",
     tagline: "Care packages, coordinated",
@@ -595,43 +626,6 @@ export const writeups: Writeup[] = [
         items: ["Flask", "WTForms", "Flask-SQLAlchemy", "pytz"],
       },
       { label: "Tools", items: ["Figma", "Replit", "Google Slides"] },
-    ],
-  },
-  {
-    slug: "studyhawk",
-    title: "StudyHawk",
-    tagline: "A timer that nudges you to rest",
-    category: "Side-Project",
-    year: "2020",
-    date: "August 4–7, 2020",
-    collaborators: [],
-    hero: "/images/projects/home/studyhawk.png",
-    links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/DonaldKLee/StudyHawk",
-        primary: true,
-      },
-    ],
-    summary: [
-      "With school and work moving home, procrastination got easier. StudyHawk is a productivity timer that pings you when it's time for a break and when the break is over, with a couple of friendly nudges in between: one halfway through your work session, in case you've drifted, and one when your break is about 75% done.",
-    ],
-    sections: [
-      {
-        heading: "Inspiration",
-        body: [
-          "Pomodoro timers, and the study timers at [Leading Learners](https://www.leadlearners.ca/).",
-        ],
-      },
-      {
-        heading: "What I learned",
-        body: [
-          "I planned to build the GUI with tkinter, but PyQt5 looked far more modern, so I switched even though it was harder to learn. As my first Python program with a GUI, wiring my functions to the interface objects was the tricky part, and a good learning experience.",
-        ],
-      },
-    ],
-    stack: [
-      { label: "Languages & libraries", items: ["Python", "PyQt5", "win10toast"] },
     ],
   },
 ];

@@ -46,7 +46,7 @@ export type AnalyticsEvent =
   | "section_view"
   /** 25 / 50 / 75 / 100% page scroll milestones */
   | "scroll_depth"
-  /** landed on a /work/<slug> write-up */
+  /** landed on a /project/<slug> write-up */
   | "writeup_view"
   /** any other outbound link */
   | "outbound_click";

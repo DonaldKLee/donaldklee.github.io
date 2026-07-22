@@ -33,6 +33,19 @@ export default function MiiLoader() {
           ))}
         </div>
       </div>
+
+      {/* spells out what the orbits are doing, in the site's render-log voice,
+          with live dots so it reads as in-progress at a glance */}
+      <div className="absolute inset-x-0 bottom-[7%] flex justify-center">
+        <span className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/85 px-3 py-1 font-mono text-xs text-ink-soft shadow-sm backdrop-blur-sm">
+          <span className="text-accent-strong">rendering</span> donald
+          <span className="ml-0.5 inline-flex gap-1">
+            <span className="mii-loading-dot h-[3px] w-[3px] rounded-full bg-accent" />
+            <span className="mii-loading-dot h-[3px] w-[3px] rounded-full bg-accent [animation-delay:0.2s]" />
+            <span className="mii-loading-dot h-[3px] w-[3px] rounded-full bg-accent [animation-delay:0.4s]" />
+          </span>
+        </span>
+      </div>
     </div>
   );
 }

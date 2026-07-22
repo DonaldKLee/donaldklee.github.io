@@ -8,7 +8,7 @@ export interface Project {
   href: string;
   image: string;
   award?: string;
-  /** when set, the card opens the internal write-up at /work/<slug> */
+  /** when set, the card opens the internal write-up at /project/<slug> */
   slug?: string;
   /**
    * Optional zoom for the card image. 1 = no zoom (default). Use >1 to crop
@@ -344,14 +344,11 @@ export const experience: ExperienceGroup[] = [
 ];
 
 export interface SideQuest {
+  /** short caption shown under the polaroid */
   title: string;
-  blurb: string;
+  /** pill overlaid on the photo */
   tag: string;
-  emoji: string;
-  /**
-   * Photo slot. Drop a file at /public/images/sidequests/<slug>.jpg and it
-   * appears automatically; until then the stylized polaroid shows.
-   */
+  /** filename in /public/images/sidequests (full name incl. extension) */
   slug: string;
 }
 
@@ -360,91 +357,28 @@ export interface SideQuest {
  * add /public/images/sidequests/<slug>.jpg and it shows in place of the
  * stylized stand-in.
  */
+// Ordered to alternate portrait / landscape and spread the nwPlus photos out,
+// so the memory rail reads as a varied filmstrip rather than clumps.
 export const sideQuests: SideQuest[] = [
-  {
-    title: "nwPlus",
-    tag: "Hackathons",
-    emoji: "🚀",
-    slug: "presntres.jpeg",
-    blurb: "Pres and Tres",
-  },
-  {
-    title: "Boeing intern cohort",
-    tag: "Boeing",
-    emoji: "✈️",
-    slug: "boeing",
-    blurb: "The data-science team that put up with all my questions.",
-  },
-  {
-    title: "Amazon intern cohort",
-    tag: "Amazon",
-    emoji: "📦",
-    slug: "amazon",
-    blurb: "Summers of free lunches and surprisingly good coffee.",
-  },
-  {
-    title: "Victoria with friends",
-    tag: "Victoria",
-    emoji: "⛵",
-    slug: "victoria",
-    blurb: "Ferries, tide pools, and far too many photos of the water.",
-  },
-  {
-    title: "Competing at CalHacks",
-    tag: "CalHacks",
-    emoji: "🐻",
-    slug: "calhacks",
-    blurb: "Berkeley, 36 hours, and a demo held together with hope.",
-  },
-  {
-    title: "Competing at StormHacks",
-    tag: "StormHacks",
-    emoji: "⛈️",
-    slug: "stormhacks",
-    blurb: "Where TravoAI came to life over one very long weekend.",
-  },
-  {
-    title: "On the mic",
-    tag: "Workshops",
-    emoji: "🎤",
-    slug: "workshops",
-    blurb: "Teaching workshops and hyping up rooms full of first-time hackers.",
-  },
-  {
-    title: "My coding club",
-    tag: "nwPlus",
-    emoji: "🚀",
-    slug: "codingclub",
-    blurb: "53 execs, three hackathons a year, one chaotic group chat.",
-  },
-  {
-    title: "Storm the Wall",
-    tag: "UBC",
-    emoji: "🌌",
-    slug: "storm-the-wall",
-    blurb: "...",
-  },
-  {
-    title: "Northern lights",
-    tag: "Iceland",
-    emoji: "🌌",
-    slug: "iceland",
-    blurb: "Stood under a green sky in the middle of nowhere. Worth the cold.",
-  },
-  {
-    title: "Off the map in Asia",
-    tag: "Asia",
-    emoji: "🏯",
-    slug: "asia",
-    blurb: "Saying yes to the adventurous option, every single time.",
-  },
-  {
-    title: "Good eats in Japan",
-    tag: "Japan",
-    emoji: "🍜",
-    slug: "japan",
-    blurb: "On a lifelong mission to find the perfect bowl of ramen.",
-  },
+  { title: "SCI 19RA", tag: "Orientation Leader", slug: "jumpstartstudents.jpg" },
+  { title: "Leadership team behind SOAR's first iteration", tag: "UBC Startups", slug: "ubcstartups.jpg" },
+  { title: "Dev team behind HackCamp 2024", tag: "nwPlus", slug: "hackcamp2024.jpg" },
+  // { title: "Cooking with friends", tag: "Friends", slug: "cookingwithfriends.jpg" },
+  // { title: "Badminton with nwPlus", tag: "nwPlus", slug: "badmintonwithnwplus.jpg" },
+  { title: "Boothing for nwPlus", tag: "nwPlus", slug: "boothingfornwplus.jpg" },
+  { title: "nwRetreat", tag: "nwPlus", slug: "nwplusretreat.jpg" },
+  { title: "Boeing interns", tag: "Boeing", slug: "boeinginterns.jpg" },
+  { title: "Dev team - nwGala 2025", tag: "nwPlus", slug: "nwplusgala.jpg" },
+  { title: "Matcha runs with nwAmazon interns", tag: "Amazon", slug: "matchawithamazoninterns.jpg" },
+  { title: "Best use of AWS awarded by Jeff from BobaTalks", tag: "Hack the North", slug: "winninghackthenorth.jpg" },
+  { title: "Pres & Tres", tag: "nwPlus", slug: "presntres.jpg" },
+  { title: "Pedal boating in a lake", tag: "Friends", slug: "boatingwithfriends.jpg" },
+  { title: "Under the northern lights", tag: "Travel", slug: "northernlights.jpg" },
+  { title: "Storm the Wall", tag: "Friends", slug: "stormthewall.jpg" },
+  { title: "Club Dynamic Award", tag: "nwPlus", slug: "clubdynamicaward.jpg" },
+  { title: "nwGala 2026", tag: "nwPlus", slug: "nwplusgala2026.jpg" },
+  { title: "ATV biking in Bali", tag: "Travel", slug: "atvriding.jpg" },
+  { title: "Alphonso Davies @ zon", tag: "Amazon", slug: "withalphonsodavies.jpg" },
 ];
 
 export const socials = [

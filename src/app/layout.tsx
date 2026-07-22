@@ -47,7 +47,14 @@ export const metadata: Metadata = {
     url: SITE,
     siteName: "Donald Lee",
     type: "website",
-    images: [{ url: "/images/SEO_BG.PNG", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/images/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Donald Lee, software developer at UBC",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -55,13 +62,9 @@ export const metadata: Metadata = {
     description:
       "Self-taught developer at UBC building AI tooling and side projects.",
     creator: "@HiDonaldLee",
+    images: ["/images/og.png"],
   },
-  icons: {
-    icon: [
-      { url: "/images/DL_Logo.png", media: "(prefers-color-scheme: light)" },
-      { url: "/images/DL_Logo_white.png", media: "(prefers-color-scheme: dark)" },
-    ],
-  },
+  // favicons are provided by app/icon.svg + app/apple-icon.png (Next convention)
 };
 
 export const viewport: Viewport = {
@@ -99,6 +102,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}
+      // Next's router sets scroll-behavior:auto on <html> before hydration for
+      // its own scroll handling; declaring it here keeps server and client in
+      // agreement (no hydration mismatch). Native scrolling stays instant, and
+      // SmoothScrollLinks' explicit scrollTo({behavior:"smooth"}) still wins.
+      style={{ scrollBehavior: "auto" }}
     >
       <head>
         {/* the hero Mii's instant poster — fetch it before anything else so the

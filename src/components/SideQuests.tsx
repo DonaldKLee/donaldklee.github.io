@@ -36,7 +36,7 @@ export default function SideQuests() {
         <SectionHeading
           marker="## side-quests"
           title="Memories throughout the years"
-          sub="Some trips, team photos, and moments with friends."
+          sub="Some trips, team photos, moments with friends, and more."
         />
       </div>
 
@@ -138,11 +138,31 @@ function Polaroid({
   onRatio: (slug: string, r: number) => void;
 }) {
   const tilt = TILTS[index % TILTS.length];
+  const imgRef = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   // photo shape: a varied default until the real image loads, then its true
   // ratio so vertical, square, and horizontal photos all sit right
   const shape = ratio ?? DEFAULT_RATIOS[index % DEFAULT_RATIOS.length];
+
+  const markLoaded = (el: HTMLImageElement) => {
+    if (el.naturalWidth && el.naturalHeight)
+      onRatio(quest.slug, clampRatio(el.naturalWidth / el.naturalHeight));
+    setLoaded(true);
+  };
+
+  // These images are eager-preloaded, so many finish before React attaches the
+  // onLoad handler. Without this, the load event is missed and the photo stays
+  // stuck at opacity 0 (loaded but invisible). Catch the already-complete case.
+  useEffect(() => {
+    const el = imgRef.current;
+    if (!el) return;
+    if (el.complete) {
+      if (el.naturalWidth > 0) markLoaded(el);
+      else setFailed(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <figure
@@ -186,18 +206,17 @@ function Polaroid({
         {!failed && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            ref={imgRef}
             src={`/images/sidequests/${quest.slug}`}
             alt={quest.title}
-            loading="lazy"
-            onLoad={(e) => {
-              const el = e.currentTarget;
-              if (el.naturalWidth && el.naturalHeight)
-                onRatio(
-                  quest.slug,
-                  clampRatio(el.naturalWidth / el.naturalHeight),
-                );
-              setLoaded(true);
-            }}
+            // eager (not lazy): the browser still fetches these at Low priority
+            // since they're offscreen, so they preload in the background after
+            // the hero and are ready the instant the rail is reached — via
+            // scroll or the "side quests" nav jump. Lazy left them blank until
+            // they panned into the auto-scrolling rail one by one.
+            decoding="async"
+            fetchPriority="low"
+            onLoad={(e) => markLoaded(e.currentTarget)}
             onError={() => setFailed(true)}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
               loaded ? "opacity-100" : "opacity-0"
@@ -214,9 +233,6 @@ function Polaroid({
         <h3 className="font-display text-base font-semibold text-ink">
           {quest.title}
         </h3>
-        <p className="mt-0.5 text-[0.82rem] leading-relaxed text-muted">
-          {quest.blurb}
-        </p>
       </figcaption>
     </figure>
   );

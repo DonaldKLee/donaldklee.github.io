@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
-import CursorWii from "@/components/CursorWii";
+import SmoothScrollLinks from "@/components/SmoothScrollLinks";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       <LoadingScreen onComplete={() => setReady(true)} />
-      <CursorWii />
+      <SmoothScrollLinks />
       <Nav />
       <SideRails />
       <main id="main">

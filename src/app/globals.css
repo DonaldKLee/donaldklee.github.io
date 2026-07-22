@@ -40,7 +40,6 @@
   --z-sticky: 40;
   --z-nav: 60;
   --z-tooltip: 70;
-  --z-cursor: 80;
   --z-overlay: 100;
   --z-loader: 120;
 }
@@ -55,7 +54,10 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* native (snappy) scrolling by default; SmoothScrollLinks animates only the
+     in-page nav/CTA jumps. scroll-padding keeps a hash landing (page load with
+     #section, or back/forward) clear of the fixed nav. */
+  scroll-padding-top: 4.5rem;
 }
 
 body {
@@ -240,10 +242,32 @@ body {
   );
   animation: mii-core-pulse 1.8s ease-in-out infinite;
 }
+/* the "rendering" caption's live dots — the unambiguous "this is loading, not
+   décor" tell, and the primary cue once reduced motion freezes the rings */
+@keyframes mii-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+.mii-loading-dot {
+  animation: mii-dot 1.4s ease-in-out infinite;
+}
 @media (prefers-reduced-motion: reduce) {
   .mii-orbit,
   .mii-core {
     animation: none;
+  }
+  /* keep the dots lit so the caption still reads as in-progress */
+  .mii-loading-dot {
+    animation: none;
+    opacity: 1;
   }
 }
 .caret {
@@ -254,14 +278,4 @@ body {
   vertical-align: -0.12em;
   background: var(--color-accent);
   animation: blink-caret 1s steps(1) infinite;
-}
-
-/* Wii hand cursor — hide the native pointer while it's active */
-.wii-cursor,
-.wii-cursor a,
-.wii-cursor button,
-.wii-cursor [role="button"],
-.wii-cursor canvas,
-.wii-cursor [data-clickable] {
-  cursor: none !important;
 }
