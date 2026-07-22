@@ -103,7 +103,23 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              onClick={() => setOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                
+                // Wait for menu close animation (300ms) before scrolling
+                setTimeout(() => {
+                  const id = l.href.startsWith("/#") ? l.href.slice(2) : l.href.slice(1);
+                  const target = document.getElementById(id);
+                  if (target) {
+                    const NAV_OFFSET = 72;
+                    const top = target.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+                    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                    window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+                    history.pushState(null, "", l.href);
+                  }
+                }, 300);
+              }}
               className="rounded-lg px-3 py-2.5 font-mono text-base text-ink-soft hover:bg-surface"
             >
               {l.label}
