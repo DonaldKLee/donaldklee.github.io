@@ -65,10 +65,26 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
     if (reduce) return;
     const el = railRef.current;
     if (!el) return;
+
     let raf = 0;
     let last = performance.now();
+    let onScreen = true;
+
+    // only run the loop while the rail is actually in view: no wasted work
+    // off-screen, and resetting `last` on re-entry prevents a lurch after the
+    // tab or section was away (where rAF pauses and dt would balloon)
+    const io = new IntersectionObserver(
+      ([e]) => {
+        onScreen = e.isIntersecting;
+        last = performance.now();
+      },
+      { rootMargin: "100px" },
+    );
+    io.observe(el);
+
     const tick = (t: number) => {
-      const dt = t - last;
+      // cap dt so returning from a background tab advances one frame, not a jump
+      const dt = Math.min(t - last, 40);
       last = t;
       // one copy's exact width, measured between the two copies' first items
       // (scrollWidth / 2 is off by the edge padding + seam gap, which made
@@ -87,11 +103,14 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
         if (el.scrollLeft >= period + 1) el.scrollLeft -= period;
         else if (el.scrollLeft < 1) el.scrollLeft += period;
       }
-      if (!paused.current) el.scrollLeft += dt * 0.03; // ~30px/s
+      if (onScreen && !paused.current) el.scrollLeft += dt * 0.04; // ~40px/s
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
   }, [reduce]);
 
   const items = reduce ? sideQuests : [...sideQuests, ...sideQuests];
@@ -99,10 +118,10 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
   return (
     <div
       ref={railRef}
-      onPointerEnter={() => (paused.current = true)}
-      onPointerLeave={() => (paused.current = false)}
-      onPointerDown={() => (paused.current = true)}
-      onPointerUp={() => (paused.current = false)}
+      // pause on hover so you can study a photo (desktop only — mouse events
+      // don't fire on touch, so phones keep rolling and never get stuck paused)
+      onMouseEnter={() => (paused.current = true)}
+      onMouseLeave={() => (paused.current = false)}
       // pt makes room for the hover lift, pb for the polaroid drop shadow —
       // a scroll container clips both, so tight padding shows a sheared edge
       className="marquee-fade no-scrollbar flex gap-6 overflow-x-auto overscroll-x-contain px-5 pb-12 pt-7 sm:gap-9 sm:px-8"
