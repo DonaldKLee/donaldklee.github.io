@@ -41,7 +41,7 @@ export default function CardMedia({
       <CardVideo
         src={project.image}
         label={alt}
-        className={`${fill ? "absolute inset-0 " : ""}h-full w-full ${className}`}
+        className={`${fill ? "absolute inset-0 " : ""}h-full w-full object-cover`}
         style={style}
         active={active}
       />
@@ -79,7 +79,7 @@ function CardVideo({
   src: string;
   label: string;
   className: string;
-  style: CSSProperties;
+  style?: CSSProperties;
   active: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);

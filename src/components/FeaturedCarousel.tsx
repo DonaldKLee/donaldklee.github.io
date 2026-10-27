@@ -223,10 +223,10 @@ export default function FeaturedCarousel({
         <div className="absolute inset-x-0 top-0 z-10 pt-[max(4.5rem,7vh)]">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <p className="mb-1 font-mono text-sm text-accent">{marker}</p>
-            <h2 className="font-display text-2xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">
+            <h2 className="font-display text-xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">
               {title}
             </h2>
-            <p className="mt-1.5 line-clamp-2 max-w-[58ch] text-sm leading-relaxed text-muted sm:text-base">
+            <p className="mt-1 hidden max-w-[58ch] text-sm leading-relaxed text-muted sm:mt-1.5 sm:line-clamp-2 sm:block sm:text-base">
               {sub}
             </p>
           </div>
@@ -369,8 +369,10 @@ function CarouselCard({
       className="group relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-line bg-bg shadow-[0_34px_80px_-36px_rgba(40,60,100,0.55)]"
     >
       {/* media: fills the whole card on desktop (text block is hidden there),
-          sits on top on phones where the text block takes the space below */}
-      <div className="relative min-h-0 grow overflow-hidden bg-surface">
+          sits on top on phones where the text block takes the space below. The
+          demo clips are widescreen (~2:1), so a dark frame turns the letterbox
+          into an intentional, cinematic border instead of blank space. */}
+      <div className="relative min-h-0 grow overflow-hidden bg-ink">
         <CardMedia
           project={project}
           fill

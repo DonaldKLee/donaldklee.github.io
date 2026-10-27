@@ -130,7 +130,9 @@ body {
    there's no hover to surface a tooltip. */
 .cylinder-stage {
   --card-w: min(92vw, 720px);
-  --card-h: max(calc(var(--card-w) * 0.58), 232px);
+  /* ~1.9:1, close to the widescreen demo clips so they nearly fill the card
+     with only a slim cinematic letterbox (radius is width-based, unaffected) */
+  --card-h: max(calc(var(--card-w) * 0.52), 232px);
   --radius: calc(var(--card-w) / 1.04);
   --persp: calc(var(--radius) * 10);
   perspective: var(--persp);
@@ -138,7 +140,9 @@ body {
 @media (max-width: 640px) {
   .cylinder-stage {
     --card-w: 86vw;
-    --card-h: max(calc(var(--card-w) * 1.26), 440px);
+    /* shorter than before: the media area above the caption stays close to the
+       widescreen clips, so phones get a slim letterbox, not a tall portrait gap */
+    --card-h: max(calc(var(--card-w) * 0.95), 360px);
   }
 }
 

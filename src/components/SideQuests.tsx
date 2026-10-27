@@ -118,9 +118,12 @@ function PhotoRail({ reduce }: { reduce: boolean }) {
   return (
     <div
       ref={railRef}
-      // pause on hover so you can study a photo (desktop only — mouse events
-      // don't fire on touch, so phones keep rolling and never get stuck paused)
-      onMouseEnter={() => (paused.current = true)}
+      // pause on hover so you can study a photo, but only on devices that truly
+      // hover: on touch, some browsers synthesize mouse events, and a pause that
+      // never clears is exactly why the rail looked frozen on phones
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) paused.current = true;
+      }}
       onMouseLeave={() => (paused.current = false)}
       // pt makes room for the hover lift, pb for the polaroid drop shadow —
       // a scroll container clips both, so tight padding shows a sheared edge

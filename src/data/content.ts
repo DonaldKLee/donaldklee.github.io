@@ -23,13 +23,31 @@ export interface Project {
 /* The headliners — flow one into the next */
 export const featuredProjects: Project[] = [
   {
-    name: "Climate Change visualized",
-    tagline: "Climate change, in 3D",
+    name: "Ember",
+    tagline: "A wildfire-prevention rover with a phone for its brain",
     description:
-      "A web app that maps decades of climate data onto an interactive 3D globe. Spin the planet, scrub through time, and watch the numbers move.",
-    category: "Side-Project",
-    href: "https://donaldklee.github.io/Global-Climate-Change-Visualization",
-    image: "/images/projects/home/GlobeDemo.mp4",
+      "An autonomous rover that detects and clears dry leaves to prevent forest fires, powered by on-device AI, LiDAR, and 3D reconstruction.",
+    category: "Hackathon",
+    href: "https://devpost.com/software/soon-2026",
+    image: "/images/projects/home/EmberDemo.mp4",
+  },
+  {
+    name: "Sifter",
+    tagline: "Canadian and US stocks, in plain English",
+    description:
+      "A stock market dashboard that explains how your stocks are doing in plain language, with daily recaps and trend context.",
+    category: "Startup",
+    href: "https://checksifter.com/",
+    image: "/images/projects/home/SifterDemo.gif",
+  },
+  {
+    name: "plus1",
+    tagline: "An AI teammate that joins your Google Meet",
+    description:
+      "An AI participant with a face and voice that joins Google Meet, answers questions in real time, and can take on action items or screenshare.",
+    category: "Hackathon",
+    href: "https://devpost.com/software/plus1-1imlbz",
+    image: "/images/projects/home/plus1Demo.gif",
   },
   {
     name: "Fragments",
@@ -41,6 +59,28 @@ export const featuredProjects: Project[] = [
     image: "/images/projects/home/FragmentsDemo.mp4",
   },
   {
+    name: "Provent",
+    tagline: "A productivity chrome extension",
+    description:
+      "A customizable Chrome extension that replaces your new-tab with a modern workspace, a pomodoro timer, and a site blocker for when you need to focus.",
+    category: "Startup",
+    href: "https://provent-extension.github.io/",
+    image: "/images/projects/home/ProventDemo.mp4",
+  },
+];
+
+/* The rest of the shelf */
+export const moreProjects: Project[] = [
+  {
+    name: "Climate Change visualized",
+    tagline: "Climate change, in 3D",
+    description:
+      "A web app that maps decades of climate data onto an interactive 3D globe. Spin the planet, scrub through time, and watch the numbers move.",
+    category: "Side-Project",
+    href: "https://donaldklee.github.io/Global-Climate-Change-Visualization",
+    image: "/images/projects/home/GlobeDemo.mp4",
+  },
+  {
     name: "nwPlus.io",
     tagline: "The club behind Western Canada's Largest hackathons",
     description:
@@ -49,7 +89,15 @@ export const featuredProjects: Project[] = [
     href: "https://www.nwplus.io/",
     image: "/images/projects/home/nwPluswwwDemo.mp4",
   },
-  { 
+  {
+    name: "RickGPT",
+    tagline: "ChatGPT UI with a Rick roll",
+    description: "A ChatGPT look-alike built for April Fools.",
+    category: "Side-Project",
+    href: "https://donaldklee.github.io/rickgpt",
+    image: "/images/projects/home/rickgpt.png",
+  },
+  {
     name: "HonkHonkHire",
     tagline: "AI mock interviewer",
     description:
@@ -58,27 +106,6 @@ export const featuredProjects: Project[] = [
     href: "https://donaldklee.github.io/honkhonkhire.html",
     image: "/images/projects/home/HonkHonkHireDemo.mp4",
     slug: "honkhonkhire",
-  },
-  {
-    name: "Provent",
-    tagline: "A productivity chrome extension",
-    description:
-      "A customizable Chrome extension that replaces your new-tab with a modern workspace, a pomodoro timer, and a site blocker for when you need to focus.",
-    category: "Startup",
-    href: "https://provent-extension.github.io/links.html",
-    image: "/images/projects/home/ProventDemo.mp4",
-  },
-];
-
-/* The rest of the shelf */
-export const moreProjects: Project[] = [
-  {
-    name: "RickGPT",
-    tagline: "ChatGPT UI with a Rick roll",
-    description: "A ChatGPT look-alike built for April Fools.",
-    category: "Side-Project",
-    href: "https://donaldklee.github.io/rickgpt",
-    image: "/images/projects/home/rickgpt.png",
   },
   {
     name: "TravoAI",
@@ -360,6 +387,8 @@ export interface SideQuest {
 // Ordered to alternate portrait / landscape and spread the nwPlus photos out,
 // so the memory rail reads as a varied filmstrip rather than clumps.
 export const sideQuests: SideQuest[] = [
+  { title: "Hack the North 2026", tag: "Hack the North", slug: "hackthenorth2026.jpg" },
+  { title: "Building a rover at SOON", tag: "SOON Hackathon", slug: "buildingroveratSOON.jpg" },
   { title: "SCI 19RA", tag: "Orientation Leader", slug: "jumpstartstudents.jpg" },
   { title: "Leadership team behind SOAR's first iteration", tag: "UBC Startups", slug: "ubcstartups.jpg" },
   { title: "Dev team behind HackCamp 2024", tag: "nwPlus", slug: "hackcamp2024.jpg" },
