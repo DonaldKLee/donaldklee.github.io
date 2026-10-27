@@ -38,7 +38,7 @@ export const featuredProjects: Project[] = [
       "A stock market dashboard that explains how your stocks are doing in plain language, with daily recaps and trend context.",
     category: "Side-Project",
     href: "https://checksifter.com/",
-    image: "/images/projects/home/SifterDemo.gif",
+    image: "/images/projects/home/SifterDemo.mp4",
   },
   {
     name: "plus1",
@@ -47,7 +47,7 @@ export const featuredProjects: Project[] = [
       "An AI participant with a face and voice that joins Google Meet, answers questions in real time, and can take on action items or screenshare.",
     category: "Hackathon",
     href: "https://devpost.com/software/plus1-1imlbz",
-    image: "/images/projects/home/plus1Demo.gif",
+    image: "/images/projects/home/plus1Demo.mp4",
   },
   {
     name: "Fragments",
