@@ -388,7 +388,7 @@ export interface SideQuest {
 // so the memory rail reads as a varied filmstrip rather than clumps.
 export const sideQuests: SideQuest[] = [
   { title: "Hack the North 2026", tag: "Hack the North", slug: "hackthenorth2026.jpg" },
-  { title: "Building a rover at SOON", tag: "SOON Hackathon", slug: "buildingroveratSOON.jpg" },
+  { title: "SOON", tag: "SOON Hackathon", slug: "soon.jpg" },
   { title: "SCI 19RA", tag: "Orientation Leader", slug: "jumpstartstudents.jpg" },
   { title: "Leadership team behind SOAR's first iteration", tag: "UBC Startups", slug: "ubcstartups.jpg" },
   { title: "Dev team behind HackCamp 2024", tag: "nwPlus", slug: "hackcamp2024.jpg" },
