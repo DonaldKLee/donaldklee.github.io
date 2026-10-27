@@ -36,7 +36,7 @@ export const featuredProjects: Project[] = [
     tagline: "Canadian and US stocks, in plain English",
     description:
       "A stock market dashboard that explains how your stocks are doing in plain language, with daily recaps and trend context.",
-    category: "Startup",
+    category: "Side-Project",
     href: "https://checksifter.com/",
     image: "/images/projects/home/SifterDemo.gif",
   },
