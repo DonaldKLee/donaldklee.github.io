@@ -18,6 +18,12 @@ export interface Project {
   zoom?: number;
   /** object-position for the card image, e.g. "center", "top", "50% 40%" */
   focus?: string;
+  /**
+   * Archived projects stay in the codebase (and their write-ups still build),
+   * but they're left off the site: no card, and the "next project" link at
+   * the bottom of a write-up skips them. Flip back to show one again.
+   */
+  archived?: boolean;
 }
 
 /* The headliners — flow one into the next */
@@ -60,6 +66,8 @@ export const featuredProjects: Project[] = [
     category: "Hackathon",
     href: "https://devpost.com/software/fragments-gmleoj",
     image: "/images/projects/home/FragmentsDemo.mp4",
+    slug: "fragments",
+    award: "Best Use of AWS · Hack the North 2025",
   },
   {
     name: "Provent",
@@ -73,8 +81,8 @@ export const featuredProjects: Project[] = [
   },
 ];
 
-/* The rest of the shelf */
-export const moreProjects: Project[] = [
+/* The rest of the shelf, archived ones included */
+const shelf: Project[] = [
   {
     name: "Climate Change visualized",
     tagline: "Climate change, in 3D",
@@ -97,6 +105,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "RickGPT",
+    archived: true,
     tagline: "ChatGPT UI with a Rick roll",
     description: "A ChatGPT look-alike built for April Fools.",
     category: "Side-Project",
@@ -125,6 +134,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "Google Memes",
+    archived: true,
     tagline: "Google UI with a Rick roll",
     description:
       "An April Fools website inspired by Google Gravity and Google Underwater.",
@@ -144,6 +154,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "VidNotes",
+    archived: true,
     tagline: "YouTube note taking simplified on the go",
     description:
       "A web app to take notes beside any YouTube video on the go. Notes can be shared via email or by copying the URL.",
@@ -154,6 +165,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "Shark Cult",
+    archived: true,
     tagline: "Tame sharks for points",
     description:
       "A browser game where you click to tame sharks as they breach. Built for a shark themed hackathon.",
@@ -164,6 +176,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "GiftDex",
+    archived: true,
     tagline: "Find the perfect tailored gift",
     description:
       "Gift-hunting is hard. GiftDex uses AI to match a person to a present.",
@@ -174,6 +187,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "Focomend",
+    archived: true,
     tagline: "YouTube, minus the rabbit hole",
     description:
       "A Chrome extension that hides recommendations and comments so a quick watch stays a quick watch.",
@@ -184,6 +198,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "COVID-19 Info Bot",
+    archived: true,
     tagline: "Daily case counts in Discord",
     description:
       "A Discord bot built with friends that delivered daily COVID-19 updates to your server.",
@@ -194,6 +209,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "Ardio",
+    archived: true,
     tagline: "News articles you can listen to",
     description:
       "A Flask app that turns CTV News articles into MP3s for the days you'd rather listen than read.",
@@ -204,6 +220,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "StudyHawk",
+    archived: true,
     tagline: "A pomodoro study timer desktop app",
     description:
       "A productivity timer that notifies you when it's time for a break and when the break is over.",
@@ -214,6 +231,7 @@ export const moreProjects: Project[] = [
   },
   {
     name: "CarePackages4U",
+    archived: true,
     tagline: "Finding donors made easy",
     description:
       "A web app built over one weekend to coordinate care packages during COVID-19.",
@@ -223,6 +241,12 @@ export const moreProjects: Project[] = [
     slug: "carepackages4u",
   },
 ];
+
+/* what the shelf actually shows */
+export const moreProjects = shelf.filter((p) => !p.archived);
+
+/* every project, archived or not, for anything that needs the full list */
+export const allProjects: Project[] = [...featuredProjects, ...shelf];
 
 export interface Role {
   org: string;

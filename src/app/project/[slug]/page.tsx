@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import WriteupView from "@/components/Writeup";
-import { getWriteup, getNextWriteup, writeupSlugs } from "@/data/writeups";
+import {
+  getWriteup,
+  getNextWriteup,
+  isArchived,
+  writeupSlugs,
+} from "@/data/writeups";
 
 export function generateStaticParams() {
   return writeupSlugs.map((slug) => ({ slug }));
@@ -22,6 +27,8 @@ export async function generateMetadata({
   const description = `${w.tagline}. ${lead}`;
   return {
     title: `${w.title} — Donald Lee`,
+    // archived write-ups still build (old links work) but stay out of search
+    ...(isArchived(slug) ? { robots: { index: false, follow: true } } : {}),
     description,
     openGraph: {
       title: `${w.title} — Donald Lee`,

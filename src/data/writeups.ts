@@ -1,4 +1,4 @@
-import type { Category } from "./content";
+import { allProjects, type Category } from "./content";
 
 /* ----------------------------------------------------------------------------
    Project write-ups.
@@ -390,6 +390,130 @@ export const writeups: Writeup[] = [
     ],
   },
   {
+    slug: "fragments",
+    title: "Fragments",
+    tagline: "Capture the moment that inspired you",
+    category: "Hackathon",
+    year: "2025",
+    date: "September 12–14, 2025",
+    collaborators: [],
+    role: "Backend API & video pipeline · Hack the North 2025",
+    award: "Best Use of AWS · Hack the North 2025",
+    hero: "/images/projects/home/fragments.jpg",
+    heroVideo: "/images/projects/home/FragmentsDemo.mp4",
+    links: [
+      { label: "Devpost", href: "https://devpost.com/software/fragments-gmleoj", primary: true },
+    ],
+    summary: [
+      "Fragments is a second brain for video. A Chrome extension lets you clip the exact moment that inspired you, on YouTube, TikTok, Instagram, even Netflix, and a web app keeps every fragment tagged, searchable, and in one place.",
+      "We built it at Hack the North 2025, where it won Best Use of AWS. I built the backend API and the pipeline that turns a raw screen recording into something you can actually search :)",
+    ],
+    stats: [
+      { value: "Any", label: "site with a video player: YouTube, TikTok, Instagram, Netflix" },
+      { value: "2 sec", label: "between frames pulled from every clip for the AI to read" },
+      { value: "3 sec", label: "Lambda's default timeout. Way too short for video." },
+    ],
+    sections: [
+      {
+        label: "Inspiration",
+        heading: "Everything you make is built on everything you've consumed",
+        body: [
+          "Great work is connected. Whether it's video production, frontend development, or freestyle dance, being a better creator starts with being a better consumer.",
+          "So how do you get better at consuming? By leaving precise fragments of the best work you find for your future self, all in one place. And in most creative fields, a video is worth a million words.",
+        ],
+      },
+      {
+        label: "The problem",
+        heading: "Bookmarks save the video, not the moment",
+        body: [
+          "A bookmark saves a 20-minute video. What you actually wanted was the eight seconds that made you go \"oh, that's how they did it.\" A month later you're scrubbing through it trying to find that part again, assuming you remember which video it was.",
+        ],
+      },
+      {
+        label: "The product",
+        heading: "Clip anything, anywhere",
+        body: [
+          "With the extension installed, a record button appears when you hover over any video on the web. Hit it, and a dark overlay shows a timer with stop and delete controls. When you stop, a short form lets you drop the clip into a collection and leave tags and notes, so future you knows why it mattered.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/fragments-clip.jpg",
+            width: 1280,
+            height: 582,
+            caption: "Saving a fragment straight from YouTube: pick a collection, add tags and notes.",
+          },
+        ],
+      },
+      {
+        label: "My role",
+        heading: "I built what happens after you hit stop",
+        body: [
+          "The extension records a WebM in the browser. Everything after that was my part: the FastAPI backend and the pipeline that gets each clip ready for everything downstream.",
+        ],
+        points: [
+          "Upload: the raw WebM comes in through the API.",
+          "Convert: FFmpeg turns it into a GIF for quick browsing and an MP4 for playback, both stored in S3.",
+          "Understand: OpenCV pulls a frame every 2 seconds, and Cohere's vision model reads those frames to write a summary and suggest tags.",
+          "Index: the metadata lands in DynamoDB, and DynamoDB Streams push every change into OpenSearch, so search stays in sync without anyone touching it.",
+        ],
+      },
+      {
+        label: "The product",
+        heading: "A gallery you can actually search",
+        body: [
+          "Your fragments show up as a wall of looping GIFs you can filter. Open one and you get the tags, your notes, the source link, and the AI-written description beside it, plus a public or private toggle. Search is fuzzy and covers all of it, AI descriptions included, so you can find a clip by what's in it, not just what you named it.",
+          "There's a community side too: browse popular collections and follow creators to see their latest fragments in a feed.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/fragments-gallery.jpg",
+            width: 1280,
+            height: 582,
+            caption: "The gallery: every fragment as a looping preview.",
+          },
+        ],
+      },
+      {
+        label: "Challenge",
+        heading: "AWS gives you exactly nothing by default",
+        body: [
+          "Every AWS service starts with zero permissions, and letting one service call another needs even more. Setting that up across the whole team and half a dozen services ate a real chunk of our weekend. And Lambda's default timeout is 3 seconds, which is way too short for most things, video very much included.",
+          "The rest of the list will sound familiar to anyone who's done a hackathon: screen-recording videos reliably across very different sites, debugging Auth0, keeping load times down with a lot of media on screen, and getting Cohere to describe clips in a way that's actually useful.",
+        ],
+      },
+      {
+        label: "What's next",
+        heading: "A beta for early users",
+        body: [
+          "The plan after the weekend: keep building in our free time and get a beta out to early users. On the list:",
+        ],
+        points: [
+          "Quick editing tools to crop and trim clips before saving.",
+          "A \"for you\" feed of recommendations, next to the following feed.",
+          "Collaborative collections, so friends and teams can build shared libraries of inspiration.",
+          "WebP previews alongside GIFs, plus lazy loading, for faster pages.",
+        ],
+      },
+    ],
+    learnings: [
+      "On AWS, assume nothing is allowed until you've allowed it, including one of your own services talking to another.",
+      "OpenSearch builds an inverted index for every field in a document, which is why search over the whole DynamoDB table stayed fast.",
+      "A great idea needs depth in its field. It's easiest when at least one person on the team already lives in that world.",
+    ],
+    stack: [
+      {
+        label: "Frontend",
+        items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Chrome Extension", "MediaRecorder API"],
+      },
+      { label: "Backend", items: ["Python", "FastAPI", "OpenCV", "FFmpeg", "Boto3"] },
+      {
+        label: "AWS",
+        items: ["S3", "Lambda", "DynamoDB", "OpenSearch", "CloudWatch", "MediaConvert"],
+      },
+      { label: "AI & auth", items: ["Cohere Aya Vision", "Auth0", "Vercel"] },
+    ],
+  },
+  {
     slug: "provent",
     title: "Provent",
     tagline: "A productivity Chrome extension",
@@ -426,7 +550,7 @@ export const writeups: Writeup[] = [
         label: "Context",
         heading: "This is the sequel to a YouTube blocker",
         body: [
-          "A year earlier I built [Focomend](/project/focomend/), because I kept toggling a site blocker on and off every time I needed YouTube for a class. It worked, but only for one site.",
+          "A year earlier I built Focomend, a little extension that hid YouTube recommendations, because I kept toggling a site blocker on and off every time I needed YouTube for a class. It worked, but only for one site.",
         ],
       },
       {
@@ -1261,14 +1385,30 @@ export const writeups: Writeup[] = [
   },
 ];
 
+/* archived is set on the project card (content.ts); write-ups follow it */
+const archivedSlugs = new Set(
+  allProjects.filter((p) => p.archived && p.slug).map((p) => p.slug!)
+);
+
+export function isArchived(slug: string): boolean {
+  return archivedSlugs.has(slug);
+}
+
+/* every write-up still builds, so old links keep working */
 export const writeupSlugs = writeups.map((w) => w.slug);
+
+/* the ones the site actually points people to */
+const listedWriteups = writeups.filter((w) => !isArchived(w.slug));
 
 export function getWriteup(slug: string): Writeup | undefined {
   return writeups.find((w) => w.slug === slug);
 }
 
-/** the next write-up in the list, wrapping around at the end */
+/**
+ * The next listed write-up, wrapping around at the end. Archived write-ups
+ * are skipped; landing on one directly sends "next" to the first listed one.
+ */
 export function getNextWriteup(slug: string): Writeup {
-  const i = writeups.findIndex((w) => w.slug === slug);
-  return writeups[(i + 1) % writeups.length];
+  const i = listedWriteups.findIndex((w) => w.slug === slug);
+  return listedWriteups[(i + 1) % listedWriteups.length];
 }
