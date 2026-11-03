@@ -30,6 +30,7 @@ export const featuredProjects: Project[] = [
     category: "Hackathon",
     href: "https://devpost.com/software/soon-2026",
     image: "/images/projects/home/EmberDemo.mp4",
+    slug: "ember",
   },
   {
     name: "Sifter",
@@ -39,6 +40,7 @@ export const featuredProjects: Project[] = [
     category: "Side-Project",
     href: "https://checksifter.com/",
     image: "/images/projects/home/SifterDemo.mp4",
+    slug: "sifter",
   },
   {
     name: "plus1",
@@ -48,6 +50,7 @@ export const featuredProjects: Project[] = [
     category: "Hackathon",
     href: "https://devpost.com/software/plus1-1imlbz",
     image: "/images/projects/home/plus1Demo.mp4",
+    slug: "plus1",
   },
   {
     name: "Fragments",
@@ -66,6 +69,7 @@ export const featuredProjects: Project[] = [
     category: "Startup",
     href: "https://provent-extension.github.io/",
     image: "/images/projects/home/ProventDemo.mp4",
+    slug: "provent",
   },
 ];
 
@@ -79,6 +83,7 @@ export const moreProjects: Project[] = [
     category: "Side-Project",
     href: "https://donaldklee.github.io/Global-Climate-Change-Visualization",
     image: "/images/projects/home/GlobeDemo.mp4",
+    slug: "climate",
   },
   {
     name: "nwPlus.io",
@@ -88,6 +93,7 @@ export const moreProjects: Project[] = [
     category: "Website",
     href: "https://www.nwplus.io/",
     image: "/images/projects/home/nwPluswwwDemo.mp4",
+    slug: "nwplus",
   },
   {
     name: "RickGPT",

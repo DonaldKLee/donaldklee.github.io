@@ -43,6 +43,34 @@ function Prose({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
+/* silent demo loop for the hero frame; holds on the poster for reduced motion */
+function HeroVideo({
+  src,
+  poster,
+  label,
+}: {
+  src: string;
+  poster: string;
+  label: string;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <video
+      src={src}
+      poster={poster}
+      role="img"
+      aria-label={label}
+      className="absolute inset-0 h-full w-full object-cover"
+      autoPlay={!reduce}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      disablePictureInPicture
+    />
+  );
+}
+
 export default function Writeup({
   writeup,
   next,
@@ -61,6 +89,7 @@ export default function Writeup({
     role,
     award,
     hero,
+    heroVideo,
     video,
     links,
     summary,
@@ -176,14 +205,22 @@ export default function Writeup({
               </span>
             </div>
             <div className="relative aspect-[16/10] w-full bg-bg sm:aspect-[16/9]">
-              <Image
-                src={hero}
-                alt={`${title}: ${tagline}`}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 1024px"
-                className="object-cover object-top"
-              />
+              {heroVideo ? (
+                <HeroVideo
+                  src={heroVideo}
+                  poster={hero}
+                  label={`${title}: ${tagline}`}
+                />
+              ) : (
+                <Image
+                  src={hero}
+                  alt={`${title}: ${tagline}`}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 1024px"
+                  className="object-cover object-top"
+                />
+              )}
             </div>
           </figure>
         </Reveal>
