@@ -18,11 +18,36 @@ export interface WriteupLink {
   primary?: boolean;
 }
 
+export interface WriteupMedia {
+  /** image in /public */
+  src: string;
+  width: number;
+  height: number;
+  caption?: string;
+  /** defaults to the caption */
+  alt?: string;
+}
+
 export interface WriteupSection {
-  /** rendered with a markdown marker, e.g. "## how-i-built-it" */
+  /**
+   * the small eyebrow above the headline, rendered as a markdown marker
+   * ("The problem" → "## the-problem"). When omitted, the heading doubles
+   * as the marker.
+   */
+  label?: string;
+  /** the headline; with a label, write it as the claim the section makes */
   heading: string;
   /** one entry per paragraph */
   body: string[];
+  /** optional short list under the prose */
+  points?: string[];
+  /** one full-width screenshot, or two side by side */
+  media?: WriteupMedia[];
+}
+
+export interface WriteupStat {
+  value: string;
+  label: string;
 }
 
 export interface StackGroup {
@@ -52,7 +77,11 @@ export interface Writeup {
   links: WriteupLink[];
   /** the lead paragraph(s); shown up top, before the narrative */
   summary: string[];
+  /** up to three headline numbers shown under the overview */
+  stats?: WriteupStat[];
   sections: WriteupSection[];
+  /** closing takeaways, rendered as a numbered list */
+  learnings?: string[];
   stack: StackGroup[];
 }
 
@@ -72,48 +101,64 @@ export const writeups: Writeup[] = [
       { label: "GitHub", href: "https://github.com/ParthJairam07/Ember" },
     ],
     summary: [
-      "Most wildfire tech kicks in once there's already smoke. We wanted to work on the part before that: the dry leaves and pine needles that pile up around homes and turn a small spark into a big fire. Keeping that ground clear isn't hard, it's just repetitive, and the leaves keep falling.",
-      "Ember is a small rover that finds fallen leaves and gathers them into a pile. The twist is that its brain is an iPhone. A phone already has a camera, motion tracking, a fast on-device chip, and (on some models) LiDAR, so instead of building a perception system from scratch, we strapped one to the rover and put those sensors to work together.",
+      "Ember is a small rover that finds dry leaves on the ground and gathers them into a pile, clearing the fuel that turns a small spark into a wildfire.",
+      "The twist is that its brain is an iPhone. A phone already has a camera, motion tracking, a fast on-device chip, and (on some models) LiDAR. So instead of building a perception system from scratch, we strapped one to a rover and put those sensors to work together. Built in a weekend by four of us at SOON.",
+    ],
+    stats: [
+      { value: "0", label: "camera frames sent to the cloud. Leaf detection runs on the phone." },
+      { value: "1", label: "navigation brain, shared line for line by the phone and the simulator" },
+      { value: "5", label: "parts of the workflow, from spotting a leaf to mapping fire risk" },
     ],
     sections: [
       {
-        heading: "My part",
+        label: "The problem",
+        heading: "The fuel for a wildfire is sitting in people's yards",
         body: [
-          "We were a team of four over one weekend. Matthew owned the hardware, and Leon and Parth built out the phone app, the 3D reconstruction, and the wildfire map alongside me. My piece was the rover's brain: the navigation code that decides where to drive, the simulator we tested it in, and the link that lets the laptop see what the phone sees.",
+          "Most wildfire tech kicks in once there's already smoke. We wanted to work on the part before that: the dry leaves and pine needles that pile up around homes. Keeping that ground clear isn't hard, it's just repetitive, and the leaves keep falling.",
         ],
       },
       {
-        heading: "The problem with seeing a leaf",
+        label: "My role",
+        heading: "I built the rover's brain",
         body: [
-          "Getting a box around a leaf on screen was the easy part. Driving to it was not. Detections flicker from frame to frame, anything brown looks like a leaf, and the moment the rover gets close, the leaf drops out of the bottom of the camera.",
-          "So I split perception from driving. A leaf only becomes a target after it's been seen a few times, and once it is, it gets pinned to a spot in the world (using the phone's AR tracking) instead of a spot on the screen. That way the rover can keep steering toward a leaf it can't see anymore. LiDAR added one more sanity check: if a \"leaf\" is floating three feet off the ground, it's probably a couch.",
+          "Matthew owned the hardware, and Leon and Parth built out the phone app, the 3D reconstruction, and the wildfire map alongside me. My piece was the brain: the navigation code that decides where to drive, the simulator we tested it in, and the link that lets the laptop see what the phone sees.",
         ],
       },
       {
+        label: "Challenge",
+        heading: "Seeing a leaf is easy. Driving to one isn't.",
+        body: [
+          "Getting a box around a leaf on screen was the easy part. Detections flicker from frame to frame, anything brown looks like a leaf, and the moment the rover gets close, the leaf drops out of the bottom of the camera.",
+          "So I split perception from driving. A leaf only becomes a target after it's been seen a few times, and once it is, it gets pinned to a spot in the world (using the phone's AR tracking) instead of a spot on the screen. That way the rover keeps steering toward a leaf it can't see anymore. LiDAR adds one more sanity check: if a \"leaf\" is floating three feet off the ground, it's probably a couch.",
+        ],
+      },
+      {
+        label: "Design decision",
         heading: "One brain, two bodies",
         body: [
-          "The biggest call I made was writing the brain in plain TypeScript and sharing the exact same code between the phone and a browser simulator. The sim drops the rover on a virtual lawn with a work circle around a pile, throws noisy detections, obstacles, and missed scoops at it, and lets you watch it plan in 3D and from the top down.",
-          "That meant we could test the full collect cycle (line up, scoop, drive back, dump, retry the ones it missed) hours before the hardware was ready. When something broke, it broke on my laptop instead of on the rover. It also meant the control dashboard could show a live top-down map of what the phone's brain was thinking.",
+          "The biggest call I made was writing the brain in plain TypeScript and running the exact same code on the phone and in a browser simulator. The sim drops the rover on a virtual lawn with a work circle around a pile, throws noisy detections, obstacles, and missed scoops at it, and shows it planning in 3D and from the top down.",
+          "That meant we could test the full cycle (line up, scoop, drive back, dump, retry the misses) hours before the hardware was ready. When something broke, it broke on my laptop instead of on the rover. It also meant the control dashboard could show a live map of what the phone's brain was thinking.",
         ],
       },
       {
-        heading: "What broke",
+        label: "Reality check",
+        heading: "Hardware makes your critical path very literal",
         body: [
-          "Hardware, mostly. Matthew flew in from Paris with the parts and tools, and a few pieces still went missing. We ended up 3D-printing replacements at the Aurora Public Library and calling a teammate's parent who lived nearby to grab RC wheels right before the store closed. Hardware has a way of making your critical path very literal.",
+          "Matthew flew in from Paris with the parts and tools, and a few pieces still went missing. We ended up 3D-printing replacements at the Aurora Public Library and calling a teammate's parent who lived nearby to grab RC wheels right before the store closed.",
         ],
       },
       {
-        heading: "Where it landed",
+        label: "Outcome",
+        heading: "The whole loop runs, just not all on the rover yet",
         body: [
-          "By the end of the weekend the phone could detect and map leaves on-device, the rover could be driven from the browser, the autopilot could run its full cycle in simulation, and captures could be turned into explorable 3D Gaussian splats. The one piece we didn't close was wiring the autonomous scoop-and-dump sequence into the rover's firmware. That's next, along with real runs on uneven ground outside.",
+          "By the end of the weekend the phone could detect and map leaves on-device, the rover could be driven from the browser, the autopilot could run its full collect cycle in simulation, and a phone walk-through could be turned into an explorable 3D scene. The piece we didn't close was wiring the autonomous scoop-and-dump into the rover's firmware. That's next, along with real runs on uneven ground outside.",
         ],
       },
-      {
-        heading: "What I learned",
-        body: [
-          "A detector is not a navigation system. Remembering where you saw something, checking that it makes physical sense, and knowing when to stop are the parts that turn a prediction into movement. And building the simulator first felt slow, but it meant we could test the whole cycle before the hardware even existed.",
-        ],
-      },
+    ],
+    learnings: [
+      "A detector is not a navigation system. Remembering where you saw something, checking that it makes physical sense, and knowing when to stop are what turn a prediction into movement.",
+      "Build the simulator first. It felt slow for the first hour, then let us test the whole cycle before the hardware even existed.",
+      "On a hardware project, the parts list is part of the plan. A missing wheel blocks everything downstream of it.",
     ],
     stack: [
       { label: "Mobile", items: ["Expo", "React Native", "TypeScript", "Swift", "ARKit", "LiDAR"] },
@@ -137,47 +182,118 @@ export const writeups: Writeup[] = [
     heroVideo: "/images/projects/home/SifterDemo.mp4",
     links: [{ label: "Try Sifter", href: "https://checksifter.com/", primary: true }],
     summary: [
-      "A lot of people my age start investing the same way: buy a couple of index funds and a few companies they've heard of, then open the app every morning and stare at red and green numbers they don't really understand.",
-      "Sifter explains how your stocks are doing in plain English. It reads the market data for what you own and what you're watching, tells you what changed and why, and skips the jargon. A P/E ratio of 20 becomes \"you're paying $20 for every $1 the company earns in a year.\" It works for both Canadian and US stocks, because a lot of tools quietly forget the TSX exists.",
+      "Sifter explains how your stocks are doing in plain English. It reads the market data for what you own and what you're watching, tells you what changed and why, and skips the jargon.",
+      "It took three versions to get here. The interesting part of this project isn't the code, it's what I cut.",
+    ],
+    stats: [
+      { value: "3", label: "versions of the product. This is the third." },
+      { value: "12 of 17", label: "BUY labels held back once readings had to actually agree" },
+      { value: "2 min", label: "between market sweeps while the market is open" },
     ],
     sections: [
       {
-        heading: "It didn't start here",
+        label: "The problem",
+        heading: "New investors can see the numbers, but not what they mean",
         body: [
-          "Sifter went through three versions before it became this one, and honestly the pivots are the most interesting part.",
-          "It started as a memecoin scanner. When I sat down and looked at the market, that space was already full of funded teams with real-time data and one-click trading. I wasn't going to win there.",
-          "Version two was a free swing-trade co-pilot. Seven technical indicators (RSI, MACD, Bollinger Bands, and friends) would vote on every stock, the votes added up to a score, and the score turned into a trade plan with an entry, a stop, a target, and a position size. Every call would get graded 5, 10, and 20 days later so the app had a public track record. The pitch was \"it grades its own homework.\"",
+          "A lot of people my age start investing the same way: a couple of index funds, a few companies they've heard of, and a morning habit of staring at red and green numbers they don't really understand.",
+          "Free tools hand you a chart and leave you to figure it out. The ones that actually interpret things cost $25 to $120 a month. And a lot of them quietly forget Canadian stocks exist.",
         ],
       },
       {
-        heading: "Then I tested it like a real user",
+        label: "Pivot",
+        heading: "It started as a memecoin scanner",
         body: [
-          "I walked through the live app as the person it was supposedly for: a second-year student with no finance background, checking their phone between classes. It went badly.",
-          "The landing page asked me to sign in before showing a single stock. The first thing on the scanner was a warning that the data was six hours old (it was actually two minutes old, the stale cache just painted first). And then there was this row: NFLX, BUY, 1 of 7 indicators agreeing. One heavily weighted indicator could push the score over the line while the other six said nothing.",
-          "The fix was a rule I still like: recommending something should be a higher bar than labelling it. Before Sifter would put a stock forward as an idea, most of the indicators had to actually agree. On a live snapshot that held back 12 of the 17 stocks labelled BUY. If nothing passed, Sifter said nothing, which is often the right answer.",
+          "When I looked at the market, that space was already full of funded teams with real-time data and one-click trading. I wasn't going to win there.",
+          "Version two was a free swing-trade co-pilot. Seven technical indicators would vote on every stock, the votes added up to a score, and the score became a trade plan: entry, stop, target, position size. Every call would get graded 5, 10, and 20 days later so the app had a public track record. The pitch was \"it grades its own homework.\"",
         ],
       },
       {
-        heading: "The audit that changed the product",
+        label: "User testing",
+        heading: "I used it like a real user, and it went badly",
         body: [
-          "Before launch I audited every page against the Terms of Service, and the verdict was: not ready. The Terms said Sifter explains data and doesn't give advice. The UI said things like \"What To Do Now\" and \"Think about selling AAPL.\" In Canada, that's the line between a tool and something that needs securities registration. I also found real bugs, like Canadian and US dollar holdings getting added together as if they were the same currency.",
-          "So I rewrote every screen from \"what you should do\" to \"what the numbers mean.\" \"Sell / Exit\" became \"Readings turned down.\" \"Today's Top Pick\" became \"Strongest reading today.\" And at the end of September I cut the track record and paper trading entirely. They were the original pitch, but they pulled the product toward being an advice machine, and they weren't what beginners actually needed.",
+          "I walked through the live app as the person it was supposedly for: a second-year student with no finance background, checking their phone between classes.",
+        ],
+        points: [
+          "The landing page asked me to sign in before showing a single stock.",
+          "The first thing on the scanner was a warning that the data was six hours old. It was actually two minutes old; a stale cache just painted first.",
+          "And then this row: NFLX, BUY, 1 of 7 indicators agreeing. One heavily weighted indicator could push a stock over the line while the other six said nothing.",
         ],
       },
       {
-        heading: "How it works now",
+        label: "Design decision",
+        heading: "Recommending should be a higher bar than labelling",
         body: [
-          "A scheduled Cloud Function sweeps the market every 2 minutes while it's open, every 15 in pre- and after-hours, and not at all when it's closed. Nothing is calculated when you load a page; you read the latest snapshot and see how old it is. Each sweep covers 60 of 180 tracked symbols: the core market funds, anything you hold or watch, anything with a live signal, and a rotating slice of the rest that cycles through everything in about a trading week.",
-          "On top of that sits the part people actually see: a short daily recap of what changed in your holdings, a watchlist, trending stocks, and plain-English explanations for every number on screen. There's a Chrome extension in the works too.",
+          "Before Sifter puts a stock forward as an idea, most of its readings have to actually agree, not just the ones with an opinion. On a live snapshot, that held back 12 of the 17 stocks labelled BUY. If nothing passes, Sifter says nothing, which is often the right answer.",
         ],
       },
       {
-        heading: "What I learned",
+        label: "The audit",
+        heading: "The app was giving advice. The Terms said it didn't.",
         body: [
-          "Building the thing was the easy part. Deciding what it should not say was the hard part. I also learned to write down the weak spots before someone else finds them. The indicator weights are hand-picked, not fitted from a backtest, and I'd rather say that up front than defend it badly in a room.",
-          "And the biggest one: the version of the product I was most excited about (signals, conviction scores, trade plans) was built for someone like me. The version that's live is built for someone just starting out.",
+          "Before launch I audited every page against the Terms of Service. The verdict: not ready. The Terms said Sifter explains data and doesn't give advice, while the screens were telling people what to do with their money. In Canada, that's the line between a tool and something that needs securities registration. I also found real bugs, like Canadian and US dollar holdings getting added together as if they were the same currency.",
+          "So I rewrote every screen from what you should do to what the numbers mean:",
+        ],
+        points: [
+          "\"What To Do Now\" → \"What the readings say\"",
+          "\"Think about selling AAPL.\" → \"AAPL's readings turned down.\"",
+          "\"Today's Top Pick\" → \"Strongest reading today\"",
         ],
       },
+      {
+        label: "The cut",
+        heading: "I cut the feature the whole pitch was built on",
+        body: [
+          "At the end of September I removed the track record and paper trading entirely. They were the original pitch, but they pulled the product toward being an advice machine, and they weren't what beginners actually needed. What was left was simpler, and better.",
+        ],
+      },
+      {
+        label: "Final product",
+        heading: "Your stocks, explained every morning",
+        body: [
+          "Open Sifter and you get a short recap of what changed in what you own, a watchlist, what's moving today, and a plain-English translation of every number on screen. A P/E ratio of 20 becomes \"you're paying $20 for every $1 the company earns in a year.\"",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/sifter-plain-words.jpg",
+            width: 1280,
+            height: 720,
+            caption: "Every number gets a translation, not a definition.",
+          },
+          {
+            src: "/images/projects/writeups/sifter-reasons.jpg",
+            width: 1280,
+            height: 720,
+            caption: "The reasoning behind each reading, one tap away.",
+          },
+        ],
+      },
+      {
+        label: "Under the hood",
+        heading: "Nothing is calculated when you load the page",
+        body: [
+          "A scheduled Cloud Function sweeps the market every 2 minutes while it's open, every 15 in pre- and after-hours, and not at all when it's closed. Pages just read the latest snapshot and show how old it is.",
+          "Each sweep covers 60 of 180 tracked symbols: the core market funds, anything you hold or watch, anything with a live signal, and a rotating slice of the rest that cycles through everything in about a trading week. There's a Chrome extension too, so the explanations show up right where you're already browsing.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/sifter-trending.jpg",
+            width: 1280,
+            height: 720,
+            caption: "Trending: what's moving today, and why.",
+          },
+          {
+            src: "/images/projects/writeups/sifter-chrome.jpg",
+            width: 1280,
+            height: 720,
+            caption: "Sifter for Chrome, beside the page you're already on.",
+          },
+        ],
+      },
+    ],
+    learnings: [
+      "Building the thing was the easy part. Deciding what it should not say was the hard part.",
+      "Write down your weak spots before someone else finds them. The indicator weights are hand-picked, not fitted from a backtest, and I'd rather say that up front.",
+      "The version I was most excited about (signals, conviction scores, trade plans) was built for someone like me. The version that's live is built for someone just starting out.",
     ],
     stack: [
       { label: "Frontend", items: ["React", "Vite", "Chrome Extension"] },
@@ -204,43 +320,64 @@ export const writeups: Writeup[] = [
       { label: "GitHub", href: "https://github.com/DonaldKLee/plus1" },
     ],
     summary: [
-      "Most AI meeting assistants are recorders. It sits outside the call, transcribes everything, and hands you a summary after everyone has left. By then, whatever it could have done for you, you've already done yourself.",
-      "plus1 is a participant instead. It joins your Google Meet as a guest with a face and a voice, hears the conversation in real time, answers out loud when you talk to it, and does the work (drafts the email, reviews the doc you pasted, pulls up the data) while the meeting is still happening. You're bringing a plus one, not sending a replacement.",
+      "plus1 joins your Google Meet as a guest with a face and a voice. It hears the conversation in real time, answers out loud when you talk to it, and does the work while the meeting is still happening.",
+      "You're bringing a plus one, not sending a replacement.",
+    ],
+    stats: [
+      { value: "3", label: "choices on every line said in the meeting: ignore, answer, or act" },
+      { value: "6", label: "real-world risk sources it checks before answering about a property" },
+      { value: "0", label: "summaries sent after the call. It does the work during it." },
     ],
     sections: [
       {
-        heading: "The hard part is knowing when to shut up",
+        label: "The problem",
+        heading: "Meeting assistants show up after the meeting is over",
         body: [
-          "An AI that can talk in a meeting is easy. An AI that talks at the right time is not. If it chimes in on everything, it's exhausting within five minutes.",
-          "So the core of plus1 is a gate: a fast classifier that looks at every line someone says and decides whether to ignore it, answer it, or act on it. Most of the time the answer is ignore. It just listens and keeps context.",
-          "We wrote down a few rules early and stuck to them. It never speaks unless it's addressed or it just finished something. If a human starts talking while it's mid-sentence, it stops immediately. Anything irreversible (sending, publishing, deleting) needs an explicit spoken \"yes.\" And if it isn't confident, it says so and asks instead of guessing.",
+          "Most AI meeting assistants are recorders. They sit outside the call, transcribe everything, and hand you a summary after everyone has left. By then, whatever they could have done for you, you've already done yourself.",
+          "We wanted a participant instead: something you can turn to mid-meeting and say \"can you draft that email?\" and it just does it.",
         ],
       },
       {
-        heading: "Why a cartoon",
+        label: "Design decision",
+        heading: "The hard part is knowing when to stay quiet",
         body: [
-          "The original design was a 3D goose in a business suit (we were in Waterloo, after all). It sounds like a joke, but it was doing real design work: a cartoon dodges the uncanny valley, a beak synced to audio volume is way easier than lip-syncing a human face, and nobody in the call is confused about whether they're talking to a person. It also honks when people disagree or someone monologues past three minutes.",
+          "An AI that can talk in a meeting is easy. One that talks at the right time is not. If it chimes in on everything, it's exhausting within five minutes.",
+          "So the core of plus1 is a gate: a fast classifier that looks at every line someone says and decides whether to ignore it, answer it, or act on it. Most of the time it ignores, listens, and keeps context. We also set a few rules early and stuck to them:",
+        ],
+        points: [
+          "It never speaks unless it's addressed or just finished something.",
+          "If a person starts talking while it's mid-sentence, it stops immediately.",
+          "Anything irreversible (sending, publishing, deleting) needs an explicit spoken \"yes.\"",
+          "If it isn't confident, it says so and asks instead of guessing.",
         ],
       },
       {
-        heading: "The underwriting demo",
+        label: "Design decision",
+        heading: "Why the design started as a goose in a suit",
         body: [
-          "For Federato's challenge, we gave plus1 an insurance underwriting job. In a meeting, you can ask it about a property policy and it pulls the data, ranks it against the 2025 appetite rules, enriches it with real-world risk data (FEMA disaster history, flood claims, earthquakes, weather extremes), and answers like an underwriter: decision, the factor driving it, and what to ask the broker for next.",
-          "Then it opens the address in a cloud browser on Google Maps and FEMA's risk maps, joins your Meet, and screenshares it to the room. Our demo case was a retail property in Tampa that it declines, and walks everyone through why.",
+          "We were in Waterloo, after all. It sounds like a joke, but it was doing real design work: a cartoon dodges the uncanny valley, a beak synced to audio volume is way easier than lip-syncing a human face, and nobody in the call is confused about whether they're talking to a person. It also honks when people disagree, or when someone monologues past three minutes.",
         ],
       },
       {
-        heading: "How we built it",
+        label: "The demo",
+        heading: "An underwriter that joins the call",
         body: [
-          "A Next.js dashboard is the operator's console: a live transcript, a \"mind\" column showing what plus1 heard, how it classified it, and what it retrieved, and cards for anything it creates. The backend drives a signed-in Chrome with Playwright to join the Meet, pipes a HeyGen LiveAvatar face and an ElevenLabs voice in as the camera and mic, and runs the cloud browser work through Browserbase.",
+          "For Federato's challenge we gave plus1 an insurance job. Ask it about a property policy and it pulls the data, ranks it against the 2025 appetite rules, checks real-world risk (FEMA disaster history, flood claims, earthquakes, weather extremes), and answers like an underwriter: the decision, the factor driving it, and what to ask the broker for next.",
+          "Then it opens the address on Google Maps and FEMA's risk maps in a cloud browser and screenshares it to the room. Our demo case was a retail property in Tampa that it declines, walking everyone through why.",
         ],
       },
       {
-        heading: "What I learned",
+        label: "How it works",
+        heading: "A console that shows what it's thinking",
         body: [
-          "The interesting design problems in agents are mostly about restraint. What the agent is allowed to do on its own, what it needs to ask about, and how it shows its reasoning so the people in the room can trust it. Getting it to do things was the easy part.",
+          "A Next.js dashboard is the operator's console: a live transcript, a column showing what plus1 heard, how it classified it, and what it retrieved, plus cards for anything it creates. You can't trust an agent you can't audit, so this was a core screen, not an afterthought.",
+          "Behind it, Playwright drives a signed-in Chrome to join the Meet, a HeyGen LiveAvatar face and an ElevenLabs voice are piped in as the camera and mic, and Browserbase runs the cloud browser work.",
         ],
       },
+    ],
+    learnings: [
+      "Most of the interesting design problems in agents are about restraint: what it does on its own, what it asks about, and when it says nothing.",
+      "If people are going to trust an agent in a live room, they need to see its reasoning. Build the debugging view first; it becomes the product.",
     ],
     stack: [
       { label: "App", items: ["Next.js", "TypeScript", "Node.js", "zod"] },
@@ -276,43 +413,89 @@ export const writeups: Writeup[] = [
       },
     ],
     summary: [
-      "Around 20% of adults chronically procrastinate. I'm not saying I'm one of them, but I've built two Chrome extensions to stop myself from opening YouTube, so draw your own conclusions.",
-      "Provent replaces your new tab with a clean workspace, adds a pomodoro timer, and blocks distracting sites while you're supposed to be working. It went from a scrappy beta to a v1.1 on the Chrome Web Store, with a website, a changelog, an email list, and a spin-off on Product Hunt.",
+      "Provent replaces your new tab with a clean workspace, adds a pomodoro timer, and blocks distracting sites while you're supposed to be working.",
+      "I'm not saying I'm a procrastinator, but I've built two Chrome extensions to stop myself from opening YouTube, so draw your own conclusions.",
+    ],
+    stats: [
+      { value: "5", label: "releases, from the first beta to v1.1 on the Chrome Web Store" },
+      { value: "2", label: "extensions: Provent, and Provent Zero for people who love their new tab" },
+      { value: "~20%", label: "of adults chronically procrastinate. This one's for them." },
     ],
     sections: [
       {
-        heading: "Where it came from",
+        label: "Context",
+        heading: "This is the sequel to a YouTube blocker",
         body: [
-          "Provent is basically the sequel to [Focomend](/project/focomend/). Back then I was toggling a site blocker on and off every time I needed YouTube for a class, and the fix was an extension that only hid the distracting parts.",
-          "But hiding recommendations only solved one site. What I really wanted was one place that handled the whole loop: a new tab that pointed me at my to-do list instead of my feeds, a timer for focused sessions, and a blocker that only kicks in during those sessions, so I don't have to remember to turn it off.",
+          "A year earlier I built [Focomend](/project/focomend/), because I kept toggling a site blocker on and off every time I needed YouTube for a class. It worked, but only for one site.",
         ],
       },
       {
-        heading: "What it does",
+        label: "The problem",
+        heading: "Blocking one site doesn't fix procrastination",
         body: [
-          "Open a new tab and you get a calm background, the date and time, a search bar, and widgets for the stuff you actually need: a to-do list, notes, your Google Calendar, plus Spotify and YouTube embeds for the study playlist.",
-          "Start a pomodoro from the popup, and every site on your block list is off-limits until the session ends. Try to open one and you get a block screen (with your own custom message, if you want to guilt-trip yourself).",
+          "What I really wanted was one place that handled the whole loop: a new tab that points me at my to-do list instead of my feeds, a timer for focused sessions, and a blocker that only kicks in during those sessions, so I never have to remember to turn it off.",
         ],
       },
       {
-        heading: "Shipping it like a product",
+        label: "The product",
+        heading: "A new tab that points you at your work, not your feeds",
         body: [
-          "This was the first thing I treated like a real product instead of a project. I shipped a beta (v0.031), then iterated in public: pop-up notifications when the timer ends, a pre-made list of blocked sites, fixes for the calendar and Spotify widgets, offline backgrounds for when the internet drops. Then v1.0, then v1.1 with a walkthrough tour, seasonal backgrounds, and widgets that stay open.",
-          "Around the extension I built a landing page, a changelog, a tutorial, terms of service, an email list for launch updates, and an uninstall survey. That last one is the one I'd recommend to anyone shipping something: it's hard to find out why people leave unless you ask them on the way out.",
+          "Open a new tab and you get a calm background, the time, a search bar, and widgets for the stuff you actually need: a to-do list, notes, your Google Calendar, plus Spotify and YouTube embeds for the study playlist. The pomodoro timer lives one click away in the toolbar.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/provent-newtab.jpg",
+            width: 1280,
+            height: 720,
+            caption: "The new tab, with widgets one click away.",
+          },
+          {
+            src: "/images/projects/writeups/provent-timer.jpg",
+            width: 1280,
+            height: 720,
+            caption: "The pomodoro timer in the toolbar popup.",
+          },
         ],
       },
       {
-        heading: "Provent Zero",
+        label: "Design decision",
+        heading: "The blocker only exists while the timer runs",
         body: [
-          "Not everyone wants their new tab replaced. Plenty of people already have one they love. So I split the product. Provent Zero is just the pomodoro timer and the site blocker, no new tab. It launched on Product Hunt.",
+          "Most blockers are always on, so you end up turning them off and forgetting to turn them back on. In Provent, sites on your block list are only off-limits during a focus session. Try to open one and you get a nudge and the time left, with your own custom message if you want to guilt-trip yourself.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/provent-blocked.jpg",
+            width: 1280,
+            height: 720,
+            caption: "What Instagram looks like mid-session.",
+          },
         ],
       },
       {
-        heading: "What I learned",
+        label: "Shipping",
+        heading: "I treated it like a product, not a project",
         body: [
-          "Building features is the fun part. Distribution, onboarding, and figuring out why people uninstall are where most of the work actually is. And sometimes the best product decision is offering less.",
+          "This was the first thing I treated like a real product instead of a project. I launched a beta, then iterated in public through v1.0 and v1.1: timer notifications, a pre-made block list, offline backgrounds for when the internet drops, a walkthrough tour, seasonal themes. Around the extension I built:",
+        ],
+        points: [
+          "A landing page, a changelog, a tutorial, and terms of service.",
+          "An email list for launch updates.",
+          "An uninstall survey. It's hard to find out why people leave unless you ask them on the way out.",
         ],
       },
+      {
+        label: "Iteration",
+        heading: "Sometimes the best feature is offering less",
+        body: [
+          "Not everyone wants their new tab replaced. Plenty of people already have one they love. So I split the product: Provent Zero is just the pomodoro timer and the site blocker, no new tab. It launched on Product Hunt.",
+        ],
+      },
+    ],
+    learnings: [
+      "Building features is the fun part. Distribution, onboarding, and figuring out why people uninstall is where most of the work actually is.",
+      "Ask people why they leave. If you only hear from happy users, you're missing most of the story.",
+      "A smaller product for a different user can beat a bigger one for everyone.",
     ],
     stack: [
       { label: "Languages", items: ["JavaScript", "HTML", "CSS"] },
@@ -348,36 +531,70 @@ export const writeups: Writeup[] = [
       },
     ],
     summary: [
-      "Everyone has seen a climate change chart. A line goes up, everyone nods, nobody remembers it. I wanted to see what happens if you put the numbers back on the planet.",
-      "This is a 3D globe you can spin and scrub through time. Pick a dataset, drag the slider, and watch every country recolour month by month as land temperatures, CO2 emissions, and sea levels move. Hit animate and it plays the whole thing back.",
+      "A 3D globe you can spin and scrub through time. Pick a dataset, drag the slider, and watch every country recolour month by month as land temperatures, CO₂ emissions, and sea levels move. Hit animate and it plays the whole thing back.",
+    ],
+    stats: [
+      { value: "3", label: "public datasets: land temperature, CO₂ emissions, and sea level" },
+      { value: "1880", label: "where the time slider starts, scrubbed month by month" },
+      { value: "20+", label: "country names translated so the data lands on the right country" },
     ],
     sections: [
       {
-        heading: "The data",
+        label: "The problem",
+        heading: "Climate charts are easy to nod at and forget",
         body: [
-          "Three public datasets do the heavy lifting: Berkeley Earth's land temperatures by country (back to the 1700s, though I start rendering at 1880), Our World in Data's CO2 and greenhouse gas emissions, and a global sea level rise series. A side panel keeps the global numbers in view while you explore: the average temperature for the selected month with a small chart, and how far sea levels have moved.",
+          "Everyone has seen a climate change chart. A line goes up, everyone nods, nobody remembers it. I wanted to see what happens if you put the numbers back on the planet.",
         ],
       },
       {
-        heading: "The unglamorous challenge",
+        label: "The idea",
+        heading: "Put the numbers back on the planet",
         body: [
-          "The hardest bug wasn't 3D at all. It was country names. The temperature dataset says \"United States,\" the map says \"United States of America.\" One says \"Burma,\" the other says \"Myanmar.\" \"Bosnia And Herzegovina\" versus \"Bosnia and Herz.\" Every mismatch is a country that silently stays grey.",
-          "I ended up writing a mapping table for each dataset, translating its names into the ones the globe knows. Not the most exciting code I've written, but it's the difference between a map that looks done and one that is.",
+          "Three public datasets do the heavy lifting: Berkeley Earth's land temperatures by country, Our World in Data's CO₂ emissions, and a global sea level series. A side panel keeps the global picture in view while you explore: the average temperature for that month with a small chart, and how far sea levels have moved.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/globe-temperature.jpg",
+            width: 1280,
+            height: 620,
+            caption: "Land temperature by country, with the global numbers alongside.",
+          },
         ],
       },
       {
-        heading: "Making it more than pretty",
+        label: "Challenge",
+        heading: "The hardest bug was country names",
         body: [
-          "A spinning globe is cool for about ten seconds. To make it worth staying on, I added an insights panel that explains what you're looking at and what actually helps: why temperatures keep climbing, how emissions break down (population, wealth, energy use, and how clean that energy is), and what slows it down.",
-          "On mobile, the menu and insights panels fold away behind buttons so the globe gets the whole screen.",
+          "It wasn't the 3D. The temperature dataset says \"United States,\" the map says \"United States of America.\" One says \"Burma,\" the other says \"Myanmar.\" \"Bosnia And Herzegovina\" versus \"Bosnia and Herz.\" Every mismatch is a country that silently stays grey.",
+          "I ended up writing a mapping table for each dataset that translates its names into the ones the globe knows. Not the most exciting code I've written, but it's the difference between a map that looks done and one that is.",
         ],
       },
       {
-        heading: "What's next",
+        label: "Design decision",
+        heading: "A spinning globe is cool for ten seconds. Context keeps people around.",
         body: [
-          "Colouring the oceans for sea level instead of showing it as a number, splitting the code into cleaner components, and maybe a chatbot you can ask about what you're seeing.",
+          "To make it worth staying on, I added an insights panel that explains what you're looking at and what actually helps: why temperatures keep climbing, what drives emissions (population, wealth, energy use, and how clean that energy is), and what slows it down. On mobile, the menu and insights fold away behind buttons so the globe gets the whole screen.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/globe-co2.jpg",
+            width: 1280,
+            height: 620,
+            caption: "Switching to CO₂ emissions per capita, with the insights panel on the right.",
+          },
         ],
       },
+      {
+        label: "What's next",
+        heading: "Colour the oceans, too",
+        body: [
+          "Sea level is still a number in the side panel. Next is showing it on the oceans themselves, splitting the code into cleaner components, and maybe a chatbot you can ask about what you're seeing.",
+        ],
+      },
+    ],
+    learnings: [
+      "Most of data visualization is data cleaning. The pretty part is the last 20%.",
+      "A visualization earns attention by answering the next question: \"okay, so what do we do about it?\"",
     ],
     stack: [
       { label: "Frontend", items: ["React", "Vite", "Tailwind CSS"] },
@@ -404,36 +621,62 @@ export const writeups: Writeup[] = [
       { label: "GitHub", href: "https://github.com/nwplus/www" },
     ],
     summary: [
-      "nwPlus is the UBC club that runs nwHacks, HackCamp, and cmd-f. nwplus.io is the front door: it's where students find out what we do, which hackathon is coming up next, who's on the team, and how to join.",
-      "I didn't build it from a blank page. It was started by the devs before me, and like most club websites, it gets passed down from team to team. My job over four years was to keep it alive, keep it current, and leave it better than I found it, first as a developer, then leading the dev team, then as co-president.",
+      "nwPlus is the UBC club that runs nwHacks, HackCamp, and cmd-f. nwplus.io is the front door: where students find out what we do, which hackathon is next, who's on the team, and how to join.",
+      "I didn't build it from a blank page. Club sites get passed down from team to team, and my job over four years was to keep it alive, keep it current, and leave it better than I found it.",
+    ],
+    stats: [
+      { value: "13+", label: "hackathons hosted by nwPlus since 2018" },
+      { value: "280+", label: "projects built at nwPlus events" },
+      { value: "9", label: "developers on the team I led as Dev Director" },
     ],
     sections: [
       {
-        heading: "A website that changes every season",
+        label: "The problem",
+        heading: "Club sites go stale right when they matter most",
         body: [
-          "A club site has a weird lifecycle. Nothing changes for months, then everything changes at once: a new hackathon goes live, a new exec team gets announced, applications open and close. If updating it is painful, it goes stale, and a stale hackathon site is how you lose sponsors and hackers.",
-          "So most of the work was making those updates routine: the hackathon cards for HackCamp, nwHacks, and cmd-f each season, banners for big announcements, the team section with everyone's profile, role, and socials, the interest form for new members, and a land acknowledgement.",
+          "A club website has a weird lifecycle. Nothing changes for months, then everything changes at once: a new hackathon goes live, a new exec team gets announced, applications open and close. If updating it is painful, it goes stale, and a stale hackathon site is how you lose sponsors and hackers.",
+          "So most of the work was making the seasonal updates routine:",
+        ],
+        points: [
+          "Hackathon cards for HackCamp, nwHacks, and cmd-f each season, plus banners for big announcements.",
+          "The team section, with everyone's profile, role, and socials.",
+          "The interest form for new members, and a land acknowledgement.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/nwplus-stats.jpg",
+            width: 788,
+            height: 386,
+            caption: "The numbers the site leads with.",
+          },
+          {
+            src: "/images/projects/writeups/nwplus-team.jpg",
+            width: 788,
+            height: 386,
+            caption: "The team section, the most-updated part of the site.",
+          },
         ],
       },
       {
-        heading: "Under the hood",
+        label: "Under the hood",
+        heading: "Make the boring changes easy",
         body: [
-          "The site is a Next.js static export with styled-components. Content like FAQs and each hackathon's details lives in Firestore, so the rest of the team can update it without a code change. It deploys to Firebase Hosting through GitHub Actions: pushes to main go to production, and pull requests get their own preview link, so anyone on the team can see a change before it goes live.",
-          "I spent some time getting that pipeline working again when it broke, because when deploys break on a volunteer team, people just stop shipping.",
+          "The site is a Next.js static export. Content like FAQs and each hackathon's details lives in Firestore, so the rest of the team can update it without touching code. It deploys to Firebase Hosting through GitHub Actions: pushes to main go to production, and every pull request gets its own preview link, so anyone can check a change before it goes live.",
+          "I spent time getting that pipeline working again when it broke, because when deploys break on a volunteer team, people just stop shipping.",
         ],
       },
       {
-        heading: "From writing code to running the team",
+        label: "Leadership",
+        heading: "From writing the code to running the team",
         body: [
-          "The bigger change wasn't technical. As Dev Director I went from writing most of the updates myself to leading a team of nine developers, which meant code review, QA passes before launches, and making sure the next person could pick the site up without me. As co-president I zoomed out further, to 9 teams and 53 execs running three hackathons.",
+          "As Dev Director I went from writing most of the updates myself to leading a team of nine developers: code review, QA passes before launches, and making sure the next person could pick the site up without me. As co-president I zoomed out again, to 9 teams and 53 execs running three hackathons.",
         ],
       },
-      {
-        heading: "What I learned",
-        body: [
-          "Maintaining something is a different skill than building it. The best thing you can do for a codebase that outlives you is make the boring changes easy, document how it deploys, and trust the next team with it.",
-        ],
-      },
+    ],
+    learnings: [
+      "Maintaining something is a different skill than building it.",
+      "The best thing you can do for a codebase that outlives you is make the boring changes easy and document how it deploys.",
+      "At some point your job stops being the code and starts being the people writing it.",
     ],
     stack: [
       { label: "Frontend", items: ["Next.js", "React", "styled-components", "Lottie"] },

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
-import type { Writeup } from "@/data/writeups";
+import type { Writeup, WriteupMedia } from "@/data/writeups";
 import { track } from "@/lib/analytics";
 import Reveal from "./Reveal";
 
@@ -26,12 +26,14 @@ function Prose({ text }: { text: string }) {
   let key = 0;
   while ((m = re.exec(text))) {
     if (m.index > last) parts.push(text.slice(last, m.index));
+    const internal = m[2].startsWith("/");
     parts.push(
       <a
         key={key++}
         href={m[2]}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(internal
+          ? {}
+          : { target: "_blank", rel: "noopener noreferrer" })}
         className="font-medium text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:decoration-accent"
       >
         {m[1]}
@@ -41,6 +43,11 @@ function Prose({ text }: { text: string }) {
   }
   if (last < text.length) parts.push(text.slice(last));
   return <>{parts}</>;
+}
+
+/* the small mono label that sits above every block: "## the-problem" */
+function Marker({ children }: { children: string }) {
+  return <p className="font-mono text-sm text-accent">{marker(children)}</p>;
 }
 
 /* silent demo loop for the hero frame; holds on the poster for reduced motion */
@@ -71,6 +78,32 @@ function HeroVideo({
   );
 }
 
+/* an in-story screenshot: a soft panel, the image, a centred caption */
+function Figure({ media, wide }: { media: WriteupMedia; wide: boolean }) {
+  return (
+    <figure>
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface p-1.5 sm:p-2">
+        <Image
+          src={media.src}
+          alt={media.alt ?? media.caption ?? ""}
+          width={media.width}
+          height={media.height}
+          sizes={wide ? "(max-width: 1024px) 100vw, 1024px" : "(max-width: 640px) 100vw, 512px"}
+          className="h-auto w-full rounded-xl border border-line/70"
+        />
+      </div>
+      {media.caption && (
+        <figcaption className="mt-3 text-center text-sm text-muted [text-wrap:balance]">
+          {media.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+const PROSE =
+  "space-y-4 text-[1.05rem] leading-[1.75] text-ink-soft [text-wrap:pretty]";
+
 export default function Writeup({
   writeup,
   next,
@@ -93,7 +126,9 @@ export default function Writeup({
     video,
     links,
     summary,
+    stats,
     sections,
+    learnings,
     stack,
   } = writeup;
 
@@ -102,11 +137,18 @@ export default function Writeup({
     track("writeup_view", { slug, project: title, category });
   }, [slug, title, category]);
 
-  const people =
+  const team =
     role ??
     (collaborators.length
       ? `Donald Lee, with ${collaborators.join(", ")}`
       : "Donald Lee · solo build");
+
+  const meta: { label: string; value: string }[] = [
+    { label: "Timeline", value: date },
+    { label: "Type", value: category },
+    { label: "Team", value: team },
+  ];
+  if (award) meta.push({ label: "Recognition", value: `🏆 ${award}` });
 
   return (
     <article className="relative">
@@ -131,36 +173,37 @@ export default function Writeup({
             <h1 className="mt-3 font-display text-[clamp(2.6rem,7vw,5rem)] font-extrabold leading-[0.98] tracking-[-0.04em] text-ink">
               {title}
             </h1>
-            <p className="mt-3 text-[clamp(1.15rem,2.6vw,1.55rem)] font-medium text-accent">
+            <p className="mt-3 max-w-[32ch] text-[clamp(1.15rem,2.6vw,1.55rem)] font-medium leading-snug text-accent">
               {tagline}
             </p>
           </Reveal>
 
+          {/* the at-a-glance strip: when, what, who */}
           <Reveal delay={0.1}>
-            <dl className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-sm text-muted">
-              <div className="flex items-center gap-2">
-                <dt className="text-line-strong">date</dt>
-                <dd className="text-ink-soft">{date}</dd>
-              </div>
-              <div className="flex items-center gap-2">
-                <dt className="text-line-strong">type</dt>
-                <dd className="rounded-full bg-surface px-2.5 py-0.5 text-ink-soft">
-                  {category}
-                </dd>
-              </div>
-              {award && (
-                <div className="flex items-center gap-2">
-                  <dt className="text-line-strong">won</dt>
-                  <dd className="text-amber">🏆 {award}</dd>
+            <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-6 sm:flex sm:flex-wrap sm:gap-x-14">
+              {meta.map((m) => (
+                <div
+                  key={m.label}
+                  className={
+                    m.label === "Team" || m.label === "Recognition"
+                      ? "col-span-2 sm:max-w-sm"
+                      : undefined
+                  }
+                >
+                  <dt className="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+                    {m.label}
+                  </dt>
+                  <dd className="mt-1.5 text-[0.95rem] leading-snug text-ink">
+                    {m.value}
+                  </dd>
                 </div>
-              )}
+              ))}
             </dl>
-            <p className="mt-2.5 font-mono text-sm text-muted">{people}</p>
           </Reveal>
 
           {/* link buttons */}
           <Reveal delay={0.14}>
-            <div className="mt-7 flex flex-wrap gap-2.5">
+            <div className="mt-8 flex flex-wrap gap-2.5">
               {links.map((l) => (
                 <a
                   key={l.label}
@@ -193,7 +236,7 @@ export default function Writeup({
           </Reveal>
         </div>
 
-        {/* hero screenshot, framed like a browser window */}
+        {/* hero media, framed like a browser window */}
         <Reveal delay={0.18} className="mx-auto mt-12 max-w-5xl">
           <figure className="overflow-hidden rounded-2xl border border-line-strong bg-surface shadow-[0_40px_90px_-50px_rgba(40,60,100,0.6)]">
             <div className="flex items-center gap-1.5 border-b border-line bg-surface-2/70 px-4 py-3">
@@ -201,7 +244,7 @@ export default function Writeup({
               <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
               <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
               <span className="ml-3 truncate font-mono text-xs text-muted">
-                {title.toLowerCase().replace(/\s+/g, "")} · preview
+                {title.toLowerCase().replace(/[^a-z0-9.]+/g, "")} · preview
               </span>
             </div>
             <div className="relative aspect-[16/10] w-full bg-bg sm:aspect-[16/9]">
@@ -226,26 +269,54 @@ export default function Writeup({
         </Reveal>
       </header>
 
-      {/* ---- body: prose + sticky stack rail --------------------------- */}
-      <div className="mx-auto grid max-w-5xl gap-x-14 gap-y-12 px-5 pb-8 sm:px-8 lg:grid-cols-[1fr_15rem]">
-        <div className="min-w-0 max-w-[68ch]">
+      {/* ---- the story -------------------------------------------------- */}
+      <div className="px-5 pb-8 sm:px-8">
+        <div className="mx-auto max-w-5xl">
           {/* lead / summary */}
-          <Reveal>
-            <p className="mb-2 font-mono text-sm text-accent">## overview</p>
-            <div className="space-y-4 text-[1.075rem] leading-relaxed text-ink-soft [text-wrap:pretty] sm:text-[1.15rem]">
+          <Reveal className="max-w-[44rem]">
+            <Marker>overview</Marker>
+            <div className="mt-3 space-y-4 leading-relaxed text-ink-soft [text-wrap:pretty]">
               {summary.map((p, i) => (
-                <p key={i} className={i === 0 ? "text-ink" : undefined}>
+                <p
+                  key={i}
+                  className={
+                    i === 0
+                      ? "text-[1.15rem] text-ink sm:text-[1.3rem]"
+                      : "text-[1.05rem] sm:text-[1.1rem]"
+                  }
+                >
                   <Prose text={p} />
                 </p>
               ))}
             </div>
           </Reveal>
 
+          {/* headline numbers */}
+          {stats && stats.length > 0 && (
+            <Reveal className="mt-14">
+              <dl className="grid divide-y divide-line border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                {stats.map((s) => (
+                  <div key={s.label} className="py-6 sm:px-7 sm:first:pl-0">
+                    <dt className="sr-only">{s.label}</dt>
+                    <dd>
+                      <span className="block font-display text-[clamp(2.1rem,4.6vw,3rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                        {s.value}
+                      </span>
+                      <span className="mt-2.5 block max-w-[28ch] text-sm leading-snug text-muted">
+                        {s.label}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          )}
+
           {/* demo video */}
           {video && (
-            <Reveal className="mt-12">
-              <p className="mb-3 font-mono text-sm text-accent">## demo</p>
-              <div className="overflow-hidden rounded-xl border border-line-strong bg-black shadow-[0_24px_60px_-40px_rgba(40,60,100,0.6)]">
+            <Reveal className="mt-20">
+              <Marker>demo</Marker>
+              <div className="mt-4 overflow-hidden rounded-2xl border border-line-strong bg-black shadow-[0_24px_60px_-40px_rgba(40,60,100,0.6)]">
                 <div className="relative aspect-video w-full">
                   <iframe
                     src={video}
@@ -260,34 +331,92 @@ export default function Writeup({
             </Reveal>
           )}
 
-          {/* narrative sections */}
+          {/* narrative sections: label → claim → evidence → picture */}
           {sections.map((s) => (
-            <Reveal key={s.heading} className="mt-12">
-              <p className="mb-2 font-mono text-sm text-accent">
-                {marker(s.heading)}
-              </p>
-              <h2 className="font-display text-[clamp(1.5rem,3.5vw,2rem)] font-bold tracking-[-0.03em] text-ink">
-                {s.heading}
-              </h2>
-              <div className="mt-3 space-y-4 text-[1.05rem] leading-relaxed text-ink-soft [text-wrap:pretty]">
-                {s.body.map((p, i) => (
-                  <p key={i}>
-                    <Prose text={p} />
-                  </p>
-                ))}
+            <section key={s.heading} className="mt-20 sm:mt-24">
+              <Reveal className="max-w-[44rem]">
+                <Marker>{s.label ?? s.heading}</Marker>
+                <h2 className="mt-3 font-display text-[clamp(1.55rem,3.3vw,2.15rem)] font-bold leading-[1.15] tracking-[-0.03em] text-ink">
+                  {s.heading}
+                </h2>
+                <div className={`mt-4 ${PROSE}`}>
+                  {s.body.map((p, i) => (
+                    <p key={i}>
+                      <Prose text={p} />
+                    </p>
+                  ))}
+                </div>
+                {s.points && (
+                  <ul className="mt-5 space-y-3">
+                    {s.points.map((pt, i) => (
+                      <li
+                        key={i}
+                        className="grid grid-cols-[1.25rem_1fr] text-[1.05rem] leading-[1.7] text-ink-soft"
+                      >
+                        <span aria-hidden className="font-mono text-accent">
+                          –
+                        </span>
+                        <span>
+                          <Prose text={pt} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Reveal>
+
+              {s.media && s.media.length > 0 && (
+                <Reveal className="mt-10">
+                  <div
+                    className={
+                      s.media.length > 1
+                        ? "grid gap-6 sm:grid-cols-2 sm:gap-5"
+                        : undefined
+                    }
+                  >
+                    {s.media.map((m) => (
+                      <Figure key={m.src} media={m} wide={s.media!.length === 1} />
+                    ))}
+                  </div>
+                </Reveal>
+              )}
+            </section>
+          ))}
+
+          {/* takeaways */}
+          {learnings && learnings.length > 0 && (
+            <Reveal className="mt-20 sm:mt-24">
+              <div className="rounded-3xl border border-line bg-surface px-6 py-8 sm:px-10 sm:py-10">
+                <Marker>key learnings</Marker>
+                <h2 className="mt-3 font-display text-[clamp(1.55rem,3.3vw,2.15rem)] font-bold tracking-[-0.03em] text-ink">
+                  What I&apos;m taking with me
+                </h2>
+                <ol className="mt-7 grid gap-6 sm:gap-7">
+                  {learnings.map((l, i) => (
+                    <li
+                      key={i}
+                      className="grid grid-cols-[2.25rem_1fr] gap-2 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <span className="pt-0.5 font-mono text-sm text-accent">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <p className="max-w-[62ch] text-[1.05rem] leading-[1.7] text-ink-soft [text-wrap:pretty]">
+                        <Prose text={l} />
+                      </p>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </Reveal>
-          ))}
-        </div>
+          )}
 
-        {/* sticky stack rail */}
-        <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <Reveal>
-            <p className="mb-3 font-mono text-sm text-accent">## stack</p>
-            <div className="space-y-5">
+          {/* built with */}
+          <Reveal className="mt-20 border-t border-line pt-10">
+            <Marker>built with</Marker>
+            <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {stack.map((g) => (
                 <div key={g.label}>
-                  <p className="mb-2 font-mono text-xs uppercase tracking-wide text-muted">
+                  <p className="mb-2.5 font-mono text-xs uppercase tracking-[0.08em] text-muted">
                     {g.label}
                   </p>
                   <ul className="flex flex-wrap gap-1.5">
@@ -304,11 +433,11 @@ export default function Writeup({
               ))}
             </div>
           </Reveal>
-        </aside>
+        </div>
       </div>
 
       {/* ---- next project --------------------------------------------- */}
-      <section className="px-5 pb-4 pt-10 sm:px-8">
+      <section className="px-5 pb-4 pt-14 sm:px-8">
         <Link
           href={`/project/${next.slug}/`}
           aria-label={`Next project: ${next.title}`}
