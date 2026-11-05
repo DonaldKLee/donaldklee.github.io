@@ -20,17 +20,22 @@ export default function SideQuests() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="side-quests" className="relative overflow-hidden pt-24 sm:pt-32">
+    <section id="side-quests" className="relative overflow-hidden pt-28 sm:pt-40">
       {/* a soft cool-to-warm wash; the closing colour matches the footer's
-          opening colour so the two read as one continuous scene */}
+          opening colour so the two read as one continuous scene. Wider than
+          the section so the arc meets the screen edges at an angle, not as a
+          steep ellipse corner. */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-y-0 -inset-x-[12%] -z-10 overflow-hidden"
         style={{
           background:
             "linear-gradient(180deg,#eef4fc 0%,#f6f9fd 38%,#fbf2e8 74%,#fdeee0 100%)",
+          borderTopLeftRadius: "50% clamp(64px, 10vw, 160px)",
+          borderTopRightRadius: "50% clamp(64px, 10vw, 160px)",
         }}
-      />
-      <div className="pointer-events-none absolute -right-24 top-8 -z-10 h-72 w-72 rounded-full bg-amber/15 blur-3xl" />
+      >
+        <div className="absolute right-[calc(9.68%-6rem)] top-24 h-72 w-72 rounded-full bg-amber/15 blur-3xl" />
+      </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <SectionHeading

@@ -99,17 +99,6 @@ export default function Hero({ ready }: { ready: boolean }) {
         initial="hidden"
         animate={ready ? "show" : "hidden"}
       >
-        <motion.div
-          variants={item}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3 py-1 font-mono text-xs text-ink-soft"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
-          open to new opportunities
-        </motion.div>
-
         <motion.h1
           variants={item}
           className="font-display text-[clamp(2.6rem,7vw,5rem)] font-extrabold leading-[0.98] tracking-[-0.04em] text-ink"
