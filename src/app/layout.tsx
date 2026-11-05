@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import Analytics from "@/components/Analytics";
+import Cursor from "@/components/Cursor";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -127,6 +128,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <Cursor />
         <Analytics />
         <script
           type="application/ld+json"
