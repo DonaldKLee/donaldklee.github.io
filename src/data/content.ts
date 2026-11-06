@@ -245,9 +245,9 @@ export const experience: ExperienceGroup[] = [
       {
         org: "Amazon",
         title: "Software Development Intern",
-        period: "May 2026 – Present",
+        period: "May 2026 – Jul 2026",
         points: [
-          "Building a desktop app that lets accountants run local MCP servers to work faster.",
+          "Helped accountants work more efficiently by building a desktop app to support local MCP servers.",
         ],
       },
       {
