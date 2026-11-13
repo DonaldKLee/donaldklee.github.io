@@ -1,8 +1,53 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { createContext, useContext, useMemo, useRef, type ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { BUILD_CLICK, BUILD_DROP, BUILD_STEP, PROP_PIECE } from "./build";
+
+/** how high above its resting spot a piece starts, in scene units */
+const BUILD_RISE = 6;
+const BuildCtx = createContext<{
+  build: boolean;
+  last: number;
+  onBuilt?: () => void;
+}>({ build: false, last: -1 });
+
+/**
+ * One piece of the brick-by-brick build: hidden until its turn, then it falls
+ * into place and hops as it clicks in, like a Lego piece pressed on. Pieces
+ * nested inside another piece drop relative to it, so arms land on the torso.
+ */
+function Brick({ i, children }: { i: number; children: ReactNode }) {
+  const { build, last, onBuilt } = useContext(BuildCtx);
+  const ref = useRef<THREE.Group>(null);
+  const t = useRef(0);
+  const done = useRef(!build);
+  useFrame((_, dt) => {
+    const g = ref.current;
+    if (!g || done.current) return;
+    // clamp so a slow first frame (shader compile) can't skip the build
+    t.current += Math.min(dt, 1 / 30);
+    const local = t.current - i * BUILD_STEP;
+    g.visible = local > 0;
+    if (local < BUILD_DROP) {
+      const p = Math.max(local, 0) / BUILD_DROP;
+      g.position.y = BUILD_RISE * (1 - p * p); // accelerating fall
+    } else if (local < BUILD_DROP + BUILD_CLICK) {
+      const q = (local - BUILD_DROP) / BUILD_CLICK;
+      g.position.y = 0.1 * Math.sin(Math.PI * q);
+    } else {
+      g.position.y = 0;
+      done.current = true;
+      if (i === last) onBuilt?.();
+    }
+  });
+  return (
+    <group ref={ref} position={[0, build ? BUILD_RISE : 0, 0]} visible={!build}>
+      {children}
+    </group>
+  );
+}
 
 const COLORS = {
   skin: "#ecbd97",
@@ -38,6 +83,10 @@ interface MiiProps {
   waveKey?: number;
   follow?: number;
   mode?: MiiMode;
+  /** assemble piece by piece on mount (the loading screen) */
+  build?: boolean;
+  /** fires once the last piece has clicked in */
+  onBuilt?: () => void;
 }
 
 /**
@@ -49,7 +98,15 @@ export default function Mii({
   waveKey = 0,
   follow = 1,
   mode = "idle",
+  build = false,
+  onBuilt,
 }: MiiProps) {
+  const buildCtx = useMemo(
+    () => ({ build, last: PROP_PIECE[mode] ? 7 : 6, onBuilt }),
+    // the build plays once, on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
   const root = useRef<THREE.Group>(null);
   const body = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
@@ -209,6 +266,7 @@ export default function Mii({
   });
 
   return (
+    <BuildCtx.Provider value={buildCtx}>
     <group ref={root} dispose={null}>
       {/* world-aligned bed + zzz — they must NOT tip with the body */}
       {sleeping && <Bed />}
@@ -221,6 +279,7 @@ export default function Mii({
       {/* the whole figure; tips onto its side for the sleep pose */}
       <group ref={body}>
       {/* ---------------- LOWER BODY: blue jeans ---------------- */}
+      <Brick i={0}>
       <group position={[0, -2.5, 0]}>
         <mesh position={[0, 0.15, 0]} scale={[1, 0.8, 0.95]}>
           <sphereGeometry args={[0.78, 28, 24]} />
@@ -247,8 +306,10 @@ export default function Mii({
           </group>
         ))}
       </group>
+      </Brick>
 
       {/* ---------------- TORSO: white tee + black quarter-zip ---------- */}
+      <Brick i={1}>
       <group position={[0, -1.5, 0]}>
         {/* black quarter-zip sweater body — mostly closed, like the photo */}
         <mesh position={[0, -0.1, 0]}>
@@ -300,6 +361,7 @@ export default function Mii({
         ))}
 
         {/* left arm */}
+        <Brick i={2}>
         <group ref={leftArm} position={[-0.92, 0.2, 0.18]} rotation={[0, 0, 0.34]}>
           <mesh position={[0, -0.45, 0]}>
             <capsuleGeometry args={[0.2, 0.72, 6, 16]} />
@@ -312,8 +374,10 @@ export default function Mii({
           {/* poke bowl cupped in this hand while eating */}
           {eating && <PokeBowl />}
         </group>
+        </Brick>
 
         {/* right arm (waves / eats) — swings outward */}
+        <Brick i={3}>
         <group
           ref={waveArm}
           position={[0.92, 0.34, 0.18]}
@@ -330,15 +394,20 @@ export default function Mii({
           {/* chopsticks held in this hand while eating */}
           {eating && <Chopsticks />}
         </group>
+        </Brick>
       </group>
+      </Brick>
 
       {/* ---------------- NECK ---------------- */}
+      <Brick i={4}>
       <mesh position={[0, -0.92, 0]}>
         <cylinderGeometry args={[0.28, 0.33, 0.5, 24]} />
         <meshStandardMaterial color={COLORS.skinDark} roughness={0.62} />
       </mesh>
+      </Brick>
 
       {/* ---------------- HEAD ---------------- */}
+      <Brick i={5}>
       <group ref={head} position={[0, 0, 0]}>
         <mesh scale={[1, 1.08, 0.96]} castShadow>
           {/* 44×36 is visually identical to 64×64 on a smooth sphere this size,
@@ -358,6 +427,7 @@ export default function Mii({
         </mesh>
 
         {/* ---- HAIR: Korean middle-part perm ---- */}
+        <Brick i={6}>
         {/* back coverage */}
         <mesh position={[0, 0.08, -0.34]} scale={[1.02, 1.05, 0.92]}>
           <sphereGeometry args={[1, 36, 32]} />
@@ -430,6 +500,7 @@ export default function Mii({
           <sphereGeometry args={[1, 24, 24]} />
           <meshStandardMaterial color={COLORS.hair} roughness={0.5} />
         </mesh>
+        </Brick>
 
         {/* ---- FACE ---- */}
         <group ref={lid}>
@@ -481,13 +552,17 @@ export default function Mii({
           <meshStandardMaterial color={COLORS.mouth} roughness={0.5} />
         </mesh>
       </group>
+      </Brick>
 
       {/* ---------------- HELD PROPS ---------------- */}
+      <Brick i={7}>
       {mode === "work" && <Laptop />}
       {mode === "chill" && <Phone />}
       {mode === "commute" && <Matcha />}
+      </Brick>
       </group>
     </group>
+    </BuildCtx.Provider>
   );
 }
 

@@ -18,6 +18,9 @@ interface MiiSceneProps {
   /** play the scale-up spawn pop on mount (skip when a poster already
    *  showed the figure, so it doesn't vanish and re-spawn) */
   spawn?: boolean;
+  /** assemble the figure piece by piece instead (the loading screen) */
+  build?: boolean;
+  onBuilt?: () => void;
 }
 
 /** Signals the parent when the scene has actually painted, so placeholders
@@ -67,7 +70,10 @@ export default function MiiScene({
   className,
   onReady,
   spawn = true,
+  build = false,
+  onBuilt,
 }: MiiSceneProps) {
+  if (build) spawn = false;
   const sleeping = mode === "sleep";
   const reduce = useReducedMotion();
 
@@ -107,7 +113,7 @@ export default function MiiScene({
           {sleeping ? (
             <group position={[0, 1.7, 0]} scale={0.82}>
               <Spawn enabled={spawn && !reduce}>
-                <Mii waveKey={waveKey} mode={mode} follow={0} />
+                <Mii waveKey={waveKey} mode={mode} follow={0} build={build} onBuilt={onBuilt} />
               </Spawn>
             </group>
           ) : (
@@ -125,7 +131,13 @@ export default function MiiScene({
                 floatingRange={[-0.04, 0.04]}
               >
                 <Spawn enabled={spawn && !reduce}>
-                  <Mii waveKey={waveKey} mode={mode} follow={compact ? 0.6 : 1} />
+                  <Mii
+                    waveKey={waveKey}
+                    mode={mode}
+                    follow={compact ? 0.6 : 1}
+                    build={build}
+                    onBuilt={onBuilt}
+                  />
                 </Spawn>
               </Float>
             </group>

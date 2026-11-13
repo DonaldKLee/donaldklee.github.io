@@ -14,15 +14,23 @@ import SideRails from "@/components/SideRails";
 
 export default function Home() {
   const [ready, setReady] = useState(false);
+  const [handoff, setHandoff] = useState(false);
+  const [miiShown, setMiiShown] = useState(false);
 
   return (
     <>
-      <LoadingScreen onComplete={() => setReady(true)} />
+      <LoadingScreen
+        onReveal={(fromLoader) => {
+          setHandoff(fromLoader);
+          setReady(true);
+        }}
+        onDone={() => setMiiShown(true)}
+      />
       <SmoothScrollLinks />
       <Nav />
       <SideRails />
       <main id="main">
-        <Hero ready={ready} />
+        <Hero ready={ready} miiShown={miiShown} handoff={handoff} />
         <About />
         <Experience />
         <Projects />

@@ -24,7 +24,17 @@ const HAVE_POSTER = new Set(["idle", "work", "eat", "chill"]);
 const posterFor = (mode: MiiStatus["mode"]) =>
   `${POSTER_BASE}-${HAVE_POSTER.has(mode) ? mode : "idle"}.webp`;
 
-export default function Hero({ ready }: { ready: boolean }) {
+export default function Hero({
+  ready,
+  miiShown = ready,
+  handoff = false,
+}: {
+  ready: boolean;
+  /** the loader's own Mii has left the stage */
+  miiShown?: boolean;
+  /** the loader's Mii landed exactly on this one: swap in without an entrance */
+  handoff?: boolean;
+}) {
   const reduce = useReducedMotion();
   const [wave, setWave] = useState(0);
   const [idx, setIdx] = useState(0);
@@ -157,9 +167,14 @@ export default function Hero({ ready }: { ready: boolean }) {
       {/* Mii */}
       <div className="relative flex-1">
         <motion.div
+          id="hero-mii"
           initial={{ opacity: 0, scale: 0.9 }}
-          animate={ready ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          animate={miiShown ? { opacity: 1, scale: 1 } : {}}
+          transition={
+            handoff
+              ? { duration: 0 }
+              : { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }
+          }
           className="relative mx-auto aspect-square w-[min(80vw,460px)] cursor-pointer select-none"
           onClick={() => {
             setWave((w) => w + 1);
