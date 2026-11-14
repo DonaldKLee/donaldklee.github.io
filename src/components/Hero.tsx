@@ -120,7 +120,7 @@ export default function Hero({
           variants={item}
           className="mt-5 max-w-[46ch] text-balance text-lg leading-relaxed text-ink-soft sm:text-xl"
         >
-          A self-taught programmer studying at UBC. I build things that help make lives easier!
+          I'm a software engineer with a passion for building things that help make lives easier!
         </motion.p>
 
         {/* rotating currently line */}

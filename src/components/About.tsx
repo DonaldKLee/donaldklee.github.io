@@ -17,7 +17,7 @@ const STACK: { group: string; items: string[] }[] = [
   },
   {
     group: "Cloud & Infrastructure",
-    items: ["AWS", "Firebase", "MongoDB", "Docker", "Git"],
+    items: ["AWS", "Firebase", "MongoDB", "Supabase", "Docker", "Git"],
   },
 ];
 
@@ -45,11 +45,10 @@ export default function About() {
             </div>
             <div className="space-y-4 text-lg leading-relaxed text-ink-soft">
               <p>
-                I&apos;m Donald, a self-taught programmer studying at the
-                University of British Columbia. I have a passion for building things that make lives easier whether that be consumer products or internal tools.
+                I&apos;m Donald, currently studying at the University of British Columbia. I self-taught myself how to code at 14 with online tutorials and I've been building ever since. I enjoy building things that make lives easier whether that be consumer products or internal tools.
               </p>
               <p>
-                Currently exploring how to leverage AI to build more impactful projects surrounding my interests in productivity, fintech, and education, but always open to chatting about new ideas and opportunities!
+                Recently I've been exploring how to leverage AI to build more impactful projects surrounding my interests in productivity, fintech, and education, but always open to chatting about new ideas and opportunities!
               </p>
             </div>
           </div>

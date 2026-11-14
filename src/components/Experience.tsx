@@ -25,9 +25,13 @@ export default function Experience() {
         <div className="overflow-hidden rounded-2xl border border-line">
           {experience.map((group, i) => {
             const isOpen = open === i;
+            const totalPeriod =
+              group.roles.length > 1
+                ? `${group.roles[group.roles.length - 1].period.split(" – ")[0]} – ${group.roles[0].period.split(" – ")[1]}`
+                : group.roles[0].period;
             return (
               <div
-                key={group.org}
+                key={`${group.org}-${i}`}
                 className={i > 0 ? "border-t border-line" : ""}
               >
                 <button
@@ -65,7 +69,7 @@ export default function Experience() {
                     </span>
                   </span>
                   <span className="hidden shrink-0 font-mono text-xs text-muted sm:block">
-                    {group.roles[0].period}
+                    {totalPeriod}
                   </span>
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
@@ -88,15 +92,17 @@ export default function Experience() {
                       <div className="space-y-6 px-5 pb-6 sm:px-7 sm:pl-[5.75rem]">
                         {group.roles.map((role) => (
                           <div key={role.title + role.period}>
-                            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                              <p className="font-medium text-ink">
-                                {role.title}
-                              </p>
-                              <p className="font-mono text-xs text-muted">
-                                {role.period}
-                              </p>
-                            </div>
-                            <ul className="mt-2 space-y-1.5">
+                            {group.roles.length > 1 && (
+                              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <p className="font-medium text-ink">
+                                  {role.title}
+                                </p>
+                                <p className="font-mono text-xs text-muted">
+                                  {role.period}
+                                </p>
+                              </div>
+                            )}
+                            <ul className={`space-y-1.5 ${group.roles.length > 1 ? "mt-2" : ""}`}>
                               {role.points.map((pt) => (
                                 <li
                                   key={pt}

@@ -278,6 +278,14 @@ export const experience: ExperienceGroup[] = [
           "Helped accountants work more efficiently by building a desktop app to support local MCP servers.",
         ],
       },
+    ],
+  },
+  {
+    org: "Amazon",
+    emoji: "📦",
+    short: "AMZ",
+    logo: "/images/logos/amazon.jpeg",
+    roles: [
       {
         org: "Amazon",
         title: "Software Development Intern",
@@ -450,7 +458,6 @@ export const EMAIL_TEMPLATE = "?subject=[Subject Goes Here] - Sent From Donald L
 
 /* Rotating "currently" lines for the hero */
 export const currentlyDoing = [
-  "interning at Amazon",
   "playing around with new AI tools",
   "shipping 2am side projects",
   "trying new things"

@@ -27,24 +27,26 @@ const SITE = "https://donaldlee.xyz";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: "Donald Lee | Software Developer",
+  title: "Donald Lee | Software Engineer",
   description:
-    "Donald Lee is a self-taught developer at UBC who builds AI tooling, hackathon projects, and the occasional 2am side quest. Currently interning at Amazon.",
+    "Donald Lee is a software engineer at UBC who builds tools that save people time. 2x Amazon SDE Intern, Boeing, MLH Top 50 Hacker.",
   keywords: [
     "Donald Lee",
     "Donald Kevin Lee",
     "UBC",
+    "software engineer",
     "Vancouver developer",
     "nwPlus",
     "Amazon intern",
+    "Boeing",
+    "MLH Top 50",
     "portfolio",
-    "software developer",
   ],
   authors: [{ name: "Donald Lee" }],
   openGraph: {
-    title: "Donald Lee | Software Developer",
+    title: "Donald Lee | Software Engineer",
     description:
-      "Self-taught developer at UBC building AI tooling and side projects. Come explore.",
+      "Software engineer at UBC building tools that save people time. 2x Amazon SDE Intern, Boeing, MLH Top 50 Hacker.",
     url: SITE,
     siteName: "Donald Lee",
     type: "website",
@@ -53,15 +55,15 @@ export const metadata: Metadata = {
         url: "/images/og.png",
         width: 1200,
         height: 630,
-        alt: "Donald Lee, software developer at UBC",
+        alt: "Donald Lee, software engineer at UBC",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Donald Lee | Software Developer",
+    title: "Donald Lee | Software Engineer",
     description:
-      "Self-taught developer at UBC building AI tooling and side projects.",
+      "Software engineer at UBC building tools that save people time. 2x Amazon SDE Intern, Boeing, MLH Top 50 Hacker.",
     creator: "@HiDonaldLee",
     images: ["/images/og.png"],
   },
