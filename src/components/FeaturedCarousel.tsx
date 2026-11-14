@@ -394,9 +394,6 @@ function CarouselCard({
           <span className="rounded-full bg-accent-wash px-2 py-0.5 text-accent-strong">
             {project.category}
           </span>
-          {project.award && (
-            <span className="text-muted">· {project.award}</span>
-          )}
         </div>
         <h3 className="mt-1.5 font-display text-lg font-bold leading-tight tracking-[-0.02em] text-ink">
           {project.name}
@@ -492,7 +489,6 @@ const MetaTooltip = forwardRef<MetaTipHandle>(function MetaTooltip(_props, ref) 
               <span className="rounded-full bg-accent-wash px-2 py-0.5 text-accent-strong">
                 {p.category}
               </span>
-              {p.award && <span className="text-muted">· {p.award}</span>}
             </div>
             <h3 className="mt-2 font-display text-xl font-bold leading-tight tracking-[-0.02em] text-ink">
               {p.name}
@@ -504,7 +500,7 @@ const MetaTooltip = forwardRef<MetaTipHandle>(function MetaTooltip(_props, ref) 
               {p.description}
             </p>
             <span className="mt-2.5 inline-flex items-center gap-1.5 font-mono text-[0.75rem] text-ink">
-              {p.slug ? "Read the story" : "View project"}
+              Click to view
               <span aria-hidden>→</span>
             </span>
           </>

@@ -7,7 +7,6 @@ export interface Project {
   category: Category;
   href: string;
   image: string;
-  award?: string;
   /** when set, the card opens the internal write-up at /project/<slug> */
   slug?: string;
   /**
@@ -50,9 +49,9 @@ export const featuredProjects: Project[] = [
   },
   {
     name: "plus1",
-    tagline: "An AI teammate that joins your Google Meet",
+    tagline: "Your plus one for meetings that matter",
     description:
-      "An AI participant with a face and voice that joins Google Meet, answers questions in real time, and can take on action items or screenshare.",
+      "The plus one you bring to meetings that matter. It joins your Google Meet with a face and voice, listens, speaks up when you talk to it, and takes on action items while you focus on the discussion.",
     category: "Hackathon",
     href: "https://devpost.com/software/plus1-1imlbz",
     image: "/images/projects/home/plus1Demo.mp4",
@@ -67,11 +66,10 @@ export const featuredProjects: Project[] = [
     href: "https://devpost.com/software/fragments-gmleoj",
     image: "/images/projects/home/FragmentsDemo.mp4",
     slug: "fragments",
-    award: "Best Use of AWS · Hack the North 2025",
   },
   {
     name: "Provent",
-    tagline: "A productivity chrome extension",
+    tagline: "A productivity Chrome extension",
     description:
       "A customizable Chrome extension that replaces your new-tab with a modern workspace, a pomodoro timer, and a site blocker for when you need to focus.",
     category: "Startup",
@@ -97,7 +95,7 @@ const shelf: Project[] = [
     name: "nwPlus.io",
     tagline: "The club behind Western Canada's Largest hackathons",
     description:
-      "Built the website for nwPlus, the UBC club that ran nwHacks, HackCamp, and cmd-f.",
+      "Revamped and maintained the website for nwPlus, the UBC club behind nwHacks, HackCamp, and cmd-f.",
     category: "Website",
     href: "https://www.nwplus.io/",
     image: "/images/projects/home/nwPluswwwDemo.mp4",
@@ -114,7 +112,7 @@ const shelf: Project[] = [
   },
   {
     name: "HonkHonkHire",
-    tagline: "AI mock interviewer",
+    tagline: "AI mock interviews tailored to you",
     description:
       "AI mock interviews tailored to your experiences. It reads your facial expressions, transcribes your answers, and hands back feedback.",
     category: "Hackathon",

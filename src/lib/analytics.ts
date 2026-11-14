@@ -48,6 +48,8 @@ export type AnalyticsEvent =
   | "scroll_depth"
   /** landed on a /project/<slug> write-up */
   | "writeup_view"
+  /** pressed play on a write-up's demo video */
+  | "demo_play"
   /** any other outbound link */
   | "outbound_click";
 

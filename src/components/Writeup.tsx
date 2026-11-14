@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Writeup, WriteupMedia } from "@/data/writeups";
 import { track } from "@/lib/analytics";
 import Reveal from "./Reveal";
@@ -78,6 +78,63 @@ function HeroVideo({
   );
 }
 
+/* the demo video in the hero frame: the still with a play button until
+   clicked, so the YouTube player (and its weight) only loads on demand */
+function HeroYouTube({
+  src,
+  poster,
+  title,
+  slug,
+}: {
+  src: string;
+  poster: string;
+  title: string;
+  slug: string;
+}) {
+  const [playing, setPlaying] = useState(false);
+  if (playing) {
+    const sep = src.includes("?") ? "&" : "?";
+    return (
+      <iframe
+        src={`${src}${sep}autoplay=1&rel=0`}
+        title={`${title} demo`}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute inset-0 h-full w-full bg-black"
+      />
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        setPlaying(true);
+        track("demo_play", { slug, project: title });
+      }}
+      aria-label={`Play the ${title} demo video`}
+      className="group absolute inset-0 h-full w-full"
+    >
+      <Image
+        src={poster}
+        alt=""
+        fill
+        priority
+        sizes="(max-width: 1024px) 100vw, 1024px"
+        className="object-cover object-top"
+      />
+      <span className="absolute inset-0 bg-ink/25 transition-colors duration-300 group-hover:bg-ink/35" />
+      <span className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3 rounded-full bg-bg py-3 pl-4 pr-5 text-sm font-medium text-ink shadow-[0_12px_40px_-12px_rgba(20,30,60,0.6)] transition-transform duration-300 group-hover:scale-105">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-strong text-accent-ink">
+          <svg viewBox="0 0 16 16" className="ml-0.5 h-3.5 w-3.5" fill="currentColor" aria-hidden>
+            <path d="M4 2.5v11l9.5-5.5z" />
+          </svg>
+        </span>
+        Watch the demo
+      </span>
+    </button>
+  );
+}
+
 /* an in-story screenshot: a soft panel, the image, a centred caption */
 function Figure({ media, wide }: { media: WriteupMedia; wide: boolean }) {
   return (
@@ -137,18 +194,17 @@ export default function Writeup({
     track("writeup_view", { slug, project: title, category });
   }, [slug, title, category]);
 
-  const team =
-    role ??
-    (collaborators.length
-      ? `Donald Lee, with ${collaborators.join(", ")}`
-      : "Donald Lee · solo build");
-
-  const meta: { label: string; value: string }[] = [
+  const meta: { label: string; value: string | string[]; wide?: boolean }[] = [
     { label: "Timeline", value: date },
     { label: "Type", value: category },
-    { label: "Team", value: team },
   ];
-  if (award) meta.push({ label: "Recognition", value: `🏆 ${award}` });
+  // solo projects skip the row
+  if (collaborators.length)
+    meta.push({ label: "Team", value: `Donald Lee, with ${collaborators.join(", ")}` });
+  if (role) meta.push({ label: "My role", value: role });
+  if (typeof award === "string") meta.push({ label: "Award", value: `🏆 ${award}`, wide: true });
+  else if (award)
+    meta.push({ label: award.event, value: award.prizes.map((p) => `🏆 ${p}`), wide: true });
 
   return (
     <article className="relative">
@@ -185,7 +241,7 @@ export default function Writeup({
                 <div
                   key={m.label}
                   className={
-                    m.label === "Team" || m.label === "Recognition"
+                    m.wide || m.label === "Team" || m.label === "My role"
                       ? "col-span-2 sm:max-w-sm"
                       : undefined
                   }
@@ -194,7 +250,13 @@ export default function Writeup({
                     {m.label}
                   </dt>
                   <dd className="mt-1.5 text-[0.95rem] leading-snug text-ink">
-                    {m.value}
+                    {Array.isArray(m.value)
+                      ? m.value.map((v) => (
+                          <span key={v} className="block">
+                            {v}
+                          </span>
+                        ))
+                      : m.value}
                   </dd>
                 </div>
               ))}
@@ -244,11 +306,13 @@ export default function Writeup({
               <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
               <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
               <span className="ml-3 truncate font-mono text-xs text-muted">
-                {title.toLowerCase().replace(/[^a-z0-9.]+/g, "")} · preview
+                {title.toLowerCase().replace(/[^a-z0-9.]+/g, "")} · {video ? "demo" : "preview"}
               </span>
             </div>
             <div className="relative aspect-[16/10] w-full bg-bg sm:aspect-[16/9]">
-              {heroVideo ? (
+              {video ? (
+                <HeroYouTube src={video} poster={hero} title={title} slug={slug} />
+              ) : heroVideo ? (
                 <HeroVideo
                   src={heroVideo}
                   poster={hero}
@@ -312,25 +376,6 @@ export default function Writeup({
             </Reveal>
           )}
 
-          {/* demo video */}
-          {video && (
-            <Reveal className="mt-20">
-              <Marker>demo</Marker>
-              <div className="mt-4 overflow-hidden rounded-2xl border border-line-strong bg-black shadow-[0_24px_60px_-40px_rgba(40,60,100,0.6)]">
-                <div className="relative aspect-video w-full">
-                  <iframe
-                    src={video}
-                    title={`${title} demo`}
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 h-full w-full"
-                  />
-                </div>
-              </div>
-            </Reveal>
-          )}
-
           {/* narrative sections: label → claim → evidence → picture */}
           {sections.map((s) => (
             <section key={s.heading} className="mt-20 sm:mt-24">
@@ -369,9 +414,11 @@ export default function Writeup({
                 <Reveal className="mt-10">
                   <div
                     className={
-                      s.media.length > 1
-                        ? "grid gap-6 sm:grid-cols-2 sm:gap-5"
-                        : undefined
+                      s.media.length > 2
+                        ? "grid gap-6 sm:grid-cols-3 sm:gap-5"
+                        : s.media.length > 1
+                          ? "grid gap-6 sm:grid-cols-2 sm:gap-5"
+                          : undefined
                     }
                   >
                     {s.media.map((m) => (
@@ -389,7 +436,7 @@ export default function Writeup({
               <div className="rounded-3xl border border-line bg-surface px-6 py-8 sm:px-10 sm:py-10">
                 <Marker>key learnings</Marker>
                 <h2 className="mt-3 font-display text-[clamp(1.55rem,3.3vw,2.15rem)] font-bold tracking-[-0.03em] text-ink">
-                  What I&apos;m taking with me
+                  What I learned
                 </h2>
                 <ol className="mt-7 grid gap-6 sm:gap-7">
                   {learnings.map((l, i) => (
