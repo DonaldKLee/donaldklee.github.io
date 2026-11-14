@@ -55,7 +55,7 @@ export default function Footer() {
           Thanks for visiting!
         </h2>
         <p className="mt-4 max-w-[46ch] text-lg leading-relaxed text-muted">
-          My inbox is always open. Have a question or want to say hi? Feel free to shoot me an email, I will try my best to get back to you!
+          My inbox is always open. Have a question, opportunity, or want to say hi? Feel free to shoot me an email, I will try my best to get back to you!
         </p>
 
         <a
