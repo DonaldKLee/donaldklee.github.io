@@ -118,12 +118,28 @@ export const writeups: Writeup[] = [
           "We were inspired by this summer's wildfires. Most wildfire tech starts working once there's already smoke. We wanted to work on what happens before that, which is the dry fuel that builds up around forests and homes. A lot of that is just fallen leaves.",
           "Clearing them isn't hard. It's just repetitive, and the leaves keep falling. That seemed like a good job to hand off to a robot.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/ember-rover-leaves.jpg",
+            width: 692,
+            height: 900,
+            caption: "The rover out on a real lawn.",
+          },
+        ],
       },
       {
         heading: "What I worked on",
         body: [
           "The leaf detection model, the autopilot and the 3D simulator we tested it in, and the live rover and leaf tracking on our dashboard.",
           "The leaf detection runs on the iPhone mounted on the rover. A computer vision model finds leaves in the camera feed, and the phone's LiDAR tells us how far away they are and which things are obstacles instead of leaves. The dashboard shows where the rover is and every leaf it has found as it happens, so you can watch what the rover is thinking from a laptop and drive it from the browser.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/ember-dashboard.jpg",
+            width: 1600,
+            height: 1067,
+            caption: "The live map in the browser: where the rover is, the leaves it's tracking, and paths it can't take.",
+          },
         ],
       },
       {
@@ -139,6 +155,14 @@ export const writeups: Writeup[] = [
           "Drawing a box around a leaf on screen was the easy part. The detections flicker between frames, anything brown looks like a leaf, and once the rover gets close, the leaf drops out of view under the camera.",
           "So I saved every leaf as a spot on the ground instead of a box on the screen, using the phone's motion tracking. If two sightings are within 25 cm of each other, they count as the same leaf. A leaf only becomes a target after it's been seen three times. Until then, it gets forgotten if it isn't seen again within four seconds. Since the rover is driving to a spot on the ground, it can keep going even after the leaf is out of view.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/ember-rover.jpg",
+            width: 678,
+            height: 550,
+            caption: "The finished rover: a rake arm, a clear bin for leaves, and the iPhone on top as its brain.",
+          },
+        ],
       },
       {
         heading: "Bugs from the rover's own body",
@@ -151,6 +175,14 @@ export const writeups: Writeup[] = [
         body: [
           "Our hardware wasn't ready until the morning of submissions, so I couldn't wait for the rover to test the autopilot. I built a 3D simulator in the browser instead. It puts the rover on a fake lawn with leaves, obstacles, and noisy detections, and runs the same autopilot code the phone runs. That let me watch the whole job play out: find the leaves, drive to each one, scoop, bring them back to the pile, and retry the ones it missed.",
           "The simulator can't tell you how the real camera behaves, so I also took the phone outside. I held it where it would sit on the rover and walked around, acting as the rover myself. That let me test the leaf detection on real leaves and check that the autopilot was steering me the right way, all before the rover could drive.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/ember-simulator.jpg",
+            width: 1600,
+            height: 1067,
+            caption: "The 3D simulator, running the same navigation code as the phone.",
+          },
         ],
       },
     ],
@@ -371,6 +403,14 @@ export const writeups: Writeup[] = [
           "Most AI meeting assistants just record. They transcribe the call and send you a summary after everyone has left. By then, you've probably already done the follow-up work yourself.",
           "We thought about the meetings where you wish you had one more person. A client call where you're talking and also trying to pull up numbers. A team sync where someone says \"can someone file that?\" and nobody does. plus1 is that extra person you invite along: it sits in the call, listens, and picks up the work so you don't have to context-switch away from the conversation.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/plus1-team.jpg",
+            width: 1024,
+            height: 768,
+            caption: "The four of us at Hack the North 2026.",
+          },
+        ],
       },
       {
         heading: "What I worked on",
@@ -403,6 +443,14 @@ export const writeups: Writeup[] = [
           "It doesn't listen to its own voice, so it can't get stuck in a loop replying to itself.",
           "Anything irreversible, like sending an email or submitting a form, needs someone to say \"yes\" out loud first. This one came from a test where it almost emailed a draft quote to a person we made up.",
           "If it's not sure, it asks instead of guessing. A wrong answer from an AI in a live meeting is worse than no answer, because people might act on it before anyone checks.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/plus1-settings.jpg",
+            width: 1600,
+            height: 834,
+            caption: "The settings for how much plus1 does on its own, and the guardrails it can't break.",
+          },
         ],
       },
       {
@@ -475,6 +523,14 @@ export const writeups: Writeup[] = [
           "But there's no good way to save the moment that actually mattered. A bookmark saves a 20-minute video. What you wanted was the eight seconds where you thought \"oh, that's how they did it.\" A month later, you're scrubbing through the whole thing trying to find that part again, if you even remember which video it was.",
           "In most creative fields, a video shows you a lot more than words can. So we built a tool that captures the exact moment, right where you found it.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/fragments-team.jpg",
+            width: 1100,
+            height: 825,
+            caption: "Our team at Hack the North 2025, after winning the AWS prize.",
+          },
+        ],
       },
       {
         heading: "What I worked on",
@@ -510,6 +566,14 @@ export const writeups: Writeup[] = [
           "When someone saves a clip, they don't always add good tags or notes. A lot of people just hit save and move on. But a month later, they need to find that clip, and all they remember is what was in it.",
           "So I built a pipeline that takes a frame from the clip every 2 seconds and sends them to Cohere's Aya Vision model. The model writes a summary of what's happening in the clip and suggests tags, like \"stop motion,\" \"floating UI,\" or \"whip pan.\" Those descriptions and tags get indexed in OpenSearch alongside the user's own notes, so you can find a clip by what's in it and not just what you called it.",
           "The prompt I wrote asks the model to describe the clip as if explaining to a video creator, and to suggest editing instructions for recreating it. That way, the AI output doubles as a reference. You don't just find the clip, you get a starting point for how to do it yourself.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/fragments-architecture.jpg",
+            width: 1440,
+            height: 500,
+            caption: "How a clip gets processed, stored, and made searchable.",
+          },
         ],
       },
       {
@@ -810,6 +874,14 @@ export const writeups: Writeup[] = [
           "Updating the team section with everyone's profile, role, and socials every year.",
           "Opening and closing application statuses for HackCamp, nwHacks, and cmd-f.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/nwplus-devteam.jpg",
+            width: 1100,
+            height: 779,
+            caption: "The dev team behind HackCamp 2024.",
+          },
+        ],
       },
       {
         heading: "Why a revamp?",
@@ -821,6 +893,14 @@ export const writeups: Writeup[] = [
           "The stats sponsors care about, like how many hackers and projects we've had, were hard to find.",
           "We had a lot of nice features, but they were hidden where most people would never see them.",
         ],
+        media: [
+          {
+            src: "/images/projects/writeups/nwplus-club.jpg",
+            width: 1100,
+            height: 733,
+            caption: "The nwPlus team at nwGala 2026.",
+          },
+        ],
       },
       {
         heading: "The revamp",
@@ -830,6 +910,12 @@ export const writeups: Writeup[] = [
           "We moved the stats to the top where sponsors would see them right away. I built a new hero section, a hackathons section where each event gets its own planet, a mobile navbar, a newsletter signup with a confirmation step, and a section for sponsors. Before it went live in fall 2024, we went through a few rounds of testing as a team.",
         ],
         media: [
+          {
+            src: "/images/projects/writeups/nwplus-hero.jpg",
+            width: 788,
+            height: 386,
+            caption: "The new hero section.",
+          },
           {
             src: "/images/projects/writeups/nwplus-stats.jpg",
             width: 788,
@@ -849,6 +935,14 @@ export const writeups: Writeup[] = [
         body: [
           "Opening applications shouldn't need a developer. The organizers running each hackathon know when applications open, and they shouldn't have to wait on a code change to tell people.",
           "So right after the revamp, I moved each hackathon's dates and whether applications are open into Firebase. The site reads them when it loads. It also sorts the hackathons on its own: the next one shows first, an event stays up for three days after it starts, and past events move to the back. Since our admin portal already writes to Firebase, organizers can open or close applications and change dates from there, and the site updates right away, with no pull request and no deploy.",
+        ],
+        media: [
+          {
+            src: "/images/projects/writeups/nwplus-hackathons.jpg",
+            width: 788,
+            height: 386,
+            caption: "Each hackathon gets its own planet. The order and application status come from Firebase.",
+          },
         ],
       },
     ],
@@ -1537,7 +1631,9 @@ export function getWriteup(slug: string): Writeup | undefined {
  * The next listed write-up, wrapping around at the end. Archived write-ups
  * are skipped; landing on one directly sends "next" to the first listed one.
  */
-export function getNextWriteup(slug: string): Writeup {
+/** The next listed write-up, or null after the last one (that page sends
+ *  readers on to the rest of the site instead of looping back). */
+export function getNextWriteup(slug: string): Writeup | null {
   const i = listedWriteups.findIndex((w) => w.slug === slug);
-  return listedWriteups[(i + 1) % listedWriteups.length];
+  return listedWriteups[i + 1] ?? null;
 }

@@ -23,19 +23,9 @@ type Box = { left: number; top: number; size: number };
 const HOLD_MS = 160; // beat on the finished figure before it moves
 const LAND_MS = 650;
 const STALL_MS = 3500; // the 3D never arrived: give up and show the site
-const SEEN_KEY = "dl-intro-seen";
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const;
 const MODES = new Set(["idle", "sleep", "work", "eat", "chill", "commute"]);
-
-const seenRecently = () => {
-  try {
-    return Date.now() - Number(localStorage.getItem(SEEN_KEY)) < WEEK_MS;
-  } catch {
-    return false;
-  }
-};
 
 // same pose the hero will show, so the handoff is invisible
 const currentMode = (): MiiStatus["mode"] => {
@@ -93,13 +83,10 @@ export default function LoadingScreen({
 
   const pieces = buildPieces(mode);
 
-  // skip, stall, or a visitor who saw it this week: everything at once
+  // skip or stall: everything at once
   const bail = () => {
     if (finished.current) return;
     finished.current = true;
-    try {
-      localStorage.setItem(SEEN_KEY, String(Date.now()));
-    } catch {}
     onReveal(false);
     onDone();
     setShow(false);
@@ -110,9 +97,6 @@ export default function LoadingScreen({
   const land = () => {
     if (finished.current) return;
     finished.current = true;
-    try {
-      localStorage.setItem(SEEN_KEY, String(Date.now()));
-    } catch {}
     const to = heroBox();
     if (!to) {
       finished.current = false;
@@ -134,7 +118,10 @@ export default function LoadingScreen({
   }, []);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "development" && seenRecently()) {
+    // a link straight into a section (e.g. /#side-quests from the last
+    // write-up) skips the intro so the visitor lands where they asked
+    const deepLink = window.location.hash.length > 1;
+    if (deepLink) {
       finished.current = true;
       setGone(true);
       onReveal(false);

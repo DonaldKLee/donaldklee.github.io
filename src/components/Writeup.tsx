@@ -166,7 +166,7 @@ export default function Writeup({
   next,
 }: {
   writeup: Writeup;
-  next: Writeup;
+  next: Writeup | null;
 }) {
   const reduce = useReducedMotion();
   const {
@@ -483,50 +483,95 @@ export default function Writeup({
         </div>
       </div>
 
-      {/* ---- next project --------------------------------------------- */}
+      {/* ---- next project (the last one points on to side quests) ------ */}
       <section className="px-5 pb-4 pt-14 sm:px-8">
-        <Link
-          href={`/project/${next.slug}/`}
-          aria-label={`Next project: ${next.title}`}
-          className="group relative mx-auto block max-w-5xl overflow-hidden rounded-3xl border border-line-strong bg-surface"
-        >
-          <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
-          <div className="relative flex flex-col items-stretch gap-6 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
-            <div className="min-w-0 flex-1">
-              <p className="font-mono text-sm text-accent">## next-project</p>
-              <h2 className="mt-2 font-display text-[clamp(1.9rem,5vw,3.2rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
-                {next.title}
-              </h2>
-              <p className="mt-2 text-lg font-medium text-accent">
-                {next.tagline}
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 font-mono text-sm text-ink">
-                read the write-up
-                <span
-                  aria-hidden
-                  className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
-                >
-                  →
+        {next ? (
+          <Link
+            href={`/project/${next.slug}/`}
+            aria-label={`Next project: ${next.title}`}
+            className="group relative mx-auto block max-w-5xl overflow-hidden rounded-3xl border border-line-strong bg-surface"
+          >
+            <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
+            <div className="relative flex flex-col items-stretch gap-6 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
+              <div className="min-w-0 flex-1">
+                <p className="font-mono text-sm text-accent">## next-project</p>
+                <h2 className="mt-2 font-display text-[clamp(1.9rem,5vw,3.2rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                  {next.title}
+                </h2>
+                <p className="mt-2 text-lg font-medium text-accent">
+                  {next.tagline}
+                </p>
+                <span className="mt-5 inline-flex items-center gap-2 font-mono text-sm text-ink">
+                  read the write-up
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+                  >
+                    →
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
 
-            <motion.div
-              initial={false}
-              whileHover={reduce ? undefined : { scale: 1.03 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-2xl border border-line bg-bg shadow-[0_28px_70px_-44px_rgba(40,60,100,0.6)] sm:w-72"
-            >
-              <Image
-                src={next.hero}
-                alt=""
-                fill
-                sizes="(max-width: 640px) 100vw, 288px"
-                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
-              />
-            </motion.div>
-          </div>
-        </Link>
+              <motion.div
+                initial={false}
+                whileHover={reduce ? undefined : { scale: 1.03 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-2xl border border-line bg-bg shadow-[0_28px_70px_-44px_rgba(40,60,100,0.6)] sm:w-72"
+              >
+                <Image
+                  src={next.hero}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 100vw, 288px"
+                  className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              </motion.div>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            href="/#side-quests"
+            aria-label="Back to the site: side quests"
+            className="group relative mx-auto block max-w-5xl overflow-hidden rounded-3xl border border-line-strong bg-surface"
+          >
+            <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
+            <div className="relative flex flex-col items-stretch gap-6 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
+              <div className="min-w-0 flex-1">
+                <p className="font-mono text-sm text-accent">## side-quests</p>
+                <h2 className="mt-2 font-display text-[clamp(1.9rem,5vw,3.2rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                  That&apos;s all the projects
+                </h2>
+                <p className="mt-2 text-lg font-medium text-accent">
+                  Up next: trips, team photos, and moments with friends.
+                </p>
+                <span className="mt-5 inline-flex items-center gap-2 font-mono text-sm text-ink">
+                  see the side quests
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+                  >
+                    →
+                  </span>
+                </span>
+              </div>
+
+              <motion.div
+                initial={false}
+                whileHover={reduce ? undefined : { scale: 1.03 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-2xl border border-line bg-bg shadow-[0_28px_70px_-44px_rgba(40,60,100,0.6)] sm:w-72"
+              >
+                <Image
+                  src="/images/sidequests/hackthenorth2026.jpg"
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 100vw, 288px"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              </motion.div>
+            </div>
+          </Link>
+        )}
       </section>
     </article>
   );
