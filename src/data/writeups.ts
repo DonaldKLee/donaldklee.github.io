@@ -122,7 +122,7 @@ export const writeups: Writeup[] = [
           {
             src: "/images/projects/writeups/ember-rover-leaves.jpg",
             width: 692,
-            height: 900,
+            height: 519,
             caption: "The rover out on a real lawn.",
           },
         ],

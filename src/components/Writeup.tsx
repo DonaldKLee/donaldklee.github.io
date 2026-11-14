@@ -138,7 +138,15 @@ function HeroYouTube({
 /* an in-story screenshot: a soft panel, the image, a centred caption */
 function Figure({ media, wide }: { media: WriteupMedia; wide: boolean }) {
   return (
-    <figure>
+    /* never taller than most of the screen and never wider than the file:
+       a tall shot gets narrower instead of filling the column. The width is
+       worked out from the image's shape so it holds before the file loads. */
+    <figure
+      className="mx-auto max-w-full"
+      style={{
+        width: `min(100%, ${media.width}px, calc(min(68vh, 560px) * ${(media.width / media.height).toFixed(4)}))`,
+      }}
+    >
       <div className="overflow-hidden rounded-2xl border border-line bg-surface p-1.5 sm:p-2">
         <Image
           src={media.src}
